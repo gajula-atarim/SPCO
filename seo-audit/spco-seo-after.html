@@ -221,9 +221,7 @@ details{font-size:13px} summary{cursor:pointer;font-family:var(--f-mono);font-si
     <li><b>The XML sitemap lists only real pages.</b> 5 URLs. The empty client-resource page is set to noindex, which removes it from the sitemap. No page was deleted.</li>
     <li><b>Heading levels descend in order on every page.</b> 36 tag changes across 4 pages and the footer. No wording was changed and each heading looks exactly as before.</li>
     <li><b>Pages are cached.</b> LiteSpeed Cache installed with page caching only; a repeat page load now takes 6–10 ms at the server.</li>
-    <li><b>Mobile loading is lighter.</b> Phones and tablets get a smaller hero image, preloaded, and five Google Fonts requests became one.</li>
-    <li><b>Duplicate stylesheets stopped.</b> Five copies of icon and menu files that a plugin loaded on top of Elementor's own.</li>
-    <li><b>Images, phone links, favicon and host corrected.</b> 3 images now carry alt text, both phone links use <code>tel:+17057370983</code>, the site has a favicon, and <code>www.spco.ca</code> redirects to <code>spco.ca</code>.</li>
+    <li><b>Images, phone links and favicon corrected.</b> 3 images now carry alt text, both phone links use <code>tel:+17057370983</code>, and the site has a favicon.</li>
   </ul>
 </section>
 
@@ -317,7 +315,6 @@ details{font-size:13px} summary{cursor:pointer;font-family:var(--f-mono);font-si
       <tr><td>Spam sitemap files on the domain</td><td class="n">13</td><td class="n ok">0</td><td><code>/sitemap/*.xml</code> now 404</td></tr>
       <tr><td>URLs in the XML sitemap</td><td class="n">6</td><td class="n ok">5</td><td>home, about, services, client resources, contact</td></tr>
       <tr><td>Sitemap readable in a browser</td><td class="n">raw XML</td><td class="n ok">linked table</td><td>each sitemap opens as a list of clickable pages</td></tr>
-      <tr><td>Empty client-resource page</td><td class="n">indexable</td><td class="n ok">noindex</td><td>21 words; the Client Resources page links straight to the PDF</td></tr>
       <tr><td>Public pages indexable</td><td class="n">5 / 5</td><td class="n">5 / 5</td><td>robots meta read per page</td></tr>
       <tr><td>PHP errors or warnings</td><td class="n">0</td><td class="n">0</td><td>checked in the HTML of all 6 pages</td></tr>
     </tbody>
@@ -395,7 +392,6 @@ details{font-size:13px} summary{cursor:pointer;font-family:var(--f-mono);font-si
       <tr><td>Links and images working</td><td class="n">—</td><td class="n ok">135 / 135</td><td>every unique URL on the 6 pages requested</td></tr>
       <tr><td>Server errors (5xx)</td><td class="n">0</td><td class="n">0</td><td>none at any point</td></tr>
       <tr><td>Empty links (<code>href=""</code> or <code>#</code>)</td><td class="n">0</td><td class="n">0</td><td>none</td></tr>
-      <tr><td><code>www.spco.ca</code></td><td class="n">200</td><td class="n ok">301</td><td>to <code>spco.ca</code>, page path kept</td></tr>
       <tr><td><code>http://</code> to <code>https://</code></td><td class="n">301</td><td class="n">301</td><td>unchanged</td></tr>
       <tr><td>Trailing-slash redirect</td><td class="n">301</td><td class="n">301</td><td><code>/about</code> → <code>/about/</code>, correct</td></tr>
     </tbody>
@@ -435,7 +431,7 @@ details{font-size:13px} summary{cursor:pointer;font-family:var(--f-mono);font-si
 <section id="s13">
   <div class="sl">13 — Duplicate &amp; thin content</div>
   <h2>No duplicates anywhere on the site.</h2>
-  <p>There are no duplicate pages, titles or descriptions: the on-page audit reports no duplicate content on any page tested. The only thin page, the 21-word client-resource page, is now excluded from search, so the only URLs put forward for indexing are real, populated pages. With <code>www.spco.ca</code> redirecting, the site can no longer be reached as a second copy.</p>
+  <p>There are no duplicate pages, titles or descriptions: the on-page audit reports no duplicate content on any page tested. The only thin page, the 21-word client-resource page, is now excluded from search, so the only URLs put forward for indexing are real, populated pages.</p>
 </section>
 
 <!-- 14 -->
@@ -457,11 +453,10 @@ details{font-size:13px} summary{cursor:pointer;font-family:var(--f-mono);font-si
       <tr><td>Images missing alt text</td><td class="n">3</td><td class="n">0</td><td><span class="pill p-good">Fixed</span></td></tr>
       <tr><td>Inconsistent phone links</td><td class="n">2 formats</td><td class="n">1</td><td><span class="pill p-good">Fixed</span></td></tr>
       <tr><td>No favicon</td><td class="n">none</td><td class="n">set</td><td><span class="pill p-good">Fixed</span></td></tr>
-      <tr><td>Site reachable on www</td><td class="n">200</td><td class="n">301</td><td><span class="pill p-good">Fixed</span></td></tr>
       <tr><td>Desktop performance below 90</td><td class="n">84</td><td class="n">91</td><td><span class="pill p-good">Fixed</span></td></tr>
     </tbody>
   </table></div>
-  <p class="fn">Fourteen issues closed and verified on the live site.</p>
+  <p class="fn">Thirteen issues closed and verified on the live site.</p>
 </section>
 
 <!-- 15 -->
@@ -494,7 +489,6 @@ details{font-size:13px} summary{cursor:pointer;font-family:var(--f-mono);font-si
       <tr><td>Speed Index (mobile)</td><td class="n">5.3 s</td><td class="n ok">3.0 s</td></tr>
       <tr><td>Phone link format</td><td class="n">2 variants</td><td class="n ok">1</td></tr>
       <tr><td>Favicon</td><td class="n">none</td><td class="n ok">set</td></tr>
-      <tr><td>www.spco.ca</td><td class="n">200</td><td class="n ok">301</td></tr>
       <tr><td>Broken links and images</td><td class="n">0</td><td class="n">0</td></tr>
       <tr><td>PHP errors on any page</td><td class="n">0</td><td class="n">0</td></tr>
     </tbody>
