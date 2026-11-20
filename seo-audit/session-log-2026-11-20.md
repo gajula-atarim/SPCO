@@ -42,3 +42,6 @@ All work went through the Atarim WordPress bridge; this cloud session's network 
 - Out of scope: font loading (18 Montserrat styles + Roboto + Roboto Slab), WebP images, og:image on services/contact.
 - Maintenance: test CPT posts and trash kept at the user's instruction; `/old/` legacy static site folder on the server.
 - Ruled out, do not revisit: renaming the `client_resources` URL base (page is noindex and empty); linking resource titles to the empty single pages.
+
+## Follow-up: favicon
+- Built an SP monogram from the logo glyphs (white on #27477C), uploaded as attachment 3818, set `site_icon` = 3818, wrote `/favicon.ico` (16/32/48 px). Copies in `seo-audit/site-changes/`. Page audit no longer flags no_favicon; homepage score 95.24 → 98.17.
