@@ -39,7 +39,8 @@ add_action( 'wp_print_footer_scripts', 'spco_seo_dedupe_styles', 1 );
 /**
  * 3. Sitemap stylesheet. Yoast SEO 28.9 stopped linking its sitemap stylesheet ("removed temporarily,
  *    to be restored in a future release"), so sitemaps showed as raw XML in browsers. This re-attaches
- *    Yoast's own CSS stylesheet (/main-sitemap.css). It runs only on sitemap URLs and steps aside if
+ *    a Yoast-style XSL view (spco-child/main-sitemap.xsl, clickable links) with Yoast's own CSS
+ *    stylesheet (/main-sitemap.css) as the fallback for browsers without XSLT. It runs only on sitemap URLs and steps aside if
  *    Yoast, or anything else, already outputs an xml-stylesheet line. Search engines ignore it.
  */
 add_action( 'init', function () {
@@ -51,7 +52,9 @@ add_action( 'init', function () {
 		if ( strpos( $buffer, '<?xml' ) !== 0 || strpos( $buffer, 'xml-stylesheet' ) !== false || strpos( $buffer, 'Yoast SEO' ) === false ) {
 			return $buffer;
 		}
-		$pi = '<?xml-stylesheet type="text/css" href="' . esc_url( home_url( '/main-sitemap.css' ) ) . '"?>';
+		// XSLT view (clickable links) for browsers that still support it; Yoast's CSS view as the fallback.
+		$pi  = '<?xml-stylesheet type="text/xsl" href="' . esc_url( get_stylesheet_directory_uri() . '/main-sitemap.xsl' ) . '"?>';
+		$pi .= '<?xml-stylesheet type="text/css" href="' . esc_url( home_url( '/main-sitemap.css' ) ) . '"?>';
 		return preg_replace( '/^(<\?xml[^>]*\?>)/', '$1' . $pi, $buffer, 1 );
 	} );
 }, 0 );
