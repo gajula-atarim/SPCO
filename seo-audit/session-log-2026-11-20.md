@@ -37,7 +37,7 @@ All work went through the Atarim WordPress bridge; this cloud session's network 
 
 ## Open items
 - Priority: submit the sitemap in GSC (Google not connected in Atarim); request removal of old spam URLs.
-- Small fixes: www → non-www 301 (offered, not chosen); disable author archives (`/author/spco/` live; offered, not chosen); Yoast org name "SPCO".
+- Small fixes: disable author archives (`/author/spco/` live; offered, not chosen); Yoast org name "SPCO".
 - Blocked on client: en-CA locale; confirm the concurrent changes.
 - Out of scope: font loading (18 Montserrat styles + Roboto + Roboto Slab), WebP images, og:image on services/contact.
 - Maintenance: test CPT posts and trash kept at the user's instruction; `/old/` legacy static site folder on the server.
@@ -45,3 +45,6 @@ All work went through the Atarim WordPress bridge; this cloud session's network 
 
 ## Follow-up: favicon
 - Built an SP monogram from the logo glyphs (white on #27477C), uploaded as attachment 3818, set `site_icon` = 3818, wrote `/favicon.ico` (16/32/48 px). Copies in `seo-audit/site-changes/`. Page audit no longer flags no_favicon; homepage score 95.24 → 98.17.
+
+## Follow-up: www → non-www
+- Prepended a RewriteCond/RewriteRule (www.spco.ca → https://spco.ca/$1, R=301) to .htaccess above the WordPress block; backup at /home/spcoca/htaccess-backup-2026-11-20-before-www-redirect.txt. Verified: www and http://www paths 301 with path and query kept; spco.ca pages 200.
