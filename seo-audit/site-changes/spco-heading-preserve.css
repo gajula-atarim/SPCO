@@ -1,0 +1,93 @@
+/* SPCO SEO heading-level fix (20 Nov 2026).
+   Heading tags were changed so heading levels no longer skip. These rules keep every changed
+   element looking exactly as it did with its old tag. Values were measured on the live site before
+   the change, at the theme breakpoints (921px, 544px). Remove a rule only with its tag change. */
+body .elementor-element.elementor-element-cc31416 .elementor-heading-title{font-family:Montserrat, sans-serif;font-weight:600;line-height:1.2em}
+body .e-heading-base.e-heading-base[data-id="0443c98"]{color:rgb(39, 71, 124);font-size:17px;line-height:1.45em}
+body .e-heading-base.e-heading-base[data-id="e299fe8"]{color:rgb(39, 71, 124);font-size:17px;line-height:1.45em}
+body .e-heading-base.e-heading-base[data-id="66ac974"]{color:rgb(39, 71, 124);font-size:17px;line-height:1.45em}
+body .elementor-element.elementor-element-c031bcf .elementor-heading-title{font-family:Montserrat, sans-serif;line-height:1.25em;text-transform:capitalize}
+body .elementor-element.elementor-element-61701f4 .elementor-heading-title{line-height:1.25em}
+body .elementor-element.elementor-element-efa3a9b .elementor-icon-box-title{font-size:24px;line-height:1.2em}
+body .elementor-element.elementor-element-a40babe .elementor-icon-box-title{font-size:24px;line-height:1.2em}
+body .elementor-element.elementor-element-2fd3040 .elementor-icon-box-title{font-size:24px;line-height:1.2em}
+body .e-heading-base.e-heading-base[data-id="894de7c"]{font-family:Montserrat, sans-serif;font-size:40px;font-weight:600;line-height:1.3em;text-transform:capitalize}
+body .e-heading-base.e-heading-base[data-id="efc2eca"]{font-family:Montserrat, sans-serif;font-size:40px;font-weight:600;line-height:1.3em;text-transform:capitalize}
+body .e-heading-base.e-heading-base[data-id="586c839"]{font-family:Montserrat, sans-serif;font-size:40px;font-weight:600;line-height:1.3em;text-transform:capitalize}
+body .elementor-element.elementor-element-baf4e06 .elementor-heading-title{line-height:1.25em}
+body .elementor-element.elementor-element-b32fbc4 .elementor-heading-title{font-weight:600}
+body .elementor-element.elementor-element-0ea153a .elementor-icon-box-title{text-transform:capitalize}
+body .elementor-element.elementor-element-b727bcd .elementor-icon-box-title{text-transform:capitalize}
+body .elementor-element.elementor-element-618cf60d .elementor-heading-title{font-family:Montserrat, sans-serif;font-size:17px;font-weight:600;line-height:1.25em;text-transform:capitalize}
+body .elementor-element.elementor-element-f54774f .elementor-heading-title{font-size:24px;line-height:1.2em}
+body .elementor-element.elementor-element-68f43e1c .elementor-heading-title{color:rgb(58, 58, 58);font-family:Montserrat, sans-serif;font-size:20px;font-weight:600;line-height:1.2em;text-transform:capitalize}
+body .elementor-element.elementor-element-3300b5ca .elementor-icon-box-title{font-size:24px;line-height:1.2em}
+body .elementor-element.elementor-element-4afad1c9 .elementor-icon-box-title{font-size:24px;line-height:1.2em}
+body .elementor-element.elementor-element-1aa00240 .elementor-icon-box-title{font-size:24px;line-height:1.2em}
+body .elementor-element.elementor-element-2ec0f4e3 .elementor-icon-box-title{font-size:24px;line-height:1.2em}
+body .elementor-element.elementor-element-58af440f .elementor-icon-box-title{font-size:24px;line-height:1.2em}
+body .elementor-element.elementor-element-3b8e98a2 .elementor-icon-box-title{font-size:24px;line-height:1.2em}
+body .elementor-element.elementor-element-07fb5b0 .elementor-heading-title{line-height:1.2em}
+body .elementor-element.elementor-element-9c6d5d1 .elementor-heading-title{line-height:1.2em}
+body .elementor-element.elementor-element-109a944 .elementor-heading-title{line-height:1.2em}
+body .elementor-element.elementor-element-20e1bce .elementor-heading-title{font-family:Montserrat, sans-serif;font-size:20px;font-weight:600;line-height:1.2em;text-transform:capitalize}
+body .elementor-element.elementor-element-f35aec0 .elementor-icon-box-title{font-size:24px;line-height:1.2em}
+body .elementor-element.elementor-element-624d5be .elementor-icon-box-title{font-size:24px;line-height:1.2em}
+body .elementor-element.elementor-element-006dc73 .elementor-icon-box-title{font-size:24px;line-height:1.2em}
+@media (max-width: 921px){
+body .elementor-element.elementor-element-efa3a9b .elementor-icon-box-title{font-size:20px}
+body .elementor-element.elementor-element-a40babe .elementor-icon-box-title{font-size:20px}
+body .elementor-element.elementor-element-2fd3040 .elementor-icon-box-title{font-size:20px}
+body .e-heading-base.e-heading-base[data-id="894de7c"]{font-size:30px}
+body .e-heading-base.e-heading-base[data-id="efc2eca"]{font-size:30px}
+body .e-heading-base.e-heading-base[data-id="586c839"]{font-size:30px}
+body .elementor-element.elementor-element-618cf60d .elementor-heading-title{font-size:15px}
+body .elementor-element.elementor-element-f54774f .elementor-heading-title{font-size:20px}
+body .elementor-element.elementor-element-68f43e1c .elementor-heading-title{font-size:17px}
+body .elementor-element.elementor-element-3300b5ca .elementor-icon-box-title{font-size:20px}
+body .elementor-element.elementor-element-4afad1c9 .elementor-icon-box-title{font-size:20px}
+body .elementor-element.elementor-element-1aa00240 .elementor-icon-box-title{font-size:20px}
+body .elementor-element.elementor-element-2ec0f4e3 .elementor-icon-box-title{font-size:20px}
+body .elementor-element.elementor-element-58af440f .elementor-icon-box-title{font-size:20px}
+body .elementor-element.elementor-element-3b8e98a2 .elementor-icon-box-title{font-size:20px}
+body .elementor-element.elementor-element-20e1bce .elementor-heading-title{font-size:17px}
+body .elementor-element.elementor-element-f35aec0 .elementor-icon-box-title{font-size:20px}
+body .elementor-element.elementor-element-624d5be .elementor-icon-box-title{font-size:20px}
+body .elementor-element.elementor-element-006dc73 .elementor-icon-box-title{font-size:20px}
+}
+@media (max-width: 544px){
+body .elementor-element.elementor-element-efa3a9b .elementor-icon-box-title{font-size:18px}
+body .elementor-element.elementor-element-a40babe .elementor-icon-box-title{font-size:18px}
+body .elementor-element.elementor-element-2fd3040 .elementor-icon-box-title{font-size:18px}
+body .e-heading-base.e-heading-base[data-id="894de7c"]{font-size:26px}
+body .e-heading-base.e-heading-base[data-id="efc2eca"]{font-size:26px}
+body .e-heading-base.e-heading-base[data-id="586c839"]{font-size:26px}
+body .elementor-element.elementor-element-618cf60d .elementor-heading-title{font-size:13px}
+body .elementor-element.elementor-element-f54774f .elementor-heading-title{font-size:18px}
+body .elementor-element.elementor-element-68f43e1c .elementor-heading-title{font-size:15px}
+body .elementor-element.elementor-element-3300b5ca .elementor-icon-box-title{font-size:18px}
+body .elementor-element.elementor-element-4afad1c9 .elementor-icon-box-title{font-size:18px}
+body .elementor-element.elementor-element-1aa00240 .elementor-icon-box-title{font-size:18px}
+body .elementor-element.elementor-element-2ec0f4e3 .elementor-icon-box-title{font-size:18px}
+body .elementor-element.elementor-element-58af440f .elementor-icon-box-title{font-size:18px}
+body .elementor-element.elementor-element-3b8e98a2 .elementor-icon-box-title{font-size:18px}
+body .elementor-element.elementor-element-20e1bce .elementor-heading-title{font-size:15px}
+body .elementor-element.elementor-element-f35aec0 .elementor-icon-box-title{font-size:18px}
+body .elementor-element.elementor-element-624d5be .elementor-icon-box-title{font-size:18px}
+body .elementor-element.elementor-element-006dc73 .elementor-icon-box-title{font-size:18px}
+}
+/* Links inside changed card titles keep the title size (the theme sizes links inside h3 separately). */
+body .elementor-element.elementor-element-006dc73 .elementor-icon-box-title a,
+body .elementor-element.elementor-element-0ea153a .elementor-icon-box-title a,
+body .elementor-element.elementor-element-1aa00240 .elementor-icon-box-title a,
+body .elementor-element.elementor-element-2ec0f4e3 .elementor-icon-box-title a,
+body .elementor-element.elementor-element-2fd3040 .elementor-icon-box-title a,
+body .elementor-element.elementor-element-3300b5ca .elementor-icon-box-title a,
+body .elementor-element.elementor-element-3b8e98a2 .elementor-icon-box-title a,
+body .elementor-element.elementor-element-4afad1c9 .elementor-icon-box-title a,
+body .elementor-element.elementor-element-58af440f .elementor-icon-box-title a,
+body .elementor-element.elementor-element-624d5be .elementor-icon-box-title a,
+body .elementor-element.elementor-element-a40babe .elementor-icon-box-title a,
+body .elementor-element.elementor-element-b727bcd .elementor-icon-box-title a,
+body .elementor-element.elementor-element-efa3a9b .elementor-icon-box-title a,
+body .elementor-element.elementor-element-f35aec0 .elementor-icon-box-title a{font-size:inherit;line-height:inherit}
