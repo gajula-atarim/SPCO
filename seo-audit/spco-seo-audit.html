@@ -1,0 +1,704 @@
+<title>SPCO SEO Baseline Audit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Spectral:wght@500;600&display=swap">
+<style>
+/* Layout: an auditor's working paper. Narrow reading column, findings referenced F-01..F-16 like workpaper refs, evidence tucked into expandable notes. */
+:root{
+  --paper:#f6f7f9; --sheet:#ffffff; --ink:#15213a; --ink-2:#4a5568; --rule:#dde2ea; --tint:#eef1f6;
+  --ochre:#a8761c; --ochre-soft:#f6ecd8;
+  --crit:#b42318; --crit-bg:#fdecea; --high:#b54708; --high-bg:#fef0e1; --med:#946200; --med-bg:#fbf3d6; --low:#2f6f4f; --low-bg:#e5f3ea; --gap:#5a5f73; --gap-bg:#eceef3;
+  --f-display:"Spectral",Georgia,"Times New Roman",serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0f1522; --sheet:#151d2e; --ink:#e6eaf2; --ink-2:#a3adc2; --rule:#29344a; --tint:#1b2539;
+  --ochre:#d9a54a; --ochre-soft:#2e2615;
+  --crit:#f97066; --crit-bg:#3a1a19; --high:#f79a4b; --high-bg:#3a2513; --med:#e8bf4a; --med-bg:#352c12; --low:#6cc196; --low-bg:#14301f; --gap:#aab0c2; --gap-bg:#232c3f;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0f1522; --sheet:#151d2e; --ink:#e6eaf2; --ink-2:#a3adc2; --rule:#29344a; --tint:#1b2539;
+  --ochre:#d9a54a; --ochre-soft:#2e2615;
+  --crit:#f97066; --crit-bg:#3a1a19; --high:#f79a4b; --high-bg:#3a2513; --med:#e8bf4a; --med-bg:#352c12; --low:#6cc196; --low-bg:#14301f; --gap:#aab0c2; --gap-bg:#232c3f;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:960px;margin:0 auto}
+header.cover{padding-block:48px 32px;border-bottom:2px solid var(--ink);display:grid;gap:20px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre)}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;text-wrap:balance;line-height:1.2;margin:0}
+h1{font-size:clamp(2rem,5vw,2.9rem)}
+h2{font-size:1.65rem}
+h3{font-size:1.2rem}
+.meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px 24px;font-size:14px}
+.meta-grid div{display:grid;gap:2px;min-width:0}
+.meta-grid span{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+nav.toc{padding-block:24px;border-bottom:1px solid var(--rule)}
+nav.toc ol{columns:2 220px;column-gap:32px;margin:12px 0 0;padding-left:1.4em;font-size:14px}
+nav.toc a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule)}
+nav.toc a:hover,nav.toc a:focus-visible{border-color:var(--ochre)}
+section{padding-block:40px 8px;display:grid;gap:16px;scroll-margin-top:16px}
+section > p,section > ul,.prose{max-width:68ch;margin:0}
+.secno{font-family:var(--f-mono);font-size:13px;color:var(--ochre);margin-right:10px;font-weight:500}
+p{margin:0}
+ul{margin:0;padding-left:1.2em}
+li+li{margin-top:4px}
+a{color:var(--ink)}
+:focus-visible{outline:2px solid var(--ochre);outline-offset:2px}
+.callout{background:var(--crit-bg);border:1px solid var(--crit);border-radius:6px;padding:16px 20px;display:grid;gap:8px;max-width:none}
+.callout strong{color:var(--crit)}
+.note{background:var(--tint);border-radius:6px;padding:14px 18px;font-size:14px;color:var(--ink-2);display:grid;gap:6px}
+.note b{color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.stat{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;display:grid;gap:4px;align-content:start}
+.stat .v{font-family:var(--f-display);font-size:1.9rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat .l{font-size:13px;color:var(--ink-2)}
+.stat .s{font-family:var(--f-mono);font-size:11px;color:var(--ink-2);text-transform:uppercase;letter-spacing:.06em}
+.tbl{overflow-x:auto;background:var(--sheet);border:1px solid var(--rule);border-radius:6px}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--rule)}
+th{font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);background:var(--tint)}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td code,p code,li code{font-family:var(--f-mono);font-size:12.5px;background:var(--tint);padding:1px 5px;border-radius:3px;word-break:break-all}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.p-crit{color:var(--crit);background:var(--crit-bg)} .p-high{color:var(--high);background:var(--high-bg)}
+.p-med{color:var(--med);background:var(--med-bg)} .p-low{color:var(--low);background:var(--low-bg)} .p-gap{color:var(--gap);background:var(--gap-bg)}
+.ref{font-family:var(--f-mono);font-size:12px;color:var(--ochre);white-space:nowrap}
+.finding{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:18px 20px;display:grid;gap:12px}
+.finding-head{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:baseline}
+.finding-head h3{flex:1 1 260px;min-width:0}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px 20px;font-size:14px}
+.kv div{display:grid;gap:2px;min-width:0}
+.kv span{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
+.finding p{font-size:15px}
+details{font-size:14px;color:var(--ink-2)}
+summary{cursor:pointer;font-family:var(--f-mono);font-size:12px;letter-spacing:.04em;color:var(--ink)}
+details[open] summary{margin-bottom:8px}
+.scores{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.ring{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:14px;display:grid;justify-items:center;gap:6px;text-align:center}
+.ring svg{width:76px;height:76px}
+.ring .l{font-size:13px;color:var(--ink-2)}
+.matrix td.c{text-align:center;font-family:var(--f-mono)}
+.yes{color:var(--crit);font-weight:600} .warn{color:var(--med);font-weight:600} .ok{color:var(--low)}
+.phase{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--rule)}
+.phase:first-of-type{border-top:0}
+.phase .when{font-family:var(--f-mono);font-size:12px;color:var(--ochre);text-transform:uppercase;letter-spacing:.06em}
+.phase h3{margin-bottom:6px}
+@media (max-width:560px){.phase{grid-template-columns:1fr;gap:6px}}
+footer{margin-top:48px;padding-top:20px;border-top:2px solid var(--ink);font-size:13px;color:var(--ink-2);display:grid;gap:6px}
+</style>
+
+<div class="wrap">
+
+<header class="cover">
+  <div class="eyebrow">SEO Audit · Pre-project baseline</div>
+  <h1>Strathdee Polley &amp; Co: SEO Baseline Audit</h1>
+  <p class="prose" style="color:var(--ink-2)">The condition of <strong style="color:var(--ink)">spco.ca</strong> before SEO work begins. Every figure here comes from the crawl and audit exports listed below, so the same checks can be re-run later for a before-and-after comparison.</p>
+  <div class="meta-grid">
+    <div><span>Website</span>https://spco.ca</div>
+    <div><span>Crawl date</span>20 November 2026</div>
+    <div><span>Data source A</span>Screaming Frog, Internal: All (56 URLs)</div>
+    <div><span>Data source B</span>OPEN SEO site audit (7 pages, 17 issue rows)</div>
+    <div><span>Data source C</span>PageSpeed Insights screenshot, desktop</div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <div class="eyebrow">Contents</div>
+  <ol>
+    <li><a href="#s1">Executive Summary</a></li>
+    <li><a href="#s2">Website SEO Health Overview</a></li>
+    <li><a href="#s3">Key Findings</a></li>
+    <li><a href="#s4">Technical SEO Audit</a></li>
+    <li><a href="#s5">Crawlability &amp; Indexability</a></li>
+    <li><a href="#s6">On-Page SEO Analysis</a></li>
+    <li><a href="#s7">Metadata Analysis</a></li>
+    <li><a href="#s8">Heading Structure</a></li>
+    <li><a href="#s9">URL &amp; Canonical Analysis</a></li>
+    <li><a href="#s10">Redirects &amp; HTTP Status Codes</a></li>
+    <li><a href="#s11">Internal Linking Analysis</a></li>
+    <li><a href="#s12">Image SEO</a></li>
+    <li><a href="#s13">Duplicate / Thin Content</a></li>
+    <li><a href="#s14">Priority Issues &amp; Recommendations</a></li>
+    <li><a href="#s15">SEO Action Plan</a></li>
+    <li><a href="#s16">Before-SEO Baseline Summary</a></li>
+  </ol>
+</nav>
+
+<!-- 1 -->
+<section id="s1">
+  <h2><span class="secno">01</span>Executive Summary</h2>
+  <div class="callout">
+    <p><strong>The website is currently hidden from search engines.</strong></p>
+    <p>All 7 pages found by the audit (100%) carry a <code>noindex, nofollow</code> instruction. This tells Google and other search engines not to list the page in search results and not to follow its links. While it is in place, spco.ca cannot rank for anything, including the firm's own name.</p>
+  </div>
+  <p>The good news is that this is one setting, not a structural problem. The rest of the data shows a site in reasonable shape:</p>
+  <ul>
+    <li>All 56 URLs crawled returned a successful <code>200 OK</code> response, with no broken links or server errors.</li>
+    <li>The homepage title (54 characters) and meta description (154 characters) are well written, within recommended lengths, and mention the service and location (Barrie, ON).</li>
+    <li>Desktop PageSpeed scores are strong for Best Practices (100) and Accessibility (95). Performance is 86.</li>
+    <li>The homepage has exactly one H1 heading and about 1,000 words of content.</li>
+  </ul>
+  <p>Beyond the indexing block, we found smaller issues: skipped heading levels on every page, 2 pages without a meta description, a resource page that no other page links to, an author archive page that exposes a login-style username, no canonical tag on the homepage, and duplicate stylesheet files that slow the page down.</p>
+  <p><strong>One important limit:</strong> because the homepage told the crawler not to follow links, Screaming Frog only analysed 1 HTML page (the homepage). Page-level details for the other 6 pages come from OPEN SEO only. A full re-crawl is needed after the indexing block is removed. Section 16 lists what that re-crawl must capture.</p>
+</section>
+
+<!-- 2 -->
+<section id="s2">
+  <h2><span class="secno">02</span>Website SEO Health Overview</h2>
+  <div class="stats">
+    <div class="stat"><div class="s">Indexable pages</div><div class="v" style="color:var(--crit)">0 / 7</div><div class="l">0% of pages can appear in search</div></div>
+    <div class="stat"><div class="s">HTTP 200 responses</div><div class="v">56 / 56</div><div class="l">100% of crawled URLs load correctly</div></div>
+    <div class="stat"><div class="s">Pages with heading skips</div><div class="v">7 / 7</div><div class="l">100% of audited pages</div></div>
+    <div class="stat"><div class="s">Missing meta description</div><div class="v">2 / 7</div><div class="l">29% of audited pages</div></div>
+  </div>
+
+  <h3>Category scorecard</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Area</th><th>Status</th><th>Basis</th></tr></thead>
+    <tbody>
+      <tr><td>Crawlability &amp; indexability</td><td><span class="pill p-crit">Blocked</span></td><td>7 of 7 pages <code>noindex, nofollow</code></td></tr>
+      <tr><td>HTTP status codes</td><td><span class="pill p-low">Good</span></td><td>56 of 56 URLs return 200; no 3xx/4xx/5xx</td></tr>
+      <tr><td>Meta titles</td><td><span class="pill p-gap">Partial data</span></td><td>Homepage title is good; other 6 pages not crawled by Screaming Frog</td></tr>
+      <tr><td>Meta descriptions</td><td><span class="pill p-med">Needs work</span></td><td>2 of 7 missing</td></tr>
+      <tr><td>Heading structure</td><td><span class="pill p-med">Needs work</span></td><td>Heading levels skip on 7 of 7 pages</td></tr>
+      <tr><td>Canonical tags</td><td><span class="pill p-high">Missing</span></td><td>No canonical tag on the homepage</td></tr>
+      <tr><td>Internal linking</td><td><span class="pill p-med">Needs work</span></td><td>1 orphan page</td></tr>
+      <tr><td>Page performance (desktop)</td><td><span class="pill p-med">Fair</span></td><td>PageSpeed Performance 86; duplicate CSS files loaded</td></tr>
+      <tr><td>Image SEO / alt text</td><td><span class="pill p-gap">No data</span></td><td>Alt text not included in the export</td></tr>
+      <tr><td>XML sitemap &amp; robots.txt</td><td><span class="pill p-gap">No data</span></td><td>Not included in either export</td></tr>
+      <tr><td>Duplicate content</td><td><span class="pill p-gap">No data</span></td><td>Needs a multi-page crawl to assess</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>PageSpeed Insights: desktop, homepage</h3>
+  <div class="scores">
+    <div class="ring"><svg viewBox="0 0 80 80" role="img" aria-label="Performance 86"><circle cx="40" cy="40" r="34" fill="none" stroke="var(--rule)" stroke-width="6"/><circle cx="40" cy="40" r="34" fill="none" stroke="var(--med)" stroke-width="6" stroke-linecap="round" stroke-dasharray="183.7 213.6" transform="rotate(-90 40 40)"/><text x="40" y="47" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="20" fill="var(--ink)">86</text></svg><div class="l">Performance</div></div>
+    <div class="ring"><svg viewBox="0 0 80 80" role="img" aria-label="Accessibility 95"><circle cx="40" cy="40" r="34" fill="none" stroke="var(--rule)" stroke-width="6"/><circle cx="40" cy="40" r="34" fill="none" stroke="var(--low)" stroke-width="6" stroke-linecap="round" stroke-dasharray="202.9 213.6" transform="rotate(-90 40 40)"/><text x="40" y="47" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="20" fill="var(--ink)">95</text></svg><div class="l">Accessibility</div></div>
+    <div class="ring"><svg viewBox="0 0 80 80" role="img" aria-label="Best Practices 100"><circle cx="40" cy="40" r="34" fill="none" stroke="var(--low)" stroke-width="6"/><text x="40" y="47" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="20" fill="var(--ink)">100</text></svg><div class="l">Best Practices</div></div>
+    <div class="ring"><svg viewBox="0 0 80 80" role="img" aria-label="SEO 66"><circle cx="40" cy="40" r="34" fill="none" stroke="var(--rule)" stroke-width="6"/><circle cx="40" cy="40" r="34" fill="none" stroke="var(--high)" stroke-width="6" stroke-linecap="round" stroke-dasharray="141 213.6" transform="rotate(-90 40 40)"/><text x="40" y="47" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="20" fill="var(--ink)">66</text></svg><div class="l">SEO</div></div>
+  </div>
+  <div class="note">
+    <p><b>Reading these scores.</b> The SEO score of 66 is consistent with the noindex instruction; Lighthouse treats a page blocked from indexing as a heavily weighted failure. The full list of Lighthouse SEO checks was not in the screenshot, so we can't confirm whether other checks also failed. PageSpeed showed "No Data" for real-user experience (Chrome field data), which usually means the site has too little recorded traffic. Mobile scores were not provided.</p>
+  </div>
+</section>
+
+<!-- 3 -->
+<section id="s3">
+  <h2><span class="secno">03</span>Key Findings</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Ref</th><th>Finding</th><th class="num">Affected</th><th>Priority</th></tr></thead>
+    <tbody>
+      <tr><td class="ref">F-01</td><td>Every page is set to <code>noindex, nofollow</code>, so nothing can appear in search results</td><td class="num">7 / 7 (100%)</td><td><span class="pill p-crit">Critical</span></td></tr>
+      <tr><td class="ref">F-02</td><td>The <code>nofollow</code> stops crawlers following links, so Google can't find the other pages either</td><td class="num">7 / 7 (100%)</td><td><span class="pill p-crit">Critical</span></td></tr>
+      <tr><td class="ref">F-03</td><td>No canonical tag on the homepage</td><td class="num">1 / 1 crawled</td><td><span class="pill p-high">High</span></td></tr>
+      <tr><td class="ref">F-04</td><td>XML sitemap and robots.txt not verified (not in the data)</td><td class="num">Sitewide</td><td><span class="pill p-high">High</span></td></tr>
+      <tr><td class="ref">F-05</td><td>Author archive exposes a login-style username (<code>guzurebovi5293</code>)</td><td class="num">1 / 7 (14%)</td><td><span class="pill p-high">High</span></td></tr>
+      <tr><td class="ref">F-06</td><td>Heading levels skip (e.g. H2 straight to H4)</td><td class="num">7 / 7 (100%)</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td class="ref">F-07</td><td>Missing meta descriptions</td><td class="num">2 / 7 (29%)</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td class="ref">F-08</td><td>Orphan page: the 2026 intake checklist has no internal links pointing to it</td><td class="num">1 / 7 (14%)</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td class="ref">F-09</td><td>Duplicate stylesheet and icon files loaded on the homepage</td><td class="num">At least 5 of 36 CSS files</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td class="ref">F-10</td><td>Large unoptimised images (175 KB PNG, 89 KB logo)</td><td class="num">2 / 5 images</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td class="ref">F-11</td><td>Homepage HTML response time of 1.21 seconds</td><td class="num">1 / 1 crawled</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td class="ref">F-12</td><td>Desktop Performance score 86 (mobile not measured)</td><td class="num">Homepage</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td class="ref">F-13</td><td>Inconsistent URL style: <code>/client-resources/</code> vs <code>/client_resources/</code></td><td class="num">1 / 7 (14%)</td><td><span class="pill p-low">Low</span></td></tr>
+      <tr><td class="ref">F-14</td><td>Statistic counters ("100+", "72+") marked up as H2 headings</td><td class="num">Homepage</td><td><span class="pill p-low">Low</span></td></tr>
+      <tr><td class="ref">F-15</td><td>Page language set to US English (<code>en-US</code>) for a Canadian firm</td><td class="num">1 / 1 crawled</td><td><span class="pill p-low">Low</span></td></tr>
+      <tr><td class="ref">F-16</td><td>Low text-to-code ratio (3.3%) on the homepage</td><td class="num">1 / 1 crawled</td><td><span class="pill p-low">Low</span></td></tr>
+    </tbody>
+  </table></div>
+  <p style="font-size:14px;color:var(--ink-2)">Percentages use 7 pages (OPEN SEO) as the base for page-level issues and 1 page (Screaming Frog HTML) where only the homepage was measurable.</p>
+</section>
+
+<!-- 4 -->
+<section id="s4">
+  <h2><span class="secno">04</span>Technical SEO Audit</h2>
+  <p>Technical SEO covers how reliably the site can be fetched, read and understood by search engines, before anyone looks at the words on the page.</p>
+  <h3>What the crawler fetched</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Content type</th><th class="num">URLs</th><th class="num">Share</th><th class="num">Status 200</th></tr></thead>
+    <tbody>
+      <tr><td>HTML pages</td><td class="num">1</td><td class="num">1.8%</td><td class="num">1</td></tr>
+      <tr><td>CSS stylesheets</td><td class="num">36</td><td class="num">64.3%</td><td class="num">36</td></tr>
+      <tr><td>JavaScript files</td><td class="num">14</td><td class="num">25.0%</td><td class="num">14</td></tr>
+      <tr><td>Images (PNG, WebP, JPEG)</td><td class="num">5</td><td class="num">8.9%</td><td class="num">5</td></tr>
+      <tr><td><strong>Total</strong></td><td class="num"><strong>56</strong></td><td class="num">100%</td><td class="num"><strong>56</strong></td></tr>
+    </tbody>
+  </table></div>
+  <h3>Homepage technical profile</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Check</th><th>Value</th><th>Assessment</th></tr></thead>
+    <tbody>
+      <tr><td>HTTP status</td><td>200 OK</td><td><span class="pill p-low">Good</span></td></tr>
+      <tr><td>Meta robots</td><td><code>noindex, nofollow</code></td><td><span class="pill p-crit">Blocking</span></td></tr>
+      <tr><td>X-Robots-Tag header</td><td>None</td><td><span class="pill p-low">Good</span> The block comes from the page's HTML, not the server</td></tr>
+      <tr><td>Canonical tag</td><td>None</td><td><span class="pill p-high">Missing</span></td></tr>
+      <tr><td>HTML size / transferred</td><td>201,449 bytes / 38,052 bytes</td><td><span class="pill p-low">Good</span> Compression is working (about 81% smaller over the wire)</td></tr>
+      <tr><td>Response time</td><td>1.21 s</td><td><span class="pill p-med">Slow</span> Above Screaming Frog's 1-second guideline</td></tr>
+      <tr><td>Language</td><td><code>en-US</code></td><td><span class="pill p-low">Low</span> <code>en-CA</code> fits a Barrie, Ontario firm</td></tr>
+      <tr><td>Text-to-code ratio</td><td>3.3%</td><td><span class="pill p-low">Low</span> Most of the file is markup and styling, not readable text</td></tr>
+      <tr><td>Platform (from asset paths)</td><td>WordPress, Astra theme, Elementor and Elementor Pro</td><td>Context for the fixes below</td></tr>
+    </tbody>
+  </table></div>
+  <div class="finding" id="f09">
+    <div class="finding-head"><span class="ref">F-09</span><h3>Duplicate stylesheet and icon files</h3><span class="pill p-med">Medium</span></div>
+    <p>The homepage loads the same files more than once: two versions of the navigation-menu stylesheet, two versions of the Elementor icon font, and both the compressed and uncompressed copies of several Font Awesome icon stylesheets. Each extra file is another request the browser must make before the page finishes drawing.</p>
+    <div class="kv">
+      <div><span>Current status</span>36 CSS files on one page</div>
+      <div><span>Affected</span>At least 5 redundant files (~21 KB)</div>
+      <div><span>SEO impact</span>Slower page load; affects Core Web Vitals</div>
+      <div><span>Action</span>Remove the duplicate enqueues; turn on Elementor's asset optimisation; consider loading only the icon sets in use</div>
+    </div>
+    <details><summary>Evidence from the crawl</summary>
+      <ul>
+        <li><code>widget-nav-menu.min.css?ver=4.3.3</code> and <code>?ver=3.26.0</code>, both 3,442 bytes</li>
+        <li><code>elementor-icons.min.css?ver=5.34.0</code> and <code>?ver=5.57.0</code>, both 4,545 bytes</li>
+        <li><code>fontawesome.css</code> (13,094 B) and <code>fontawesome.min.css</code> (12,587 B), plus <code>all.min.css</code> (12,839 B), which already contains them</li>
+        <li><code>brands.css</code> and <code>brands.min.css</code>; <code>solid.css</code> and <code>solid.min.css</code></li>
+      </ul>
+    </details>
+  </div>
+  <div class="finding" id="f11">
+    <div class="finding-head"><span class="ref">F-11</span><h3>Homepage response time of 1.21 seconds</h3><span class="pill p-med">Medium</span></div>
+    <p>The crawler waited 1.21 seconds for the homepage HTML. Other files on the same server came back in 0.26 to 0.91 seconds, so the delay is in building the page, not the network. Page caching usually fixes this on WordPress.</p>
+    <div class="kv">
+      <div><span>Current status</span>1.210 s (single measurement)</div>
+      <div><span>Affected</span>Homepage</div>
+      <div><span>SEO impact</span>Slower first paint; crawl efficiency</div>
+      <div><span>Action</span>Confirm page caching is active; re-measure server response (TTFB) with a dedicated tool</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section id="s5">
+  <h2><span class="secno">05</span>Crawlability &amp; Indexability</h2>
+  <p><b>Crawlability</b> is whether search engines can reach a page. <b>Indexability</b> is whether they are allowed to store it and show it in results. A page has to pass both to rank.</p>
+  <div class="finding" id="f01">
+    <div class="finding-head"><span class="ref">F-01</span><h3>Every page is blocked from search results</h3><span class="pill p-crit">Critical</span></div>
+    <p>Each page contains <code>&lt;meta name="robots" content="noindex, nofollow"&gt;</code>. Search engines obey this. The pages will be dropped from, or never added to, Google's index.</p>
+    <div class="kv">
+      <div><span>Current status</span><code>noindex, nofollow</code></div>
+      <div><span>Affected</span>7 of 7 pages (100%)</div>
+      <div><span>SEO impact</span>No search visibility at all</div>
+      <div><span>Action</span>Remove the directive, then confirm on every page</div>
+    </div>
+    <p>On WordPress this is most often the <em>Settings → Reading → "Discourage search engines from indexing this site"</em> option, left on after development. It can also be set by an SEO plugin. The X-Robots-Tag header is empty, so the block is in the page HTML and not the server configuration.</p>
+  </div>
+  <div class="finding" id="f02">
+    <div class="finding-head"><span class="ref">F-02</span><h3>Links are not followed, so pages cannot be discovered</h3><span class="pill p-crit">Critical</span></div>
+    <p>The <code>nofollow</code> part tells crawlers not to follow any link on the page. This is why Screaming Frog stopped after the homepage: it found 5 unique internal links but did not follow them. Google would behave the same way.</p>
+    <div class="kv">
+      <div><span>Current status</span>Crawl stops at the homepage</div>
+      <div><span>Affected</span>7 of 7 pages (100%)</div>
+      <div><span>SEO impact</span>Inner pages can't be discovered through links</div>
+      <div><span>Action</span>Fixed by the same change as F-01; then re-crawl the full site</div>
+    </div>
+  </div>
+  <h3>Indexability by page (OPEN SEO)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>URL</th><th>Meta robots</th><th>Should it be indexed?</th></tr></thead>
+    <tbody>
+      <tr><td><code>/</code></td><td><span class="yes">noindex, nofollow</span></td><td>Yes</td></tr>
+      <tr><td><code>/about/</code></td><td><span class="yes">noindex, nofollow</span></td><td>Yes</td></tr>
+      <tr><td><code>/services/</code></td><td><span class="yes">noindex, nofollow</span></td><td>Yes</td></tr>
+      <tr><td><code>/client-resources/</code></td><td><span class="yes">noindex, nofollow</span></td><td>Yes</td></tr>
+      <tr><td><code>/contact/</code></td><td><span class="yes">noindex, nofollow</span></td><td>Yes</td></tr>
+      <tr><td><code>/client_resources/2026-intake-and-checklist/</code></td><td><span class="yes">noindex, nofollow</span></td><td>Client to decide: public resource or client-only?</td></tr>
+      <tr><td><code>/author/guzurebovi5293/</code></td><td><span class="yes">noindex, nofollow</span></td><td>Probably not (see F-05)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="finding" id="f04">
+    <div class="finding-head"><span class="ref">F-04</span><h3>XML sitemap and robots.txt not verified</h3><span class="pill p-high">High</span></div>
+    <p>An XML sitemap lists the pages you want indexed; robots.txt tells crawlers where they may go and where the sitemap is. Neither file appears in the exports, so we can't say whether they exist or are correct. This needs checking before the site is opened to search engines.</p>
+    <div class="kv">
+      <div><span>Current status</span>Unknown (no data)</div>
+      <div><span>Affected</span>Sitewide</div>
+      <div><span>SEO impact</span>Discovery speed of new and updated pages</div>
+      <div><span>Action</span>Check <code>/robots.txt</code> and the sitemap URL; declare the sitemap in robots.txt; submit it in Google Search Console</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section id="s6">
+  <h2><span class="secno">06</span>On-Page SEO Analysis</h2>
+  <p>On-page SEO is about the content and markup of each page. Screaming Frog's on-page data covers the homepage only. OPEN SEO covers all 7 pages for the checks below.</p>
+  <h3>Issue matrix: all audited pages</h3>
+  <div class="tbl"><table class="matrix">
+    <thead><tr><th>URL</th><th class="c">Noindex</th><th class="c">Heading skip</th><th class="c">Meta description</th><th class="c">Orphan</th></tr></thead>
+    <tbody>
+      <tr><td><code>/</code></td><td class="c yes">Yes</td><td class="c warn">Yes</td><td class="c ok">Present</td><td class="c ok">No</td></tr>
+      <tr><td><code>/about/</code></td><td class="c yes">Yes</td><td class="c warn">Yes</td><td class="c ok">Present</td><td class="c ok">No</td></tr>
+      <tr><td><code>/services/</code></td><td class="c yes">Yes</td><td class="c warn">Yes</td><td class="c ok">Present</td><td class="c ok">No</td></tr>
+      <tr><td><code>/client-resources/</code></td><td class="c yes">Yes</td><td class="c warn">Yes</td><td class="c ok">Present</td><td class="c ok">No</td></tr>
+      <tr><td><code>/contact/</code></td><td class="c yes">Yes</td><td class="c warn">Yes</td><td class="c ok">Present</td><td class="c ok">No</td></tr>
+      <tr><td><code>/client_resources/2026-intake-and-checklist/</code></td><td class="c yes">Yes</td><td class="c warn">Yes</td><td class="c warn">Missing</td><td class="c warn">Yes</td></tr>
+      <tr><td><code>/author/guzurebovi5293/</code></td><td class="c yes">Yes</td><td class="c warn">Yes</td><td class="c warn">Missing</td><td class="c ok">No</td></tr>
+    </tbody>
+  </table></div>
+  <p style="font-size:14px;color:var(--ink-2)">"Present" means OPEN SEO did not report the description as missing. Its wording and length were only measured for the homepage.</p>
+  <h3>Homepage content profile</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Metric</th><th class="num">Value</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td>Word count</td><td class="num">1,036</td><td>A healthy amount of content for a homepage</td></tr>
+      <tr><td>Sentences</td><td class="num">160</td><td></td></tr>
+      <tr><td>Average words per sentence</td><td class="num">6.5</td><td>Low because labels, buttons and stat counters count as sentences</td></tr>
+      <tr><td>Flesch Reading Ease</td><td class="num">66.8</td><td>"Normal": readable by a general audience</td></tr>
+      <tr><td>Text-to-code ratio</td><td class="num">3.3%</td><td>Page builder markup outweighs the text (F-16)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="finding" id="f05">
+    <div class="finding-head"><span class="ref">F-05</span><h3>Author archive exposes a login-style username</h3><span class="pill p-high">High</span></div>
+    <p>The site has a public author page at <code>/author/guzurebovi5293/</code>. Author pages show the account's username in the URL, which is half of what's needed to sign in to WordPress. The name looks auto-generated and doesn't match a person at the firm. We can't tell from this data whether the account is legitimate. On a single-firm site, author archives also add a thin page with no unique content.</p>
+    <div class="kv">
+      <div><span>Current status</span>Live author archive, no meta description</div>
+      <div><span>Affected</span>1 of 7 pages (14%)</div>
+      <div><span>SEO impact</span>Thin page; security exposure</div>
+      <div><span>Action</span>Check the account under Users; remove or rename it if unknown; disable or noindex author archives</div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section id="s7">
+  <h2><span class="secno">07</span>Metadata Analysis</h2>
+  <p>The <b>meta title</b> is the blue headline in a Google result. The <b>meta description</b> is the short summary below it. Neither directly decides ranking, but both decide whether someone clicks.</p>
+  <h3>Homepage metadata (Screaming Frog)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Element</th><th>Content</th><th class="num">Length</th><th class="num">Pixel width</th><th>Assessment</th></tr></thead>
+    <tbody>
+      <tr><td>Title</td><td>Tax &amp; Accounting in Barrie, ON | Strathdee Polley &amp; Co</td><td class="num">54 chars</td><td class="num">479 px</td><td><span class="pill p-low">Good</span> Within the ~580 px display limit; service, location and brand included</td></tr>
+      <tr><td>Meta description</td><td>Practical tax, accounting and advisory services for Barrie business owners, professionals and families. Direct access to the people who know your numbers.</td><td class="num">154 chars</td><td class="num">958 px</td><td><span class="pill p-low">Good</span> Within limits; near the upper pixel width, so the last words may be cut on some screens</td></tr>
+      <tr><td>Meta keywords</td><td>None</td><td class="num">0</td><td class="num"></td><td>Fine. Google ignores this tag</td></tr>
+    </tbody>
+  </table></div>
+  <div class="finding" id="f07">
+    <div class="finding-head"><span class="ref">F-07</span><h3>Missing meta descriptions</h3><span class="pill p-med">Medium</span></div>
+    <p>Without a description, Google writes its own snippet from page text, which is often less persuasive and less accurate.</p>
+    <div class="kv">
+      <div><span>Current status</span>Missing on 2 pages</div>
+      <div><span>Affected</span>2 of 7 pages (29%)</div>
+      <div><span>SEO impact</span>Lower click-through from search results</div>
+      <div><span>Action</span>Write a unique 120–158 character description for the intake checklist; noindex the author archive rather than describe it</div>
+    </div>
+    <details><summary>Affected URLs</summary><ul><li><code>/client_resources/2026-intake-and-checklist/</code></li><li><code>/author/guzurebovi5293/</code></li></ul></details>
+  </div>
+  <div class="note"><p><b>Data gap.</b> Titles and descriptions for the other 6 pages were not in the Screaming Frog export, so we can't check their lengths or whether any are duplicated. The post-fix re-crawl will cover this.</p></div>
+</section>
+
+<!-- 8 -->
+<section id="s8">
+  <h2><span class="secno">08</span>Heading Structure</h2>
+  <p>Headings (H1 to H6) work like the outline of a document. There should be one H1 (the page's main topic), with H2s for sections and H3s inside them. Skipping a level, such as going from H2 to H4, makes the outline harder for search engines and screen readers to follow.</p>
+  <h3>Homepage headings (Screaming Frog)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Level</th><th>Text</th><th class="num">Length</th><th>Assessment</th></tr></thead>
+    <tbody>
+      <tr><td>H1</td><td>Accounting and tax advice from people who know your business</td><td class="num">60</td><td><span class="pill p-low">Good</span> One H1 only; describes the service</td></tr>
+      <tr><td>H2 (1st)</td><td>100+</td><td class="num">4</td><td><span class="pill p-low">Low</span> A statistic counter, not a section heading</td></tr>
+      <tr><td>H2 (2nd)</td><td>72+</td><td class="num">3</td><td><span class="pill p-low">Low</span> A statistic counter, not a section heading</td></tr>
+    </tbody>
+  </table></div>
+  <div class="finding" id="f06">
+    <div class="finding-head"><span class="ref">F-06</span><h3>Heading levels skip on every page</h3><span class="pill p-med">Medium</span></div>
+    <p>OPEN SEO found headings that jump levels on all 7 pages. Because it appears everywhere, the cause is probably in a shared template (header, footer or a reused section) rather than in each page's content.</p>
+    <div class="kv">
+      <div><span>Current status</span>Levels skip</div>
+      <div><span>Affected</span>7 of 7 pages (100%)</div>
+      <div><span>SEO impact</span>Weaker content outline; accessibility</div>
+      <div><span>Action</span>Fix shared header/footer headings first, then each page. Check visual size after each change, because the theme styles each level differently</div>
+    </div>
+  </div>
+  <div class="finding" id="f14">
+    <div class="finding-head"><span class="ref">F-14</span><h3>Statistic counters used as H2 headings</h3><span class="pill p-low">Low</span></div>
+    <p>The first two H2s on the homepage are "100+" and "72+". These are numbers, not section titles, and they take the place where descriptive headings such as "Our services" would carry more meaning.</p>
+    <div class="kv">
+      <div><span>Current status</span>2 of the homepage's H2s are numbers</div>
+      <div><span>Affected</span>Homepage</div>
+      <div><span>SEO impact</span>Minor</div>
+      <div><span>Action</span>Change the counter widgets' HTML tag to a <code>div</code> or <code>p</code>, keeping the styling</div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section id="s9">
+  <h2><span class="secno">09</span>URL &amp; Canonical Analysis</h2>
+  <p>A <b>canonical tag</b> tells search engines which address is the official version of a page, so that variations (with tracking parameters, for example) don't compete with each other.</p>
+  <div class="finding" id="f03">
+    <div class="finding-head"><span class="ref">F-03</span><h3>No canonical tag on the homepage</h3><span class="pill p-high">High</span></div>
+    <p>The homepage has no canonical tag. Some SEO plugins leave the canonical out when a page is set to noindex, so it may appear once F-01 is fixed. This needs to be confirmed after the fix, not assumed.</p>
+    <div class="kv">
+      <div><span>Current status</span>No canonical element</div>
+      <div><span>Affected</span>1 of 1 crawled page</div>
+      <div><span>SEO impact</span>Risk of split signals across URL variants</div>
+      <div><span>Action</span>After lifting noindex, confirm a self-referencing canonical is on every page; configure the SEO plugin if not</div>
+    </div>
+  </div>
+  <h3>URL structure (all 7 pages)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>URL</th><th>Folder depth</th><th>Assessment</th></tr></thead>
+    <tbody>
+      <tr><td><code>/</code></td><td>0</td><td><span class="pill p-low">Good</span></td></tr>
+      <tr><td><code>/about/</code>, <code>/services/</code>, <code>/contact/</code></td><td>1</td><td><span class="pill p-low">Good</span> Short, lowercase, readable</td></tr>
+      <tr><td><code>/client-resources/</code></td><td>1</td><td><span class="pill p-low">Good</span> Uses a hyphen</td></tr>
+      <tr><td><code>/client_resources/2026-intake-and-checklist/</code></td><td>2</td><td><span class="pill p-low">Low</span> Uses an underscore, and sits under a different folder from its hub page</td></tr>
+      <tr><td><code>/author/guzurebovi5293/</code></td><td>2</td><td>See F-05</td></tr>
+    </tbody>
+  </table></div>
+  <div class="finding" id="f13">
+    <div class="finding-head"><span class="ref">F-13</span><h3>Inconsistent URL style for client resources</h3><span class="pill p-low">Low</span></div>
+    <p>The hub page uses <code>/client-resources/</code> and the resource item uses <code>/client_resources/</code>. Google's guidance is to use hyphens, which it reads as word separators. Underscores join words together. Matching folders also make it clear the item belongs to the hub.</p>
+    <div class="kv">
+      <div><span>Current status</span>Underscore in the resource URL base</div>
+      <div><span>Affected</span>1 of 7 pages (14%)</div>
+      <div><span>SEO impact</span>Minor</div>
+      <div><span>Action</span>Change the resource post type's slug to <code>client-resources</code> and add a 301 redirect from the old address. Do this before the site is indexed, while nothing ranks on the old URL</div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section id="s10">
+  <h2><span class="secno">10</span>Redirects &amp; HTTP Status Codes</h2>
+  <p>Status codes are the server's reply to each request: 200 means "here it is", 3xx means "moved", 4xx means "not found", 5xx means "server error".</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Status code</th><th class="num">URLs</th><th class="num">Share</th></tr></thead>
+    <tbody>
+      <tr><td>200 OK</td><td class="num">56</td><td class="num">100%</td></tr>
+      <tr><td>3xx Redirects</td><td class="num">0</td><td class="num">0%</td></tr>
+      <tr><td>4xx Client errors</td><td class="num">0</td><td class="num">0%</td></tr>
+      <tr><td>5xx Server errors</td><td class="num">0</td><td class="num">0%</td></tr>
+    </tbody>
+  </table></div>
+  <p>No redirects or errors were found. This covers only the homepage and its files. The re-crawl should also confirm that <code>http://</code> and <code>www.</code> versions of the address redirect to <code>https://spco.ca</code> with a single 301, which this data does not show.</p>
+</section>
+
+<!-- 11 -->
+<section id="s11">
+  <h2><span class="secno">11</span>Internal Linking Analysis</h2>
+  <p>Internal links are how visitors and search engines move between pages. They also signal which pages matter most.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Homepage link metric (Screaming Frog)</th><th class="num">Value</th></tr></thead>
+    <tbody>
+      <tr><td>Internal links out (total / unique)</td><td class="num">30 / 5</td></tr>
+      <tr><td>External links out (total / unique)</td><td class="num">3 / 2</td></tr>
+      <tr><td>Internal links in (total / unique)</td><td class="num">6 / 1</td></tr>
+      <tr><td>Crawl depth</td><td class="num">0</td></tr>
+    </tbody>
+  </table></div>
+  <p>The homepage links to 5 unique internal pages, 30 times in total, which is typical for repeated header, body and footer navigation. The 6 inbound links all come from the homepage itself (logo and menu links), since no other page was crawled.</p>
+  <div class="finding" id="f08">
+    <div class="finding-head"><span class="ref">F-08</span><h3>Orphan page: 2026 intake checklist</h3><span class="pill p-med">Medium</span></div>
+    <p>An orphan page has no internal links pointing to it. Visitors can't navigate to it and search engines treat it as unimportant. The Client Resources hub page would be the natural place to link it from.</p>
+    <div class="kv">
+      <div><span>Current status</span>0 internal links in</div>
+      <div><span>Affected</span>1 of 7 pages (14%)</div>
+      <div><span>SEO impact</span>Page unlikely to be found or ranked</div>
+      <div><span>Action</span>Link it from <code>/client-resources/</code>, or remove it from the sitemap if it's meant for clients only</div>
+    </div>
+    <details><summary>Affected URL</summary><p><code>https://spco.ca/client_resources/2026-intake-and-checklist/</code></p></details>
+  </div>
+</section>
+
+<!-- 12 -->
+<section id="s12">
+  <h2><span class="secno">12</span>Image SEO</h2>
+  <p>The homepage loads 5 images, 295,658 bytes in total.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Image</th><th>Format</th><th class="num">Size</th><th class="num">Share</th><th>Assessment</th></tr></thead>
+    <tbody>
+      <tr><td><code>QBO-lv2.png</code></td><td>PNG</td><td class="num">175,396 B</td><td class="num">59.3%</td><td><span class="pill p-med">Large</span> Convert to WebP and resize to display size</td></tr>
+      <tr><td><code>SPCO-LOGO-1.png</code></td><td>PNG</td><td class="num">88,837 B</td><td class="num">30.0%</td><td><span class="pill p-med">Large</span> A 180×36 version (8,988 B) already exists</td></tr>
+      <tr><td><code>Barrie-Fountain-scaled-…jpg</code></td><td>JPEG</td><td class="num">17,541 B</td><td class="num">5.9%</td><td><span class="pill p-low">Good</span></td></tr>
+      <tr><td><code>SPCO-Logo-180x36.png</code></td><td>PNG</td><td class="num">8,988 B</td><td class="num">3.0%</td><td><span class="pill p-low">Good</span></td></tr>
+      <tr><td><code>xero-l2-certified-professional.webp</code></td><td>WebP</td><td class="num">4,896 B</td><td class="num">1.7%</td><td><span class="pill p-low">Good</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="finding" id="f10">
+    <div class="finding-head"><span class="ref">F-10</span><h3>Two images make up 89% of image weight</h3><span class="pill p-med">Medium</span></div>
+    <p>The QuickBooks badge PNG and the full-size logo PNG together weigh 264 KB. Saving them as WebP at the size they are actually shown would likely cut that substantially and help the Performance score.</p>
+    <div class="kv">
+      <div><span>Current status</span>264,233 B across 2 PNGs</div>
+      <div><span>Affected</span>2 of 5 images (40%)</div>
+      <div><span>SEO impact</span>Page speed, Largest Contentful Paint</div>
+      <div><span>Action</span>Convert to WebP, resize, and use the existing small logo where possible</div>
+    </div>
+  </div>
+  <div class="note"><p><b>Data gap: alt text.</b> The "Internal: All" export doesn't include image alt attributes, so we can't report how many images are missing descriptive alt text. Export Screaming Frog's <em>Images</em> tab (Missing Alt Text and Alt Text Over 100 Characters filters) after the full re-crawl.</p></div>
+</section>
+
+<!-- 13 -->
+<section id="s13">
+  <h2><span class="secno">13</span>Duplicate / Thin Content</h2>
+  <p>Duplicate content is when several pages carry the same or near-identical text. Thin content is a page with too little useful text to deserve a ranking.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Check</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td>Exact duplicates</td><td><span class="pill p-gap">Not assessable</span> Only 1 HTML page was crawled, so there is nothing to compare</td></tr>
+      <tr><td>Near duplicates</td><td><span class="pill p-gap">Not assessable</span> Screaming Frog's near-duplicate analysis returned no data</td></tr>
+      <tr><td>Homepage word count</td><td><span class="pill p-low">Good</span> 1,036 words; not thin</td></tr>
+      <tr><td>Likely thin page</td><td><span class="pill p-med">Probable</span> The author archive (F-05). Author pages on a single-firm site usually repeat content found elsewhere</td></tr>
+    </tbody>
+  </table></div>
+  <p>The re-crawl should run with near-duplicate detection and spelling and grammar checks turned on in Screaming Frog, so these can be measured across all pages.</p>
+</section>
+
+<!-- 14 -->
+<section id="s14">
+  <h2><span class="secno">14</span>Priority Issues &amp; Recommendations</h2>
+  <h3>Critical: fix before anything else</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Ref</th><th>SEO issue</th><th>Current status</th><th class="num">URLs</th><th class="num">%</th><th>SEO impact</th><th>Recommended action</th></tr></thead>
+    <tbody>
+      <tr><td class="ref">F-01</td><td>Pages set to noindex</td><td><code>noindex</code></td><td class="num">7</td><td class="num">100%</td><td>No search visibility</td><td>Untick "Discourage search engines" (or the SEO plugin equivalent); confirm on all pages</td></tr>
+      <tr><td class="ref">F-02</td><td>Links set to nofollow</td><td><code>nofollow</code></td><td class="num">7</td><td class="num">100%</td><td>Pages can't be discovered</td><td>Same fix as F-01; re-crawl to confirm all pages are reached</td></tr>
+    </tbody>
+  </table></div>
+  <h3>High priority</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Ref</th><th>SEO issue</th><th>Current status</th><th class="num">URLs</th><th class="num">%</th><th>SEO impact</th><th>Recommended action</th></tr></thead>
+    <tbody>
+      <tr><td class="ref">F-03</td><td>Missing canonical</td><td>None on homepage</td><td class="num">1</td><td class="num">100% of crawled</td><td>Split ranking signals</td><td>Confirm self-referencing canonicals after F-01</td></tr>
+      <tr><td class="ref">F-04</td><td>Sitemap / robots.txt unverified</td><td>No data</td><td class="num">n/a</td><td class="num">n/a</td><td>Slower discovery</td><td>Check both; declare sitemap; submit in Search Console</td></tr>
+      <tr><td class="ref">F-05</td><td>Author archive with login-style username</td><td>Public</td><td class="num">1</td><td class="num">14%</td><td>Thin page; security</td><td>Verify account; disable or noindex author archives</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Medium priority</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Ref</th><th>SEO issue</th><th>Current status</th><th class="num">URLs</th><th class="num">%</th><th>SEO impact</th><th>Recommended action</th></tr></thead>
+    <tbody>
+      <tr><td class="ref">F-06</td><td>Heading levels skip</td><td>Skips present</td><td class="num">7</td><td class="num">100%</td><td>Weaker outline</td><td>Fix shared templates first, then pages</td></tr>
+      <tr><td class="ref">F-07</td><td>Missing meta description</td><td>Missing</td><td class="num">2</td><td class="num">29%</td><td>Lower click-through</td><td>Write unique descriptions</td></tr>
+      <tr><td class="ref">F-08</td><td>Orphan page</td><td>0 inlinks</td><td class="num">1</td><td class="num">14%</td><td>Unlikely to rank</td><td>Link from Client Resources hub</td></tr>
+      <tr><td class="ref">F-09</td><td>Duplicate CSS / icon files</td><td>36 CSS files</td><td class="num">1</td><td class="num">n/a</td><td>Page speed</td><td>Remove duplicate enqueues</td></tr>
+      <tr><td class="ref">F-10</td><td>Heavy images</td><td>264 KB in 2 PNGs</td><td class="num">1</td><td class="num">n/a</td><td>Page speed</td><td>Convert to WebP; resize</td></tr>
+      <tr><td class="ref">F-11</td><td>Slow HTML response</td><td>1.21 s</td><td class="num">1</td><td class="num">n/a</td><td>Page speed</td><td>Enable or verify page caching</td></tr>
+      <tr><td class="ref">F-12</td><td>Performance score</td><td>86 desktop</td><td class="num">1</td><td class="num">n/a</td><td>User experience</td><td>Addressed by F-09 to F-11; measure mobile</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Low priority</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Ref</th><th>SEO issue</th><th>Current status</th><th class="num">URLs</th><th class="num">%</th><th>SEO impact</th><th>Recommended action</th></tr></thead>
+    <tbody>
+      <tr><td class="ref">F-13</td><td>Underscore in URL base</td><td><code>/client_resources/</code></td><td class="num">1</td><td class="num">14%</td><td>Minor</td><td>Change slug; 301 redirect</td></tr>
+      <tr><td class="ref">F-14</td><td>Numbers used as H2s</td><td>"100+", "72+"</td><td class="num">1</td><td class="num">n/a</td><td>Minor</td><td>Change counter tag to <code>div</code></td></tr>
+      <tr><td class="ref">F-15</td><td>Language <code>en-US</code></td><td><code>en-US</code></td><td class="num">1</td><td class="num">100% of crawled</td><td>Minor</td><td>Switch site language to English (Canada), with client sign-off</td></tr>
+      <tr><td class="ref">F-16</td><td>Low text-to-code ratio</td><td>3.3%</td><td class="num">1</td><td class="num">n/a</td><td>Minor</td><td>Improves as F-09 trims markup; no direct action</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 15 -->
+<section id="s15">
+  <h2><span class="secno">15</span>SEO Action Plan</h2>
+  <div>
+    <div class="phase">
+      <div class="when">Phase 1<br>Week 1</div>
+      <div><h3>Open the site to search engines</h3>
+        <ul>
+          <li>Take a full backup.</li>
+          <li>Remove <code>noindex, nofollow</code> sitewide (F-01, F-02).</li>
+          <li>Decide whether the author archive and intake checklist should be indexed; set them accordingly (F-05).</li>
+          <li>Check robots.txt and the XML sitemap; set up Google Search Console and submit the sitemap (F-04).</li>
+          <li>Confirm canonical tags now appear (F-03).</li>
+          <li>Re-crawl the full site with Screaming Frog and re-run OPEN SEO.</li>
+        </ul></div>
+    </div>
+    <div class="phase">
+      <div class="when">Phase 2<br>Weeks 2–3</div>
+      <div><h3>On-page fixes</h3>
+        <ul>
+          <li>Review titles and meta descriptions for all pages using the new crawl; write the 2 missing descriptions (F-07).</li>
+          <li>Fix heading levels in shared templates, then on each page (F-06, F-14).</li>
+          <li>Link the intake checklist from the Client Resources hub (F-08).</li>
+          <li>Correct the resource URL base with a 301 redirect (F-13).</li>
+          <li>Audit image alt text from the new Images export.</li>
+        </ul></div>
+    </div>
+    <div class="phase">
+      <div class="when">Phase 3<br>Weeks 3–4</div>
+      <div><h3>Performance</h3>
+        <ul>
+          <li>Remove duplicate stylesheet and icon files (F-09).</li>
+          <li>Convert and resize the two heavy PNGs (F-10).</li>
+          <li>Confirm page caching and re-measure response time (F-11).</li>
+          <li>Run PageSpeed Insights on mobile and desktop for key pages (F-12).</li>
+          <li>Switch site language to <code>en-CA</code> if the client agrees (F-15).</li>
+        </ul></div>
+    </div>
+    <div class="phase">
+      <div class="when">Phase 4<br>Week 6 onward</div>
+      <div><h3>Measure against this baseline</h3>
+        <ul>
+          <li>Re-run both crawls and PageSpeed with the same settings and compare against Section 16.</li>
+          <li>Check Search Console's indexing report for pages indexed vs. submitted.</li>
+          <li>Indexing typically takes days to weeks; ranking movement should be judged over 4–8 weeks, not sooner.</li>
+        </ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section id="s16">
+  <h2><span class="secno">16</span>Before-SEO Baseline Summary</h2>
+  <p>These are the measured starting values. Re-run the same tools with the same settings after implementation and fill in the "After" column.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Metric</th><th>Baseline (20 Nov 2026)</th><th>Target</th><th>Source</th><th>After</th></tr></thead>
+    <tbody>
+      <tr><td>Indexable pages</td><td class="num">0 of 7 (0%)</td><td>All public pages</td><td>OPEN SEO</td><td></td></tr>
+      <tr><td>Pages with noindex</td><td class="num">7 of 7 (100%)</td><td>Only pages meant to be hidden</td><td>OPEN SEO</td><td></td></tr>
+      <tr><td>HTML pages reached by crawler</td><td class="num">1</td><td>All linked pages</td><td>Screaming Frog</td><td></td></tr>
+      <tr><td>URLs returning 200</td><td class="num">56 of 56 (100%)</td><td>100%</td><td>Screaming Frog</td><td></td></tr>
+      <tr><td>3xx / 4xx / 5xx URLs</td><td class="num">0 / 0 / 0</td><td>0 / 0 / 0</td><td>Screaming Frog</td><td></td></tr>
+      <tr><td>Pages missing meta description</td><td class="num">2 of 7 (29%)</td><td>0</td><td>OPEN SEO</td><td></td></tr>
+      <tr><td>Pages with heading skips</td><td class="num">7 of 7 (100%)</td><td>0</td><td>OPEN SEO</td><td></td></tr>
+      <tr><td>Orphan pages</td><td class="num">1</td><td>0</td><td>OPEN SEO</td><td></td></tr>
+      <tr><td>Homepage canonical tag</td><td>Absent</td><td>Self-referencing</td><td>Screaming Frog</td><td></td></tr>
+      <tr><td>Homepage title length</td><td class="num">54 chars / 479 px</td><td>Keep within 30–60 chars</td><td>Screaming Frog</td><td></td></tr>
+      <tr><td>Homepage meta description length</td><td class="num">154 chars / 958 px</td><td>120–158 chars</td><td>Screaming Frog</td><td></td></tr>
+      <tr><td>Homepage H1 count</td><td class="num">1</td><td>1</td><td>Screaming Frog</td><td></td></tr>
+      <tr><td>Homepage word count</td><td class="num">1,036</td><td>Maintain</td><td>Screaming Frog</td><td></td></tr>
+      <tr><td>Homepage response time</td><td class="num">1.21 s</td><td>Under 0.6 s</td><td>Screaming Frog</td><td></td></tr>
+      <tr><td>Homepage HTML size / transferred</td><td class="num">201,449 B / 38,052 B</td><td>Lower</td><td>Screaming Frog</td><td></td></tr>
+      <tr><td>CSS / JS files on homepage</td><td class="num">36 / 14</td><td>Fewer</td><td>Screaming Frog</td><td></td></tr>
+      <tr><td>Image weight on homepage</td><td class="num">295,658 B</td><td>Lower</td><td>Screaming Frog</td><td></td></tr>
+      <tr><td>PageSpeed desktop: Performance</td><td class="num">86</td><td>90+</td><td>PageSpeed Insights</td><td></td></tr>
+      <tr><td>PageSpeed desktop: Accessibility</td><td class="num">95</td><td>95+</td><td>PageSpeed Insights</td><td></td></tr>
+      <tr><td>PageSpeed desktop: Best Practices</td><td class="num">100</td><td>100</td><td>PageSpeed Insights</td><td></td></tr>
+      <tr><td>PageSpeed desktop: SEO</td><td class="num">66</td><td>90+</td><td>PageSpeed Insights</td><td></td></tr>
+      <tr><td>Real-user (field) data</td><td>No Data</td><td>Data available</td><td>PageSpeed Insights</td><td></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Not measured in this baseline</h3>
+  <p>These need extra data or tools. They should be captured as soon as possible so they have a starting point too.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Item</th><th>What's needed</th></tr></thead>
+    <tbody>
+      <tr><td>Titles, descriptions, headings, canonicals for the other 6 pages</td><td>Full Screaming Frog re-crawl after noindex/nofollow is removed</td></tr>
+      <tr><td>Image alt text</td><td>Screaming Frog Images export</td></tr>
+      <tr><td>Duplicate and near-duplicate content</td><td>Multi-page crawl with near-duplicate detection enabled</td></tr>
+      <tr><td>XML sitemap, robots.txt</td><td>Direct check of both files</td></tr>
+      <tr><td>http/https and www redirects</td><td>Crawl of the URL variants</td></tr>
+      <tr><td>Mobile PageSpeed scores and Core Web Vitals</td><td>PageSpeed Insights (mobile); field data once traffic builds</td></tr>
+      <tr><td>Indexed pages, impressions, clicks, queries</td><td>Google Search Console</td></tr>
+      <tr><td>Organic traffic and conversions</td><td>Google Analytics 4</td></tr>
+      <tr><td>Keyword rankings, backlinks, local listing (Google Business Profile)</td><td>Rank tracking, backlink and local SEO tools</td></tr>
+      <tr><td>Structured data (schema)</td><td>Rich Results Test or Screaming Frog structured data extraction</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<footer>
+  <p><strong style="color:var(--ink)">Methodology.</strong> Findings are drawn from three inputs: a Screaming Frog "Internal: All" export (56 URLs, crawled 20 Nov 2026, 13:14:32 to 13:14:46), an OPEN SEO site audit issue export (7 pages, 17 issue rows: 3 warnings, 14 informational), and a PageSpeed Insights desktop screenshot of the homepage. Priority reflects our judgement of SEO impact and urgency. Where the data did not cover an area, the report says so instead of estimating.</p>
+  <p>Prepared for Strathdee Polley &amp; Co · spco.ca</p>
+</footer>
+
+</div>
