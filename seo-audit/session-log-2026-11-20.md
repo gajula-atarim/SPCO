@@ -48,3 +48,6 @@ All work went through the Atarim WordPress bridge; this cloud session's network 
 
 ## Follow-up: www → non-www
 - Prepended a RewriteCond/RewriteRule (www.spco.ca → https://spco.ca/$1, R=301) to .htaccess above the WordPress block; backup at /home/spcoca/htaccess-backup-2026-11-20-before-www-redirect.txt. Verified: www and http://www paths 301 with path and query kept; spco.ca pages 200.
+
+## Follow-up: sitemap stylesheet
+- Yoast 28.9 removed its sitemap stylesheet output ("removed temporarily"); its XSL is gone and Chromium has dropped XSLT. Added hook 3 to spco-child/inc/spco-seo.php: on sitemap URLs, inserts <?xml-stylesheet type="text/css" href="https://spco.ca/main-sitemap.css"?> (Yoast's own CSS) after the XML declaration, only when no stylesheet line exists. Server lint passed; backup /home/spcoca/spco-seo.php.bak-before-sitemap-css. Verified on sitemap_index.xml and page-sitemap.xml; homepage 200.

@@ -35,3 +35,23 @@ function spco_seo_dedupe_styles() {
 }
 add_action( 'wp_print_styles', 'spco_seo_dedupe_styles', 100 );
 add_action( 'wp_print_footer_scripts', 'spco_seo_dedupe_styles', 1 );
+
+/**
+ * 3. Sitemap stylesheet. Yoast SEO 28.9 stopped linking its sitemap stylesheet ("removed temporarily,
+ *    to be restored in a future release"), so sitemaps showed as raw XML in browsers. This re-attaches
+ *    Yoast's own CSS stylesheet (/main-sitemap.css). It runs only on sitemap URLs and steps aside if
+ *    Yoast, or anything else, already outputs an xml-stylesheet line. Search engines ignore it.
+ */
+add_action( 'init', function () {
+	$path = isset( $_SERVER['REQUEST_URI'] ) ? (string) strtok( wp_unslash( $_SERVER['REQUEST_URI'] ), '?' ) : '';
+	if ( ! preg_match( '#/([a-z0-9_-]+-)?sitemap(_index|[0-9]+)?\.xml$#i', $path ) ) {
+		return;
+	}
+	ob_start( function ( $buffer ) {
+		if ( strpos( $buffer, '<?xml' ) !== 0 || strpos( $buffer, 'xml-stylesheet' ) !== false || strpos( $buffer, 'Yoast SEO' ) === false ) {
+			return $buffer;
+		}
+		$pi = '<?xml-stylesheet type="text/css" href="' . esc_url( home_url( '/main-sitemap.css' ) ) . '"?>';
+		return preg_replace( '/^(<\?xml[^>]*\?>)/', '$1' . $pi, $buffer, 1 );
+	} );
+}, 0 );
