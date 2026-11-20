@@ -63,3 +63,9 @@ All work went through the Atarim WordPress bridge; this cloud session's network 
 - The client is editing the site through their own Claude session (this explains the plugin removals, Elementor Pro update and WP_DEBUG change).
 - Integrity check after being told: robots.txt, www 301, sitemap stylesheet lines, functions.php include, main-sitemap.xsl (200) are all intact; server inc/spco-seo.php has the same sha1 as seo-audit/site-changes/spco-seo.php (b17a01e9…). No posts or pages changed since 09:15 UTC except the icon.
 - Wrote seo-audit/handover-for-client-claude.md for the client's session.
+
+## Follow-up: favicon not rendering (fixed)
+- Cause: the uploaded icon (media 3818, `spco-site-icon.png`) was corrupt on the server (PNG IDAT CRC error; the base64 upload was damaged), and `/favicon.ico` too. The page linked to them correctly, but browsers refused the files.
+- Fix (each step approved by the user): replaced the PNG with a clean 4-colour 512 px copy (md5 checked before writing; now `site-changes/spco-site-icon.png`), generated 32/180/192/270 px copies with GD (an Imagick resize turned the navy teal, so it was redone), rebuilt `/favicon.ico` (16/32/48 px PNG frames) and purged LiteSpeed.
+- Verified: all icon files decode at the right size in navy #27477C; homepage head links -32x32, -192x192 and apple-touch -180x180.
+- Backups: /home/spcoca/spco-site-icon.png.bak-corrupt, /home/spcoca/favicon.ico.bak-before-fix.
