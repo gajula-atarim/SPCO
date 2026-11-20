@@ -1,5 +1,6 @@
 // Render a built WHC report (.html) to a print-ready A4 PDF.
-// Usage: node reports/whc-brand/pdf.js <report.html> <out.pdf> "<footer label>"
+// Usage: node reports/whc-brand/pdf.js <report.html> <out.pdf> ["<footer label>" | none]
+// Pass "none" for no page footer (the Rebuts-style reports end with their own footer paragraph).
 // Keeps each section heading with the block after it, keeps any block that fits on a page
 // in one piece, lets only page-taller tables break (between rows, header repeated).
 const { chromium } = require('playwright');
@@ -18,8 +19,10 @@ const [, , src, out, label = 'Web Hosting Canada'] = process.argv;
     const h = el => el.getBoundingClientRect().height;
     // 1) small blocks stay whole; large ones flow and break between rows / cards (each of which is whole)
     document.querySelectorAll('.tbl, .co, .f, .phase, .strip, section > ul, section > p').forEach(el => {
-      if (h(el) < PAGE_H * 0.45) el.style.breakInside = 'avoid';
+      if (h(el) < PAGE_H * 0.45 && !el.matches('ul')) el.style.breakInside = 'avoid';
     });
+    // bullet lists may break between items, never inside one
+    document.querySelectorAll('section > ul > li').forEach(li => li.style.breakInside = 'avoid');
     // 2) never leave a section label / heading alone at the foot of a page:
     //    wrap label + heading (+ short intro) + the next block when that bundle is short;
     //    otherwise keep the heading with the top of the next block (caption + first row / first card row).
@@ -33,11 +36,11 @@ const [, , src, out, label = 'Web Hosting Canada'] = process.argv;
         while (kids[j] && (kids[j].matches('h2, h3') || (kids[j].matches('p') && h(kids[j]) < 110 && group.length < 3))) group.push(kids[j++]);
         const next = kids[j];
         const total = group.reduce((a, g) => a + h(g), 0) + (next ? h(next) : 0);
-        if (next && total < PAGE_H * 0.4) {
+        if (next && !next.matches('ul') && total < PAGE_H * 0.4) {
           group.push(next);
           const wrap = document.createElement('div');
           wrap.style.display = 'grid';
-          wrap.style.gap = getComputedStyle(sec).rowGap;
+          wrap.style.gap = '8px';
           wrap.style.breakInside = 'avoid';
           el.before(wrap); group.forEach(g => wrap.appendChild(g));
         } else {
@@ -54,7 +57,7 @@ const [, , src, out, label = 'Web Hosting Canada'] = process.argv;
   }, PAGE_H);
   await page.pdf({
     path: out, format: 'A4', printBackground: true, preferCSSPageSize: true,
-    displayHeaderFooter: true,
+    displayHeaderFooter: label !== 'none',
     headerTemplate: '<span></span>',
     footerTemplate: `<div style="width:100%;font-family:'IBM Plex Mono',Menlo,monospace;font-size:7px;color:#6b707c;padding:0 14mm;display:flex;justify-content:space-between"><span>${label}</span><span>Page <span class="pageNumber"></span> of <span class="totalPages"></span></span></div>`,
   });

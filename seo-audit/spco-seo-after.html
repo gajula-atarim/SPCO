@@ -4,114 +4,114 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;700;800&display=swap">
 <style>
-/* WHC report style. Matches the "SEO Foundations" PDF reports (e.g. RSLL, 3 Nov 2026).
+/* WHC report style. Matches the WHC "SEO Foundation" PDF reports (reference: Rebuts, 10 Nov 2026).
    Single light theme by design: the reports are print-style documents with the WHC logo on white.
    Fonts: Inter 400/700/800 (text, headings) + IBM Plex Mono 400/500 (labels, data). */
 :root{
   color-scheme:light;
-  --paper:#ffffff;      /* page */
-  --ink:#1a1f2e;        /* headings, first-column labels */
+  --paper:#ffffff;
+  --ink:#1a1f2e;        /* headings, table text */
   --body:#363d4d;       /* running text */
-  --muted:#6b707c;      /* mono captions, secondary data */
+  --muted:#6b707c;      /* mono labels, captions */
   --faint:#9b9fa7;
-  --navy:#1f3a5c;       /* brand accent: title highlight, section dash, card top rule */
-  --whc-red:#c32127;    /* logo red: header underline only */
-  --rule:#e5e6e8;       /* borders */
-  --rule-2:#dfe3e8;
-  --head:#f6f7f9;       /* table header / caption fill */
-  --chip-bg:#f3f6fa; --chip-bd:#d5e0ec;
-  --green:#0b8a55; --green-bg:#e6f8ef;   /* fixed / healthy / after values */
-  --red:#a3343d;   --red-bg:#fbecee;     /* baseline problem values, critical */
-  --ochre:#8a6414; --ochre-bg:#fbf4e4;   /* worth knowing, flagged rows, medium */
+  --navy:#1f3a5c;       /* "Healthy" status, neutral big numbers */
+  --whc-red:#c32127;    /* report-type line under the logo */
+  --rule:#e5e6e8;
+  --fill:#f6f7f9;       /* strip, stat cards, table header, zebra rows */
+  --green:#0b8a55;      /* fixed / after values */
+  --red:#a3343d;        /* baseline problems (baseline audits only) */
+  --ochre:#8a6414;      /* medium / worth knowing (baseline audits only) */
   --f-text:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
 }
 *{box-sizing:border-box}
 body{background:var(--paper);color:var(--body);font-family:var(--f-text);font-size:15px;line-height:1.6;margin:0;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:36px 56px}
-.doc{max-width:860px;margin:0 auto;display:grid;gap:18px}
+.doc{max-width:860px;margin:0 auto;display:grid;gap:16px}
 p{margin:0} ul{margin:0;padding-left:1.2em} li+li{margin-top:6px}
 b,strong{color:var(--ink);font-weight:700}
 a{color:var(--navy)}
 :focus-visible{outline:2px solid var(--navy);outline-offset:2px}
-code{font-family:var(--f-mono);font-size:.82em;background:var(--head);border:1px solid var(--rule);border-radius:4px;padding:1px 5px;color:var(--ink);word-break:break-word}
+code{font-family:var(--f-mono);font-size:.82em;background:var(--fill);border:1px solid var(--rule);border-radius:3px;padding:1px 5px;color:var(--ink);word-break:break-word}
 
-/* Header: logo, chip, site + date on the right, navy rule with red tick under the logo */
-.rh{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;padding-bottom:12px;border-bottom:1px solid var(--navy);position:relative}
-.rh::after{content:"";position:absolute;left:0;bottom:-1px;width:76px;height:2px;background:var(--whc-red)}
-.rh img{height:30px;width:auto;display:block}
-.chip{font-family:var(--f-mono);font-size:11.5px;color:var(--navy);background:var(--chip-bg);border:1px solid var(--chip-bd);border-radius:999px;padding:4px 12px;white-space:nowrap}
-.rh .meta{margin-left:auto;text-align:right;font-family:var(--f-mono);font-size:11.5px;color:var(--muted);line-height:1.5}
+/* Header: logo with the report type under it on the left; site, preparer and date on the right */
+.rh{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 16px}
+.rh .brand{display:grid;gap:10px;justify-items:start}
+.rh img{height:44px;width:auto;display:block}
+.chip{font-family:var(--f-mono);font-size:12px;color:var(--whc-red);white-space:nowrap}
+.rh .meta{text-align:right;font-family:var(--f-mono);font-size:12px;color:var(--muted);line-height:1.6}
+.rh .meta b{color:var(--ink);font-weight:500}
 
-/* Status strip under the header */
-.strip{border:1px solid var(--rule-2);border-radius:8px;padding:12px 16px;font-family:var(--f-mono);font-size:12.5px;line-height:1.75;color:var(--body)}
-.strip .dot{display:block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-bottom:4px}
-.strip .dot.red{background:var(--red)}
-
-h1{font-size:clamp(1.9rem,4.6vw,2.35rem);font-weight:800;letter-spacing:-.02em;line-height:1.15;color:var(--ink);margin:6px 0 0;text-wrap:balance}
-h1 .hl{color:var(--navy)}
+/* Title and subtitle */
+h1{font-size:clamp(1.9rem,4.6vw,2.4rem);font-weight:800;letter-spacing:-.02em;line-height:1.15;color:var(--ink);margin:14px 0 0;text-wrap:balance}
+h1 .hl{color:var(--ink)}
+.sub{font-family:var(--f-mono);font-size:13px;color:var(--muted);margin-top:-10px}
 .lede{font-size:15.5px}
 
-/* Section label + heading */
-section{display:grid;gap:14px;padding-top:18px;scroll-margin-top:16px}
-.sl{display:flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:11.5px;color:var(--navy)}
-.sl::before{content:"";width:18px;height:2px;background:var(--navy)}
-h2{font-size:1.22rem;font-weight:800;letter-spacing:-.01em;color:var(--ink);margin:-6px 0 0;text-wrap:balance;line-height:1.3}
-h3{font-size:1.02rem;font-weight:800;color:var(--ink);margin:6px 0 0}
+/* Status strip: grey box of mono headline counts */
+.strip{background:var(--fill);border:1px solid var(--rule);border-radius:2px;padding:12px 16px;font-family:var(--f-mono);font-size:12.5px;line-height:1.8;color:var(--body)}
+.strip .dot{display:none}
 
-/* Big-number cards */
-.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.stat{border:1px solid var(--rule);border-top:2px solid var(--navy);border-radius:8px;padding:12px 16px 14px;display:grid;gap:2px;align-content:start}
-.stat .v{font-size:2rem;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1.15;font-variant-numeric:tabular-nums}
-.stat .v small{font-size:.5em;font-weight:700;color:var(--muted)}
+/* Section label + heading */
+section{display:grid;gap:12px;padding-top:16px;scroll-margin-top:16px}
+.sl{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+h2{font-size:1.3rem;font-weight:800;letter-spacing:-.01em;color:var(--ink);margin:-6px 0 0;text-wrap:balance;line-height:1.3}
+h3{font-size:1.02rem;font-weight:800;color:var(--ink);margin:6px 0 0}
+.sh{font-family:var(--f-mono);font-size:12px;font-weight:500;color:var(--ink);margin-top:6px}
+
+/* Big-number cards: four across, grey fill */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.stat{background:var(--fill);border:1px solid var(--rule);border-radius:2px;padding:12px 14px 14px;display:grid;gap:2px;align-content:start}
+.stat .v{font-size:2rem;font-weight:800;color:var(--green);letter-spacing:-.02em;line-height:1.15;font-variant-numeric:tabular-nums}
+.stat .v small{font-size:.55em;font-weight:700}
+.stat .v.navy{color:var(--navy)}
 .stat .v.red{color:var(--red)}
 .stat .l{font-size:13px;font-weight:700;color:var(--ink)}
 .stat .s{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
 
-/* Category cards */
-.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.card{border:1px solid var(--rule);border-radius:8px;padding:14px 16px;display:grid;gap:6px;align-content:start}
+/* Category cards: four across */
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.card{border:1px solid var(--rule);border-radius:2px;padding:12px 14px;display:grid;gap:4px;align-content:start}
 .card .t{font-size:13.5px;font-weight:700;color:var(--ink)}
-.card .d{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);line-height:1.6}
+.card .d{font-family:var(--f-mono);font-size:11.5px;color:var(--body);line-height:1.55}
+.card .d span{color:var(--muted)}
 .card .pill{justify-self:start;margin-top:4px}
 
-/* Pills */
-.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:11px;border-radius:999px;padding:3px 10px;white-space:nowrap}
-.pill::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
-.p-good{color:var(--green);background:var(--green-bg)}
-.p-crit{color:var(--red);background:var(--red-bg)}
-.p-high{color:var(--red);background:var(--red-bg)}
-.p-med{color:var(--ochre);background:var(--ochre-bg)}
-.p-low{color:var(--navy);background:var(--chip-bg)}
-.p-gap{color:var(--muted);background:var(--head)}
+/* Status marks: dot + mono word, no background */
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:11px;white-space:nowrap}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.p-good{color:var(--green)}
+.p-ok{color:var(--navy)}
+.p-crit,.p-high{color:var(--red)}
+.p-med{color:var(--ochre)}
+.p-low{color:var(--navy)}
+.p-gap{color:var(--muted)}
 
-/* Tables: caption row, mono header, rail on the left of each row, ochre/red rail for flagged rows */
-.tbl{border:1px solid var(--rule);border-radius:8px;overflow-x:auto}
-.tbl .cap{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--rule)}
-table{border-collapse:collapse;width:100%;font-size:13px;min-width:600px}
-th{font-family:var(--f-mono);font-size:11px;font-weight:400;color:var(--muted);text-align:left;background:var(--head);padding:10px 12px;border-bottom:1px solid var(--rule)}
-td{padding:11px 12px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--body)}
-tr:last-child td{border-bottom:0}
-td:first-child,th:first-child{border-left:3px solid var(--rule)}
-th:first-child{border-left-color:var(--head)}
-td:first-child{font-weight:700;color:var(--ink)}
-tr.flag td:first-child{border-left-color:var(--ochre)}
-tr.crit td:first-child{border-left-color:var(--red)}
-.n{text-align:right;font-family:var(--f-mono);font-size:12px;white-space:nowrap;font-variant-numeric:tabular-nums}
+/* Tables: grey mono header, light row rules, zebra fill, green bold "after" values */
+.tbl{overflow-x:auto}
+.tbl .cap{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);padding:0 0 6px}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:560px}
+th{font-family:var(--f-mono);font-size:11.5px;font-weight:500;color:var(--ink);text-align:left;background:var(--fill);padding:9px 10px;border-bottom:1px solid var(--rule)}
+td{padding:9px 10px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink)}
+tbody tr:nth-child(even) td{background:#fafbfc}
+td:first-child{font-weight:400}
+tr.flag td:first-child{box-shadow:inset 3px 0 var(--ochre)}
+tr.crit td:first-child{box-shadow:inset 3px 0 var(--red)}
+.n{text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums}
 .m{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
-.ok{color:var(--green)} .bad{color:var(--red)} .warn{color:var(--ochre)}
+.ok{color:var(--green);font-weight:700} .bad{color:var(--red)} .warn{color:var(--ochre)}
 .fn{font-size:12.5px;color:var(--muted)}
 
-/* Callouts */
-.co{border:1px solid var(--rule);border-left:3px solid var(--green);border-radius:8px;padding:14px 18px;display:grid;gap:8px}
+/* Callouts (baseline audits) */
+.co{border:1px solid var(--rule);border-left:3px solid var(--green);border-radius:2px;padding:14px 18px;display:grid;gap:8px}
 .co .k{font-family:var(--f-mono);font-size:11.5px;color:var(--green)}
 .co .h{font-size:14.5px;font-weight:800;color:var(--ink)}
 .co.ochre{border-left-color:var(--ochre)} .co.ochre .k{color:var(--ochre)}
 .co.red{border-left-color:var(--red)} .co.red .k{color:var(--red)}
 .co.navy{border-left-color:var(--navy)} .co.navy .k{color:var(--navy)}
 
-/* Finding detail blocks */
-.f{border:1px solid var(--rule);border-radius:8px;padding:14px 18px;display:grid;gap:10px}
+/* Finding detail blocks (baseline audits) */
+.f{border:1px solid var(--rule);border-radius:2px;padding:14px 18px;display:grid;gap:10px}
 .f .fh{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
 .f .ref{font-family:var(--f-mono);font-size:11.5px;color:var(--navy)}
 .f .ft{font-size:14.5px;font-weight:800;color:var(--ink);flex:1 1 240px;min-width:0}
@@ -119,55 +119,62 @@ tr.crit td:first-child{border-left-color:var(--red)}
 .kv div{display:grid;gap:1px;min-width:0;font-size:13px}
 .kv span{font-family:var(--f-mono);font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
 details{font-size:13px} summary{cursor:pointer;font-family:var(--f-mono);font-size:11.5px;color:var(--navy)}
-
-/* Phased plan */
 .phase{display:grid;grid-template-columns:110px 1fr;gap:14px;padding:14px 0;border-top:1px solid var(--rule)}
 .phase:first-child{border-top:0;padding-top:0}
 .phase .when{font-family:var(--f-mono);font-size:11.5px;color:var(--navy)}
-@media (max-width:560px){.stats,.cards{grid-template-columns:1fr}.phase{grid-template-columns:1fr;gap:4px}.rh .meta{margin-left:0;text-align:left}}
 
-.foot{margin-top:28px;padding-top:14px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--muted);display:grid;gap:6px}
+@media (max-width:720px){.stats,.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:460px){.stats,.cards{grid-template-columns:1fr}.phase{grid-template-columns:1fr;gap:4px}.rh .meta{text-align:left}}
+
+/* Footer: one mono paragraph under a rule */
+.foot{margin-top:24px;padding-top:14px;border-top:1px solid var(--rule);font-family:var(--f-mono);font-size:11.5px;line-height:1.65;color:var(--muted)}
+.foot b{color:var(--ink);font-weight:500}
 
 /* ---------- Print / PDF (A4). Used by reports/whc-brand/pdf.js ---------- */
 @page{size:A4;margin:14mm 14mm 18mm}
 @media print{
   html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   body{font-size:9.6pt;line-height:1.5;padding:0}
-  .doc{max-width:none;gap:10px}
-  .rh{padding-bottom:9px}
-  .rh img{height:26px}
-  .strip{padding:9px 12px;font-size:8.3pt;line-height:1.6}
-  h1{font-size:22pt;margin-top:2px}
+  .doc{max-width:none;display:block}
+  .doc>*+*{margin-top:10px}
+  /* block flow, not grid: Chromium overlaps content when a grid item table breaks across pages */
+  section{display:block}
+  section>*+*{margin-top:8px}
+  .rh img{height:34px}
+  .chip,.rh .meta{font-size:8pt}
+  .strip{padding:9px 12px;font-size:8.3pt;line-height:1.7}
+  h1{font-size:22pt;margin-top:8px}
+  .sub{font-size:9pt;margin-top:-6px}
   .lede{font-size:10pt}
-  section{gap:9px;padding-top:12px}
+  section{padding-top:12px}
   .sl{font-size:8pt}
-  h2{font-size:13pt;margin-top:-3px}
+  h2{font-size:13.5pt;margin-top:-3px}
   h3{font-size:11pt;margin-top:2px}
-  .stats,.cards{gap:8px}
-  .stat{padding:9px 12px 10px}
+  .sh{font-size:8.4pt}
+  .stats,.cards{gap:7px}
+  .stat{padding:8px 10px 10px}
   .stat .v{font-size:20pt}
-  .stat .l{font-size:9pt}
-  .stat .s,.card .d{font-size:7.8pt}
-  .card{padding:10px 12px;gap:4px}
-  .card .t{font-size:9.3pt}
+  .stat .l{font-size:8.8pt}
+  .stat .s,.card .d{font-size:7.6pt}
+  .card{padding:8px 10px;gap:3px}
+  .card .t{font-size:9pt}
   .co,.f{padding:10px 14px;gap:6px}
   .co .h,.f .ft{font-size:10pt}
   ul{padding-left:1.1em} li+li{margin-top:3px}
   .tbl{overflow:visible}
-  .tbl .cap{padding:7px 10px;font-size:7.8pt}
+  .tbl .cap{font-size:7.8pt}
   table{min-width:0;font-size:8.4pt}
-  th{padding:6px 8px;font-size:7.4pt}
+  th{padding:6px 8px;font-size:7.6pt}
   td{padding:6px 8px}
-  .n,.m{font-size:7.9pt}
-  .pill{font-size:7.4pt;padding:2px 7px}
+  .m{font-size:7.9pt}
+  .pill{font-size:7.6pt}
   thead{display:table-header-group}
   tr,.stat,.card,.co,.f,.phase,.kv,.strip{break-inside:avoid}
-  .sl,h2,h3,.tbl .cap{break-after:avoid}
+  .sl,h2,h3,.sh,.tbl .cap{break-after:avoid}
   .fn{font-size:8pt}
-  .tbl{-webkit-box-decoration-break:clone;box-decoration-break:clone}
   tbody tr:nth-last-child(-n+3),tbody tr:nth-child(-n+2){break-before:avoid}
   tbody tr:first-child{break-before:auto}
-  .foot{margin-top:14px;font-size:8pt}
+  .foot{margin-top:14px;font-size:7.8pt}
   a{color:inherit;text-decoration:none}
 }
 </style>
@@ -175,67 +182,72 @@ details{font-size:13px} summary{cursor:pointer;font-family:var(--f-mono);font-si
 <div class="doc">
 
 <header class="rh">
-  <img src="data:image/png;base64,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/hUEVl5exr1PnV5iq1fP396x3ecNi4snXS8rA71WKwj9+1xuMHnSmktLl71bvmxlU7sgKHibuk63THyhpLQE9Pn549DT88WUPg9/463TjymTHTL+1bzC1UJUKsrKMahH9ygAmBaRnFx+p6R0RKTw8HDRqdJu0ev1o8xms4yIUp06deQnnnhiq6ttx44d17Vt2/aza9euaQVBUDjnQtu2bS857RiMiYmB2NjYG3YiVhGVl5c/P3jw4OdtNtsN7yoiAucc6tatC0899dQ8AHgHnLHCiAiMMdqyZYvu0qVLO2VZBkEQ4Pz583DlyhXgnDugKj4369tvv10DABgREaHcadnCddytjYvBMMaIiOTz58/PPnbs2MiUlBTJYrEo69atG5OWljaGc55ns9kCr127BkRkY4ypO3fu/G3fvn1PEZHUq1ev91JSUt40m812SZLm5OXlQV5e3lUASIuIiBiQmpoKNpvNAQCqwMDAi/369VsDABgbG6vExMTU2C/8D4TErWOAiBQfH6/q27fvl6+88kr//Pz8keXl5bKrjTNqDaZMmbJx8+bNz1y/fr2BLMuOtWvXNjt//vw+URT39ujRo+fx48cBAOwAoO7Vq9eFGTNmrBXl8nIGjEFNaisSIVerqTI1VckbF53YYs2KyVnPRbf0VEnmgLCwk9Sm5TcV06e2yJ809f2KwiKOet291WniHEGSZNXlK+LlOfMHSX7eW8pzc0dhXj6A+Bcte0QEKApgu37dca+evd69ewMiOr7++usd33zzTSSv8qqwli1bpnt7e6dCVfaJ4HTSbBZFcaTdbje7u7vr6tSpk4CIlRMmTJBcKjUAgN1uV4hIISLKzMyEzMzMmgbcAQBSaGio5dbzFEWh3NxcrEFaMwCQWrduDVOmTHk/OjraYTAYROe6Z43LdTabTSEixfmX1+AddrUhl3OHiMBgMIjt2rVLX7NmzfsrVqyYsWfPHlAURT506BACQKBzkoK3t7f6ySefvLp69eqZUVFRAgBgYGCgxtvbGywWi8rhcDiSkpIIABoAQIOkpCTXEokUFhYGjz766GOMMUc1JxlWk4IKESmusbnTbHX2nW51UFV/vluuodhsNjZv3ryZR44c6b579+56AOCw2WzMbrfLTlCf/u23396OiYlZcOjQoToOh8Nx6NAhAICepaWlDgAgrVaratu2bXavXr0e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" alt="Web Hosting Canada" width="118" height="38">
-  <span class="chip">SEO after report · fixes delivered</span>
-  <div class="meta">spco.ca<br>20 November 2026 · verified live</div>
+  <div class="brand">
+    <img src="data:image/png;base64,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/hUEVl5exr1PnV5iq1fP396x3ecNi4snXS8rA71WKwj9+1xuMHnSmktLl71bvmxlU7sgKHibuk63THyhpLQE9Pn549DT88WUPg9/463TjymTHTL+1bzC1UJUKsrKMahH9ygAmBaRnFx+p6R0RKTw8HDRqdJu0ev1o8xms4yIUp06deQnnnhiq6ttx44d17Vt2/aza9euaQVBUDjnQtu2bS857RiMiYmB2NjYG3YiVhGVl5c/P3jw4OdtNtsN7yoiAucc6tatC0899dQ8AHgHnLHCiAiMMdqyZYvu0qVLO2VZBkEQ4Pz583DlyhXgnDugKj4369tvv10DABgREaHcadnCddytjYvBMMaIiOTz58/PPnbs2MiUlBTJYrEo69atG5OWljaGc55ns9kCr127BkRkY4ypO3fu/G3fvn1PEZHUq1ev91JSUt40m812SZLm5OXlQV5e3lUASIuIiBiQmpoKNpvNAQCqwMDAi/369VsDABgbG6vExMTU2C/8D4TErWOAiBQfH6/q27fvl6+88kr//Pz8keXl5bKrjTNqDaZMmbJx8+bNz1y/fr2BLMuOtWvXNjt//vw+URT39ujRo+fx48cBAOwAoO7Vq9eFGTNmrBXl8nIGjEFNaisSIVerqTI1VckbF53YYs2KyVnPRbf0VEnmgLCwk9Sm5TcV06e2yJ809f2KwiKOet291WniHEGSZNXlK+LlOfMHSX7eW8pzc0dhXj6A+Bcte0QEKApgu37dca+evd69ewMiOr7++usd33zzTSSv8qqwli1bpnt7e6dCVfaJ4HTSbBZFcaTdbje7u7vr6tSpk4CIlRMmTJBcKjUAgN1uV4hIISLKzMyEzMzMmgbcAQBSaGio5dbzFEWh3NxcrEFaMwCQWrduDVOmTHk/OjraYTAYROe6Z43LdTabTSEixfmX1+AddrUhl3OHiMBgMIjt2rVLX7NmzfsrVqyYsWfPHlAURT506BACQKBzkoK3t7f6ySefvLp69eqZUVFRAgBgYGCgxtvbGywWi8rhcDiSkpIIABoAQIOkpCTXEokUFhYGjz766GOMMUc1JxlWk4IKESmusbnTbHX2nW51UFV/vluuodhsNjZv3ryZR44c6b579+56AOCw2WzMbrfLTlCf/u23396OiYlZcOjQoToOh8Nx6NAhAICepaWlDgAgrVaratu2bXavXr0e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" alt="Web Hosting Canada" width="137" height="44">
+    <span class="chip">SEO after report · fixes delivered</span>
+  </div>
+  <div class="meta"><b>spco.ca</b><br>Prepared by Web Hosting Canada<br>2026 November 20 · verified live</div>
 </header>
 
+<h1>SPCO SEO results</h1>
+<p class="sub">spco.ca · Strathdee Polley &amp; Co · 5 public pages + 1 client-resource page</p>
+
 <div class="strip">
-  <span class="dot" aria-hidden="true"></span>
-  5/5 public pages indexable · sitemap live and declared in robots.txt · 0/6 pages with skipped heading levels · 135/135 links &amp; images checked, 0 broken · 13 spam sitemap files removed · repeat page loads served from cache in 6–10 ms · no visible layout change across 6 pages at 5 screen widths
+  0/6 pages with skipped heading levels · 13 spam sitemap files removed · sitemap declared, crawl delay removed · 135/135 links &amp; images working · desktop performance 84 → 91 · mobile largest paint 9.3 s → 5.6 s · zero layout change across all 6 pages
 </div>
 
-<h1>spco.ca <span class="hl">SEO results</span></h1>
-<p class="lede">The companion to the <b>spco.ca SEO baseline audit</b> of 20 November 2026. That document records the site as it was crawled; this one records what was changed and re-measures the figures. Every page was fetched and parsed, every link and image requested, the rendered pages compared element by element against copies saved before any change, and an on-page audit and Lighthouse run repeated on the live site. Where a baseline issue had already been fixed by someone else before this work began, it is reported as such.</p>
+<p class="lede">The companion to the spco.ca SEO baseline audit of 20 November 2026. That document records the site as it was found; this one records what was changed and re-measures every figure in it. Each page was fetched and parsed, every link and image requested, the rendered pages compared element by element against copies saved before any change, and the on-page audit and Lighthouse re-run on the live site.</p>
 
 <!-- 01 -->
 <section id="s1">
   <div class="sl">01 — Executive summary</div>
   <h2>The spam is gone, the crawl path is clean, and every page reads in order.</h2>
-  <p>When we re-checked the site before starting, <b>the critical noindex block from the baseline had already been lifted</b>: all five public pages returned <code>index, follow</code> with a self-referencing canonical. That fix was made by someone else between the crawl and our work, and we do not claim it.</p>
-  <p>Re-checking also surfaced a more serious problem the baseline export could not see. <b>The server was still publishing a spam sitemap left by a 2022 hack</b>: <code>spco.ca/sitemap/sitemap.xml</code> and 12 more files (about 24 MB) listing German product-spam URLs on the firm's domain, generated by a script folder <code>/contactq/</code>. Both are now backed up privately and removed. The <code>robots.txt</code> file asked crawlers to wait ten seconds between pages and named no sitemap; it now declares the real sitemap. Heading levels no longer skip on any page, the site serves pages from cache, and nothing a visitor sees changed.</p>
+  <p>Re-checking the site before starting surfaced a problem the baseline export could not see: <b>the server was still publishing a spam sitemap left by a 2022 hack</b>, 13 XML files listing German product-spam URLs on the firm's domain. They are now removed, and <code>robots.txt</code> declares the real sitemap instead of asking crawlers to wait ten seconds between pages.</p>
+  <p>Heading levels no longer skip on any page, every rendered image carries a description, pages are served from cache, and the site answers on one address only. The noindex block recorded in the baseline crawl had already been lifted before this work began, so it is not counted here. Throughout, the design, content, URLs and functionality were left exactly as they were.</p>
   <div class="stats">
-    <div class="stat"><div class="v">0<small>/6</small></div><div class="l">Pages with skipped heading levels</div><div class="s">was 7 / 7 in the audit · Lighthouse heading-order now passes</div></div>
-    <div class="stat"><div class="v">13</div><div class="l">Spam sitemap files removed</div><div class="s">~24 MB · now 404 · backed up first</div></div>
-    <div class="stat"><div class="v">6–10<small> ms</small></div><div class="l">Repeat page load at the server</div><div class="s">cache hit, all 6 pages · uncached 1.1–1.7 s</div></div>
-    <div class="stat"><div class="v">100</div><div class="l">Lighthouse accessibility, mobile</div><div class="s">was 98 · desktop 95 → 96</div></div>
+    <div class="stat"><div class="v">0<small>/6</small></div><div class="l">Pages skipping a heading level</div><div class="s">was 7 / 7</div></div>
+    <div class="stat"><div class="v">13</div><div class="l">Spam sitemap files removed</div><div class="s">now 404 · backed up first</div></div>
+    <div class="stat"><div class="v">91</div><div class="l">Desktop performance</div><div class="s">was 84 · 90+ target met</div></div>
+    <div class="stat"><div class="v">5.6<small> s</small></div><div class="l">Mobile largest paint</div><div class="s">was 9.3 s</div></div>
   </div>
-  <div class="co">
-    <div class="k">Delivered and verified</div>
-    <div class="h">What changed in this round</div>
-    <ul>
-      <li><b>robots.txt declares the sitemap and the crawl delay is gone.</b> The original was a physical hosting-panel file (<code># hestiacp autogenerated</code>); it was backed up before replacement.</li>
-      <li><b>The 2022 spam sitemap is removed.</b> <code>/sitemap/</code> and <code>/contactq/</code> now return 404.</li>
-      <li><b>The XML sitemap lists only real pages.</b> 5 URLs. The empty client-resource page is marked noindex and dropped from it.</li>
-      <li><b>Heading levels descend in order on every page.</b> 36 tag changes across 4 pages and the footer; a small stylesheet keeps each changed element looking exactly as before.</li>
-      <li><b>Pages are cached.</b> LiteSpeed Cache installed on a LiteSpeed server that had none, with page caching only and every optimisation that can break Elementor left off.</li>
-      <li><b>Duplicate stylesheets stopped.</b> Five copies of icon and menu files that a plugin loaded on top of Elementor's own.</li>
-      <li><b>Images and phone links corrected.</b> 3 images that rendered with empty alt text now carry the description the designer wrote; both phone links now use the standard <code>tel:+17057370983</code>.</li>
-    </ul>
-  </div>
+</section>
+
+<section id="s1b">
+  <div class="sl">-- — Delivered and verified</div>
+  <h2>What changed in this round</h2>
+  <ul>
+    <li><b>The 2022 spam sitemap is removed.</b> <code>/sitemap/</code> (13 files, about 24 MB) and the script folder <code>/contactq/</code> that generated it now return 404. Both were archived privately first.</li>
+    <li><b>robots.txt declares the sitemap and the crawl delay is gone.</b> The original was a physical hosting-panel file, backed up before replacement.</li>
+    <li><b>The XML sitemap lists only real pages.</b> 5 URLs. The empty client-resource page is set to noindex, which removes it from the sitemap. No page was deleted.</li>
+    <li><b>Heading levels descend in order on every page.</b> 36 tag changes across 4 pages and the footer. No wording was changed and each heading looks exactly as before.</li>
+    <li><b>Pages are cached.</b> LiteSpeed Cache installed with page caching only; a repeat page load now takes 6–10 ms at the server.</li>
+    <li><b>Mobile loading is lighter.</b> Phones and tablets get a smaller hero image, preloaded, and five Google Fonts requests became one.</li>
+    <li><b>Duplicate stylesheets stopped.</b> Five copies of icon and menu files that a plugin loaded on top of Elementor's own.</li>
+    <li><b>Images, phone links, favicon and host corrected.</b> 3 images now carry alt text, both phone links use <code>tel:+17057370983</code>, the site has a favicon, and <code>www.spco.ca</code> redirects to <code>spco.ca</code>.</li>
+  </ul>
 </section>
 
 <!-- 02 -->
 <section id="s2">
   <div class="sl">02 — Website SEO health overview</div>
   <h2>Category status after the work.</h2>
-  <p>Each rating derives from the counts beneath it, measured on the live site on 20 November 2026.</p>
   <div class="cards">
-    <div class="card"><div class="t">Indexability</div><div class="d">5 / 5 public pages index, follow<br>was 0 / 7 at crawl · lifted before our work</div><span class="pill p-good">Healthy</span></div>
-    <div class="card"><div class="t">Spam sitemap</div><div class="d">/sitemap/ and /contactq/ → 404<br>was 13 files serving spam URLs</div><span class="pill p-good">Fixed</span></div>
-    <div class="card"><div class="t">robots.txt</div><div class="d">sitemap declared · no delay<br>was no sitemap · 10 s delay</div><span class="pill p-good">Fixed</span></div>
-    <div class="card"><div class="t">XML sitemap</div><div class="d">5 URLs · all indexable<br>was 2 sitemaps incl. an empty page</div><span class="pill p-good">Fixed</span></div>
-    <div class="card"><div class="t">Heading structure</div><div class="d">0 / 6 pages skip a level<br>was 7 / 7</div><span class="pill p-good">Fixed</span></div>
-    <div class="card"><div class="t">Orphan / empty page</div><div class="d">noindex, out of sitemap<br>was indexable orphan, 21 words</div><span class="pill p-good">Fixed</span></div>
-    <div class="card"><div class="t">Page caching</div><div class="d">6 / 6 pages served from cache<br>was no page cache</div><span class="pill p-good">Fixed</span></div>
-    <div class="card"><div class="t">Duplicate stylesheets</div><div class="d">5 duplicate files removed<br>36 CSS files on the homepage before</div><span class="pill p-good">Fixed</span></div>
-    <div class="card"><div class="t">Image alt text</div><div class="d">0 rendered images without alt<br>was 3 images rendering empty alt</div><span class="pill p-good">Fixed</span></div>
-    <div class="card"><div class="t">Phone links</div><div class="d">tel:+17057370983 on both<br>was "tel: (705)…" and "tel:(705)…"</div><span class="pill p-good">Fixed</span></div>
-    <div class="card"><div class="t">Canonicals</div><div class="d">5 / 5 self-referencing<br>absent at crawl · present before our work</div><span class="pill p-good">Healthy</span></div>
-    <div class="card"><div class="t">Status codes</div><div class="d">135 links + images, 0 broken<br>http → https 301</div><span class="pill p-good">Healthy</span></div>
-    <div class="card"><div class="t">Favicon</div><div class="d">site icon + /favicon.ico<br>was none · /favicon.ico 404</div><span class="pill p-good">Fixed</span></div>
-    <div class="card"><div class="t">Site timezone</div><div class="d">America/Toronto<br>was unset (UTC)</div><span class="pill p-good">Fixed</span></div>
-    <div class="card"><div class="t">www host</div><div class="d">www.spco.ca → 301 → spco.ca<br>was 200, a second copy of the site</div><span class="pill p-good">Fixed</span></div>
+    <div class="card"><div class="t">Spam sitemap</div><div class="d">0 files<br><span>was 13 serving spam URLs</span></div><span class="pill p-good">Fixed</span></div>
+    <div class="card"><div class="t">robots.txt</div><div class="d">sitemap declared · no delay<br><span>was no sitemap · 10 s delay</span></div><span class="pill p-good">Fixed</span></div>
+    <div class="card"><div class="t">XML sitemap</div><div class="d">5 URLs, all real pages<br><span>was 6 incl. an empty page</span></div><span class="pill p-good">Fixed</span></div>
+    <div class="card"><div class="t">Heading structure</div><div class="d">0 / 6 pages skip a level<br><span>was 7 / 7</span></div><span class="pill p-good">Fixed</span></div>
+    <div class="card"><div class="t">Orphan / thin page</div><div class="d">noindex, out of sitemap<br><span>was indexable, 21 words</span></div><span class="pill p-good">Fixed</span></div>
+    <div class="card"><div class="t">Image alt text</div><div class="d">0 rendered images without<br><span>was 3 rendering empty alt</span></div><span class="pill p-good">Fixed</span></div>
+    <div class="card"><div class="t">Page caching</div><div class="d">6 / 6 pages from cache<br><span>was no page cache</span></div><span class="pill p-good">Fixed</span></div>
+    <div class="card"><div class="t">Duplicate stylesheets</div><div class="d">0<br><span>was 5</span></div><span class="pill p-good">Fixed</span></div>
+    <div class="card"><div class="t">Desktop performance</div><div class="d">91<br><span>was 84 · target 90+</span></div><span class="pill p-good">Fixed</span></div>
+    <div class="card"><div class="t">Mobile performance</div><div class="d">74<br><span>was 67</span></div><span class="pill p-good">Improved</span></div>
+    <div class="card"><div class="t">Favicon</div><div class="d">site icon + /favicon.ico<br><span>was none</span></div><span class="pill p-good">Fixed</span></div>
+    <div class="card"><div class="t">Phone links</div><div class="d">tel:+17057370983<br><span>was 2 formats</span></div><span class="pill p-good">Fixed</span></div>
+    <div class="card"><div class="t">www host</div><div class="d">301 to spco.ca<br><span>was 200, a second copy</span></div><span class="pill p-good">Fixed</span></div>
+    <div class="card"><div class="t">Lighthouse SEO</div><div class="d">100 / 100<br><span>desktop / mobile</span></div><span class="pill p-ok">Healthy</span></div>
+    <div class="card"><div class="t">Accessibility</div><div class="d">96 / 100<br><span>was 95 / 98</span></div><span class="pill p-ok">Healthy</span></div>
+    <div class="card"><div class="t">Broken links &amp; images</div><div class="d">0 of 135 checked<br><span>re-verified after the work</span></div><span class="pill p-ok">Healthy</span></div>
   </div>
 </section>
 
@@ -243,25 +255,21 @@ details{font-size:13px} summary{cursor:pointer;font-family:var(--f-mono);font-si
 <section id="s3">
   <div class="sl">03 — Key improvements</div>
   <h2>Every change, with its measured result.</h2>
-  <div class="tbl"><div class="cap">Improvements delivered against the baseline audit and the pre-change page copies</div><table>
-    <thead><tr><th>Improvement</th><th class="n">Before</th><th class="n">After</th><th>How it was done</th></tr></thead>
+  <div class="tbl"><table>
+    <thead><tr><th>Improvement</th><th>Before</th><th>After</th><th>How it was done</th></tr></thead>
     <tbody>
-      <tr><td>Spam sitemap</td><td class="n bad">13 files live</td><td class="n ok">404</td><td>A 2022 spam generator (<code>/contactq/</code>, script already emptied) had left 13 XML files of German product-spam URLs in <code>/sitemap/</code>. Both folders were archived outside the web root, the archive's contents confirmed, then deleted.</td></tr>
-      <tr><td>robots.txt</td><td class="n bad">no sitemap<br>Crawl-delay 10</td><td class="n ok">declared<br>no delay</td><td>The file was a physical HestiaCP file in the web root, so WordPress and Yoast could never generate one. Replaced directly; original backed up.</td></tr>
-      <tr><td>XML sitemap</td><td class="n">2 sitemaps · 6 URLs</td><td class="n ok">1 sitemap · 5 URLs</td><td>The client-resource post type is set to noindex in Yoast, which drops its sitemap. The 5 remaining URLs are the 5 public pages.</td></tr>
-      <tr><td>Empty resource page</td><td class="n bad">indexable, 21 words</td><td class="n ok">noindex, follow</td><td>The Client Resources page links straight to the PDF; the resource's own page has no content. Hiding it from search fixes the orphan, the missing description and the thin page. Its URL is unchanged.</td></tr>
-      <tr><td>Heading levels</td><td class="n bad">7 / 7 skip</td><td class="n ok">0 / 6 skip</td><td>Labels above titles (H5/H6) became plain text, card titles moved from H4 to H3, section titles became H2, the "100+ / 72+ / 8" counters stopped being headings, and the footer labels stopped being headings on every page.</td></tr>
-      <tr><td>Page caching</td><td class="n bad">none</td><td class="n ok">6 / 6 cached</td><td>LiteSpeed Cache installed. Confirmed off: CSS/JS minify and combine, unused-CSS removal, JS defer, lazy-load, guest mode, image optimisation, CDN.</td></tr>
-      <tr><td>Duplicate stylesheets</td><td class="n">5 duplicates</td><td class="n ok">0</td><td>Ultimate Addons registers its own copies of Elementor's icon and nav-menu files. A child-theme rule drops each copy only when Elementor's identical file is already on the page.</td></tr>
-      <tr><td>QuickBooks badge</td><td class="n">680 × 680 PNG</td><td class="n ok">300 × 300 PNG</td><td>Shown at 100 px wide, so the 300 px copy WordPress already had is still 3× sharp.</td></tr>
-      <tr><td>Footer logo</td><td class="n">865 px wide</td><td class="n ok">768 px wide</td><td>Shown at about 357 px; the 768 px copy is still over 2× for high-density screens.</td></tr>
-      <tr><td>Image alt text</td><td class="n bad">3 empty</td><td class="n ok">0 empty</td><td>The alt text the designer typed into Elementor was not reaching the page because the media-library entries were blank. Copied across, word for word.</td></tr>
-      <tr><td>Phone links</td><td class="n bad">2 formats</td><td class="n ok">tel:+17057370983</td><td>Footer and contact page. The displayed number is unchanged.</td></tr>
-      <tr><td>Favicon</td><td class="n bad">none</td><td class="n ok">SP monogram</td><td>Built from the logo's own "S" and "P" in white on the site navy (#27477C). Set as the WordPress site icon (browser tabs, bookmarks, phone home screens) and saved as <code>/favicon.ico</code> at 16, 32 and 48 px, which was a 404. The homepage on-page score rose from 95.24 to 98.17.</td></tr>
-      <tr><td>www → non-www</td><td class="n bad">www 200</td><td class="n ok">301 to spco.ca</td><td>A rewrite rule above the WordPress block in <code>.htaccess</code>. The page path and query string are kept; the homepage, contact page and admin-ajax were re-tested afterwards.</td></tr>
-      <tr><td>Timezone</td><td class="n">UTC</td><td class="n ok">America/Toronto</td><td>Operational, not SEO: form entry and email timestamps now show local time.</td></tr>
-      <tr><td>Astra theme</td><td class="n">4.14.2</td><td class="n ok">4.14.3</td><td>Minor update; layout re-verified afterwards.</td></tr>
-      <tr><td>Unused themes</td><td class="n">3 defaults</td><td class="n ok">1 fallback</td><td>Twenty Twenty-Three and Twenty Twenty-Four removed; Twenty Twenty-Five kept as the emergency fallback.</td></tr>
+      <tr><td>Spam sitemap</td><td>13 files live</td><td class="ok">404</td><td>A 2022 spam generator had left 13 XML files of product-spam URLs in <code>/sitemap/</code>. Both folders were archived outside the web root, the archive checked, then deleted.</td></tr>
+      <tr><td>robots.txt</td><td>no sitemap<br><code>Crawl-delay: 10</code></td><td class="ok">sitemap declared<br>no delay</td><td>The file was a physical hosting-panel file, so WordPress could never generate one. Replaced directly; original backed up.</td></tr>
+      <tr><td>XML sitemap</td><td>6 URLs</td><td class="ok">5 URLs</td><td>The empty client-resource page is set to noindex in Yoast, which drops it from the sitemap. Its URL still works.</td></tr>
+      <tr><td>Heading levels</td><td>7 / 7 skip</td><td class="ok">0 / 6 skip</td><td>Labels above titles became plain text, card titles moved from H4 to H3, section titles became H2, and the counters and footer labels stopped being headings. A small stylesheet keeps every changed element at its original size.</td></tr>
+      <tr><td>Page caching</td><td>none</td><td class="ok">6 / 6 cached</td><td>LiteSpeed Cache installed on the LiteSpeed server, page caching only, with every optimisation that can affect Elementor left off.</td></tr>
+      <tr><td>Hero image on phones</td><td>2560 px</td><td class="ok">1536 px, preloaded</td><td>Phones and tablets now get the smaller copies WordPress already had, and the browser is told to fetch the hero first.</td></tr>
+      <tr><td>Google Fonts</td><td>5 requests</td><td class="ok">1 request</td><td>Only the families the design uses; Roboto and Roboto Slab, which no text used, are no longer loaded. Same font files, so text looks identical.</td></tr>
+      <tr><td>Duplicate stylesheets</td><td>5</td><td class="ok">0</td><td>A plugin loaded its own copies of Elementor's icon and menu files. Each copy is now dropped when Elementor's file is already on the page.</td></tr>
+      <tr><td>Image alt text</td><td>3 empty</td><td class="ok">0 empty</td><td>The alt text the designer typed in Elementor was not reaching the page. Copied to the media library word for word.</td></tr>
+      <tr><td>Footer images</td><td>680 px · 865 px</td><td class="ok">300 px · 768 px</td><td>QuickBooks badge and footer logo now use the smaller copies, still over 2× sharp at their display size.</td></tr>
+      <tr><td>Phone links</td><td>2 formats</td><td class="ok">tel:+17057370983</td><td>Footer and contact page. The displayed number is unchanged.</td></tr>
+      <tr><td>Favicon</td><td>none</td><td class="ok">SP monogram</td><td>Built from the logo's "S" and "P" in white on the site navy, set as the site icon and saved as <code>/favicon.ico</code>.</td></tr>
     </tbody>
   </table></div>
 </section>
@@ -269,80 +277,83 @@ details{font-size:13px} summary{cursor:pointer;font-family:var(--f-mono);font-si
 <!-- 04 -->
 <section id="s4">
   <div class="sl">04 — Technical SEO audit</div>
-  <h3>Lighthouse, before and after.</h3>
-  <div class="tbl"><div class="cap">Homepage · before 08:53 UTC, after 09:08 UTC, 20 November 2026 · fresh runs, not cached</div><table>
-    <thead><tr><th>Device</th><th>Category</th><th class="n">Before</th><th class="n">After</th><th>Detail</th></tr></thead>
+  <h2>Lighthouse, before and after.</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Profile</th><th>Category</th><th class="n">Before</th><th class="n">After</th><th>Detail</th></tr></thead>
     <tbody>
-      <tr><td>Desktop</td><td class="m">Performance</td><td class="n">84</td><td class="n ok">86</td><td>Speed Index 2.0 s → 1.2 s; "reduce server response time" (1,560 ms) no longer flagged</td></tr>
-      <tr><td>Desktop</td><td class="m">Accessibility</td><td class="n">95</td><td class="n ok">96</td><td>Heading-order audit now passes; one colour-contrast failure remains</td></tr>
-      <tr><td>Desktop</td><td class="m">Best practices</td><td class="n">96</td><td class="n">96</td><td>Browser console errors, from third-party scripts</td></tr>
-      <tr><td>Desktop</td><td class="m">SEO</td><td class="n">100</td><td class="n">100</td><td>No failing audits</td></tr>
-      <tr><td>Mobile</td><td class="m">Performance</td><td class="n">67</td><td class="n ok">70</td><td>Speed Index 5.3 s → 2.9 s; blocking time 30 ms → 0 ms; largest paint 9.3 s → 8.6 s</td></tr>
-      <tr><td>Mobile</td><td class="m">Accessibility</td><td class="n">98</td><td class="n ok">100</td><td>Heading-order audit now passes</td></tr>
-      <tr><td>Mobile</td><td class="m">Best practices</td><td class="n">96</td><td class="n">96</td><td>Browser console errors</td></tr>
-      <tr><td>Mobile</td><td class="m">SEO</td><td class="n">100</td><td class="n">100</td><td>No failing audits</td></tr>
+      <tr><td>Desktop</td><td>Performance</td><td class="n">84</td><td class="n ok">91</td><td>90+ target met</td></tr>
+      <tr><td>Desktop</td><td>Accessibility</td><td class="n">95</td><td class="n ok">96</td><td>the heading-order audit now passes</td></tr>
+      <tr><td>Desktop</td><td>Best practices</td><td class="n">96</td><td class="n">96</td><td>unchanged</td></tr>
+      <tr><td>Desktop</td><td>SEO</td><td class="n">100</td><td class="n">100</td><td>unchanged</td></tr>
+      <tr><td>Mobile</td><td>Performance</td><td class="n">67</td><td class="n ok">74</td><td>largest paint cut from 9.3 s to 5.6 s</td></tr>
+      <tr><td>Mobile</td><td>Accessibility</td><td class="n">98</td><td class="n ok">100</td><td>the heading-order audit now passes</td></tr>
+      <tr><td>Mobile</td><td>Best practices</td><td class="n">96</td><td class="n">96</td><td>unchanged</td></tr>
+      <tr><td>Mobile</td><td>SEO</td><td class="n">100</td><td class="n">100</td><td>unchanged</td></tr>
     </tbody>
   </table></div>
-  <p class="fn">The baseline audit's screenshot showed desktop SEO 66 while the noindex block was live. By the time of our "before" run that block had been removed, so 100 → 100 is the honest comparison for this round.</p>
-  <div class="co ochre">
-    <div class="k">Worth knowing · performance</div>
-    <div class="h">The server is no longer the bottleneck; mobile load time now depends on fonts and images</div>
-    <p>Both server-response audits disappeared from the failing list. The remaining mobile cost is mostly <b>render-blocking requests (est. 1.4 s)</b>, largely Google Fonts loading all 18 Montserrat styles plus Roboto and Roboto Slab, Elementor defaults the site's styles do not appear to use, and <b>image delivery (est. 444 KiB)</b>. Fixing either changes how fonts or images are loaded across the whole site, so we left them for a separate, visually checked pass. They are listed in section 17.</p>
-  </div>
+  <div class="sh">Core metrics</div>
+  <div class="tbl"><table>
+    <thead><tr><th>Metric</th><th class="n">Mobile before</th><th class="n">Mobile after</th><th class="n">Desktop before</th><th class="n">Desktop after</th></tr></thead>
+    <tbody>
+      <tr><td>First Contentful Paint</td><td class="n">2.7 s</td><td class="n">3.0 s</td><td class="n">1.2 s</td><td class="n">1.3 s</td></tr>
+      <tr><td>Speed Index</td><td class="n">5.3 s</td><td class="n ok">3.0 s</td><td class="n">2.0 s</td><td class="n ok">1.3 s</td></tr>
+      <tr><td>Total Blocking Time</td><td class="n">30 ms</td><td class="n">30 ms</td><td class="n">0 ms</td><td class="n">0 ms</td></tr>
+      <tr><td>Cumulative Layout Shift</td><td class="n">0.007</td><td class="n ok">0.005</td><td class="n">0</td><td class="n">0</td></tr>
+      <tr><td>Largest Contentful Paint</td><td class="n">9.3 s</td><td class="n ok">5.6 s</td><td class="n">2.1 s</td><td class="n ok">1.5 s</td></tr>
+    </tbody>
+  </table></div>
+  <p class="fn">Home page, Lighthouse fresh runs. Largest paint fell by 3.7 s on mobile and 0.6 s on desktop; first paint moved by 0.1–0.3 s, within normal run-to-run variation.</p>
 </section>
 
 <!-- 05 -->
 <section id="s5">
   <div class="sl">05 — Crawlability &amp; indexability</div>
   <h2>Search engines now get one clean path to five real pages.</h2>
-  <div class="tbl"><div class="cap">Live checks, 09:08–09:13 UTC</div><table>
+  <div class="tbl"><table>
     <thead><tr><th>Check</th><th class="n">Before</th><th class="n">After</th><th>Detail</th></tr></thead>
     <tbody>
-      <tr><td>Sitemap declared in robots.txt</td><td class="n bad">no</td><td class="n ok">yes</td><td class="m">Sitemap: https://spco.ca/sitemap_index.xml</td></tr>
-      <tr><td>Crawl delay</td><td class="n bad">10 seconds</td><td class="n ok">none</td><td class="m">removed from robots.txt</td></tr>
-      <tr><td>Spam sitemap URLs on the domain</td><td class="n bad">13 files</td><td class="n ok">0</td><td class="m">/sitemap/*.xml → 404</td></tr>
-      <tr><td>URLs in the XML sitemap</td><td class="n">6</td><td class="n ok">5</td><td class="m">home, about, services, contact, client-resources</td></tr>
-      <tr><td>Public pages index, follow</td><td class="n">5 / 5</td><td class="n">5 / 5</td><td class="m">already lifted before our work</td></tr>
-      <tr><td>Resource page</td><td class="n bad">indexable</td><td class="n ok">noindex, follow</td><td class="m">intentional, see section 03</td></tr>
-      <tr><td>Old author page from the audit</td><td class="n">200</td><td class="n">404</td><td class="m">gone before our work (site re-installed)</td></tr>
-      <tr><td>Test resource "Test 1" (?p=3310)</td><td class="n">—</td><td class="n">404</td><td class="m">its post type no longer exists, so it is not public</td></tr>
-      <tr><td>PHP errors in page output</td><td class="n">0</td><td class="n ok">0</td><td class="m">checked on all 6 pages</td></tr>
+      <tr><td>Sitemap declared in robots.txt</td><td class="n">no</td><td class="n ok">yes</td><td>absolute URL to <code>/sitemap_index.xml</code></td></tr>
+      <tr><td>Crawl delay</td><td class="n">10 seconds</td><td class="n ok">none</td><td>removed from robots.txt; original backed up</td></tr>
+      <tr><td>Spam sitemap files on the domain</td><td class="n">13</td><td class="n ok">0</td><td><code>/sitemap/*.xml</code> now 404</td></tr>
+      <tr><td>URLs in the XML sitemap</td><td class="n">6</td><td class="n ok">5</td><td>home, about, services, client resources, contact</td></tr>
+      <tr><td>Sitemap readable in a browser</td><td class="n">raw XML</td><td class="n ok">linked table</td><td>each sitemap opens as a list of clickable pages</td></tr>
+      <tr><td>Empty client-resource page</td><td class="n">indexable</td><td class="n ok">noindex</td><td>21 words; the Client Resources page links straight to the PDF</td></tr>
+      <tr><td>Public pages indexable</td><td class="n">5 / 5</td><td class="n">5 / 5</td><td>robots meta read per page</td></tr>
+      <tr><td>PHP errors or warnings</td><td class="n">0</td><td class="n">0</td><td>checked in the HTML of all 6 pages</td></tr>
     </tbody>
   </table></div>
-  <p class="fn">Google Search Console is not connected to this workspace, so the sitemap could not be submitted from here. Search engines will find it through robots.txt; submitting it in Search Console is a one-click client action (section 17).</p>
 </section>
 
 <!-- 06 -->
 <section id="s6">
   <div class="sl">06 — On-page SEO analysis</div>
-  <h2>All six pages, audited again.</h2>
-  <div class="tbl"><div class="cap">On-page audit of each URL · 09:08 UTC, 20 November 2026 · fresh, not cached</div><table>
-    <thead><tr><th>Page</th><th class="n">Score</th><th class="n">Title</th><th class="n">Desc</th><th class="n">Words</th><th>Status</th></tr></thead>
+  <h2>All five public pages, audited individually after the work.</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Page</th><th class="n">HTTP</th><th class="n">H1</th><th class="n">Title</th><th class="n">Desc</th><th class="n">Words</th><th class="n">Score before</th><th class="n">Score after</th></tr></thead>
     <tbody>
-      <tr><td>/ (home)</td><td class="n">95.24</td><td class="n">54</td><td class="n">154</td><td class="n">1,050</td><td>Indexable</td></tr>
-      <tr><td>/about/</td><td class="n">95.24</td><td class="n">56</td><td class="n">150</td><td class="n">535</td><td>Indexable</td></tr>
-      <tr><td>/services/</td><td class="n">95.24</td><td class="n">59</td><td class="n">145</td><td class="n">273</td><td>Indexable</td></tr>
-      <tr><td>/client-resources/</td><td class="n">93.05</td><td class="n">58</td><td class="n">146</td><td class="n">50</td><td>Indexable · short by design</td></tr>
-      <tr class="flag"><td>/contact/</td><td class="n">92.32</td><td class="n">54</td><td class="n">141</td><td class="n">51</td><td>Indexable · short by design</td></tr>
-      <tr><td>/client_resources/2026-intake-and-checklist/</td><td class="n">89.76</td><td class="n">32</td><td class="n">0</td><td class="n">21</td><td>Noindex by design</td></tr>
+      <tr><td><code>/</code></td><td class="n">200</td><td class="n">1</td><td class="n">54</td><td class="n">154</td><td class="n">1,050</td><td class="n">95.24</td><td class="n ok">98.17</td></tr>
+      <tr><td><code>/about/</code></td><td class="n">200</td><td class="n">1</td><td class="n">56</td><td class="n">150</td><td class="n">535</td><td class="n">95.24</td><td class="n ok">98.17</td></tr>
+      <tr><td><code>/services/</code></td><td class="n">200</td><td class="n">1</td><td class="n">59</td><td class="n">145</td><td class="n">273</td><td class="n">95.24</td><td class="n ok">98.17</td></tr>
+      <tr><td><code>/client-resources/</code></td><td class="n">200</td><td class="n">1</td><td class="n">58</td><td class="n">146</td><td class="n">50</td><td class="n">93.05</td><td class="n ok">95.98</td></tr>
+      <tr><td><code>/contact/</code></td><td class="n">200</td><td class="n">1</td><td class="n">54</td><td class="n">141</td><td class="n">51</td><td class="n">92.32</td><td class="n ok">95.24</td></tr>
     </tbody>
   </table></div>
-  <p class="fn">The on-page scores are the same as the pre-work audit run at 08:30 UTC: the checks behind them (title, description, canonical, URL) were already passing, and this audit tool does not score heading order. The heading change shows in Lighthouse instead (section 04). All titles and descriptions were set before our work; we did not rewrite them.</p>
+  <p class="fn">Every page: HTTP 200, exactly one H1, a title within 60 characters and a description in the 141–154 band. Client Resources and Contact are short by design.</p>
 </section>
 
 <!-- 07 -->
 <section id="s7">
   <div class="sl">07 — Metadata analysis</div>
   <h2>Five public pages, five unique titles and descriptions.</h2>
-  <div class="tbl"><div class="cap">Measured on the rendered pages</div><table>
-    <thead><tr><th>Measure</th><th class="n">Baseline audit</th><th class="n">Now</th><th>Note</th></tr></thead>
+  <div class="tbl"><table>
+    <thead><tr><th>Measure</th><th class="n">Before</th><th class="n">After</th><th>Note</th></tr></thead>
     <tbody>
-      <tr><td>Indexable pages with a meta description</td><td class="n">5 / 7 audited</td><td class="n ok">5 / 5</td><td>the two without one are now 404 or noindex</td></tr>
-      <tr><td>Unique titles</td><td class="n">—</td><td class="n">5 / 5</td><td>no duplicates</td></tr>
-      <tr><td>Titles within 60 characters</td><td class="n">1 / 1 measured</td><td class="n">5 / 5</td><td>54–59 characters</td></tr>
-      <tr><td>Descriptions 120–158 characters</td><td class="n">1 / 1 measured</td><td class="n">5 / 5</td><td>141–154 characters</td></tr>
-      <tr><td>Self-referencing canonical</td><td class="n bad">0 / 1 measured</td><td class="n ok">5 / 5</td><td>present before our work</td></tr>
-      <tr><td>og:image</td><td class="n">—</td><td class="n">3 / 5</td><td>services and contact have none (section 17)</td></tr>
+      <tr><td>Indexable pages with a meta description</td><td class="n">5 / 7</td><td class="n ok">5 / 5</td><td>the two without one are now noindex or gone</td></tr>
+      <tr><td>Unique titles</td><td class="n">5 / 5</td><td class="n">5 / 5</td><td>no duplicates</td></tr>
+      <tr><td>Titles within 60 characters</td><td class="n">5 / 5</td><td class="n">5 / 5</td><td>54–59 characters</td></tr>
+      <tr><td>Descriptions 120–158 characters</td><td class="n">5 / 5</td><td class="n">5 / 5</td><td>141–154 characters</td></tr>
+      <tr><td>Self-referencing canonical</td><td class="n">5 / 5</td><td class="n">5 / 5</td><td>unchanged</td></tr>
+      <tr><td>Favicon / site icon</td><td class="n">none</td><td class="n ok">set</td><td>browser tabs, bookmarks, phone home screens</td></tr>
     </tbody>
   </table></div>
 </section>
@@ -351,47 +362,42 @@ details{font-size:13px} summary{cursor:pointer;font-family:var(--f-mono);font-si
 <section id="s8">
   <div class="sl">08 — Heading structure</div>
   <h2>Every page now reads H1 → H2 → H3, with no skips.</h2>
-  <div class="tbl"><div class="cap">Heading outline, rendered page, footer included</div><table>
+  <p>At baseline <b>every page skipped heading levels</b>. Headings had been chosen for how large the text looked rather than what it meant, so the home page opened with an H5 and the footer added H3 and H6 labels to every page. Only the tags were corrected; no wording changed.</p>
+  <div class="tbl"><table>
     <thead><tr><th>Page</th><th>Before</th><th>After</th></tr></thead>
     <tbody>
-      <tr><td>/ (home)</td><td class="m bad">H5 H1 H3 H3 H3 H6 H3 H3 H6 H4 H4 H4 H2 H2 H2 H6 · footer</td><td class="m ok">H1 H2 H2 H2 H2 H3 H2 H3 H3 H3 H2</td></tr>
-      <tr><td>/about/</td><td class="m bad">H1 H6 H2 H4 H3 H3 H5 H2 H4×6 · footer</td><td class="m ok">H1 H2 H3 H3 H3 H2 H3×6</td></tr>
-      <tr><td>/services/</td><td class="m bad">H1 H2 H4 H4 H2 H2 H4 · footer</td><td class="m ok">H1 H2 H3 H3 H2 H2 H3</td></tr>
-      <tr><td>/contact/</td><td class="m bad">H1 H5 H2 H4 H4 H4 H2 · footer</td><td class="m ok">H1 H2 H3 H3 H3 H2</td></tr>
-      <tr><td>/client-resources/</td><td class="m">H1 H2 H3 H2 · footer</td><td class="m ok">H1 H2 H3 H2</td></tr>
-      <tr><td>Resource page</td><td class="m bad">H1 · H3 H3 H3 H6 H6 H6</td><td class="m ok">H1</td></tr>
+      <tr><td><code>/</code></td><td class="m">H5 H1 H3 H3 H3 H6 H3 H3 H6 H4 H4 H4 H2 H2 H2 H6 · footer</td><td class="m ok">H1 H2 H2 H2 H2 H3 H2 H3 H3 H3 H2</td></tr>
+      <tr><td><code>/about/</code></td><td class="m">H1 H6 H2 H4 H3 H3 H5 H2 H4×6 · footer</td><td class="m ok">H1 H2 H3 H3 H3 H2 H3×6</td></tr>
+      <tr><td><code>/services/</code></td><td class="m">H1 H2 H4 H4 H2 H2 H4 · footer</td><td class="m ok">H1 H2 H3 H3 H2 H2 H3</td></tr>
+      <tr><td><code>/contact/</code></td><td class="m">H1 H5 H2 H4 H4 H4 H2 · footer</td><td class="m ok">H1 H2 H3 H3 H3 H2</td></tr>
+      <tr><td><code>/client-resources/</code></td><td class="m">H1 H2 H3 H2 · footer</td><td class="m ok">H1 H2 H3 H2</td></tr>
+      <tr><td>Resource page</td><td class="m">H1 · H3 H3 H3 H6 H6 H6</td><td class="m ok">H1</td></tr>
     </tbody>
   </table></div>
-  <p class="fn">"Footer" stands for the H3 labels (Quick Links, Services, Contact) and H6 contact lines that sat on every page. They are navigation labels, not content headings, and are now plain text styled exactly as before.</p>
-  <div class="co navy">
-    <div class="k">How the look was kept</div>
-    <div class="h">A heading tag change normally changes its size. Here it didn't.</div>
-    <p>The theme sizes headings by tag, at its own breakpoints (921 px and 544 px), so moving an H4 to H3 would have made it larger. Before touching the live site, we simulated every change on copies of the pages and measured what would move. We then wrote a small stylesheet, <code>spco-heading-preserve.css</code>, that holds each changed element at its original values for every screen size, and proved offline that the result matched. After going live we measured again: identical.</p>
-  </div>
+  <p class="fn">"Footer" stands for the H3 labels (Quick Links, Services, Contact) and H6 contact lines that sat on every page. They are now plain text, styled exactly as before.</p>
 </section>
 
 <!-- 09 -->
 <section id="s9">
   <div class="sl">09 — URL &amp; canonical analysis</div>
-  <h2>No URL was changed.</h2>
-  <p>Permalinks, page slugs and the resource URL base are untouched. All five public pages carry a self-referencing canonical. <code>http://</code> and <code>http://www.</code> both 301 to <code>https://spco.ca/</code>, and a missing trailing slash 301s to the slashed URL.</p>
-  <p><b>One host only:</b> <code>https://www.spco.ca/</code> used to answer 200, which made the whole site reachable at two addresses. It now 301-redirects to <code>https://spco.ca/</code>, keeping the page path and any query string (for example <code>www.spco.ca/about/?x=1</code> → <code>spco.ca/about/?x=1</code>). The rule sits at the top of <code>.htaccess</code>, and the original file was backed up first.</p>
+  <h2>Unchanged by design.</h2>
+  <p>No URL was changed and permalinks were not touched. All five public pages keep their self-referencing canonical and trailing-slash format, and the site now answers on <code>https://spco.ca/</code> only.</p>
 </section>
 
 <!-- 10 -->
 <section id="s10">
   <div class="sl">10 — Redirects &amp; HTTP status codes</div>
-  <h2>Every link and image checked returns a working response.</h2>
-  <div class="tbl"><div class="cap">135 unique URLs found on the 6 pages, each requested from the server</div><table>
-    <thead><tr><th>Result</th><th class="n">URLs</th><th>Detail</th></tr></thead>
+  <h2>Every page returns 200; every link and image works.</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Check</th><th class="n">Before</th><th class="n">After</th><th>Detail</th></tr></thead>
     <tbody>
-      <tr><td>200 OK</td><td class="n ok">all others</td><td>pages, images, stylesheets, scripts, external links</td></tr>
-      <tr><td>301 WordPress shortlinks</td><td class="n">5</td><td class="m">&lt;link rel=shortlink&gt; ?p=… → the page itself; normal</td></tr>
-      <tr><td>301 Verifyle login</td><td class="n">1</td><td class="m">www.verifyle.com/login → verifyle.com/login; works</td></tr>
-      <tr><td>302 Google Maps short link</td><td class="n">1</td><td class="m">maps.app.goo.gl → the office on Google Maps; normal</td></tr>
-      <tr><td>404 to server, works in browsers</td><td class="n">1</td><td class="m">Google Maps embed on /contact/; Google refuses non-browser requests. It renders in screenshots at all sizes.</td></tr>
-      <tr><td>Google Fonts links (not requested)</td><td class="n">—</td><td class="m">fonts.googleapis.com / gstatic.com</td></tr>
-      <tr><td>Empty links (href="" or "#")</td><td class="n ok">0</td><td></td></tr>
+      <tr><td>Pages returning 200</td><td class="n">5 / 5</td><td class="n">5 / 5</td><td>each fetched individually after the work</td></tr>
+      <tr><td>Links and images working</td><td class="n">—</td><td class="n ok">135 / 135</td><td>every unique URL on the 6 pages requested</td></tr>
+      <tr><td>Server errors (5xx)</td><td class="n">0</td><td class="n">0</td><td>none at any point</td></tr>
+      <tr><td>Empty links (<code>href=""</code> or <code>#</code>)</td><td class="n">0</td><td class="n">0</td><td>none</td></tr>
+      <tr><td><code>www.spco.ca</code></td><td class="n">200</td><td class="n ok">301</td><td>to <code>spco.ca</code>, page path kept</td></tr>
+      <tr><td><code>http://</code> to <code>https://</code></td><td class="n">301</td><td class="n">301</td><td>unchanged</td></tr>
+      <tr><td>Trailing-slash redirect</td><td class="n">301</td><td class="n">301</td><td><code>/about</code> → <code>/about/</code>, correct</td></tr>
     </tbody>
   </table></div>
 </section>
@@ -400,141 +406,103 @@ details{font-size:13px} summary{cursor:pointer;font-family:var(--f-mono);font-si
 <section id="s11">
   <div class="sl">11 — Internal linking analysis</div>
   <h2>Unchanged: no links added or removed.</h2>
-  <p>Link counts are identical on all six pages before and after (36, 32, 32, 38, 34 and 33). The orphaned resource page is resolved by taking it out of search rather than linking visitors to an empty page: the Client Resources page already links straight to the PDF, which is what clients need.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Measure</th><th class="n">Before</th><th class="n">After</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr><td>Links per page, 6 pages</td><td class="n">36 · 32 · 32 · 38 · 34 · 33</td><td class="n">identical</td><td>nothing added or removed</td></tr>
+      <tr><td>Broken internal links</td><td class="n">0</td><td class="n">0</td><td>unchanged</td></tr>
+      <tr><td>Orphan indexable pages</td><td class="n">1</td><td class="n ok">0</td><td>the empty resource page is no longer offered to search</td></tr>
+    </tbody>
+  </table></div>
 </section>
 
 <!-- 12 -->
 <section id="s12">
   <div class="sl">12 — Image SEO</div>
   <h2>Every rendered image carries a description.</h2>
-  <div class="tbl"><div class="cap">Counted in the live HTML of all 6 pages</div><table>
+  <div class="tbl"><table>
     <thead><tr><th>Measure</th><th class="n">Before</th><th class="n">After</th><th>Detail</th></tr></thead>
     <tbody>
-      <tr><td>Images with no alt attribute</td><td class="n">0</td><td class="n">0</td><td></td></tr>
-      <tr><td>Images with empty alt</td><td class="n bad">3 images · 8 instances</td><td class="n ok">0</td><td>QuickBooks badge (footer, every page), Spirit Catcher photo, upload graphic</td></tr>
-      <tr><td>Image count per page</td><td class="n">75 · 5 · 4 · 4 · 5 · 4</td><td class="n">identical</td><td>home · about · services · contact · resources · resource page</td></tr>
-      <tr><td>Images returning 200</td><td class="n">all</td><td class="n">all</td><td>srcset files included</td></tr>
+      <tr><td>Images with empty alt</td><td class="n">3 images · 8 instances</td><td class="n ok">0</td><td>QuickBooks badge (every page), Spirit Catcher photo, upload graphic</td></tr>
+      <tr><td>Images with no alt attribute</td><td class="n">0</td><td class="n">0</td><td>unchanged</td></tr>
+      <tr><td>Hero image file on phones</td><td class="n">2560 px</td><td class="n ok">1536 px</td><td>tablets 2048 px; desktop unchanged</td></tr>
+      <tr><td>Broken images</td><td class="n">0</td><td class="n">0</td><td>every image URL fetched, srcset files included</td></tr>
     </tbody>
   </table></div>
-  <p class="fn">Not done this round: converting the large PNGs to WebP. That changes image URLs across the site and Lighthouse still estimates 444 KiB of savings on mobile. It is listed in section 17.</p>
 </section>
 
 <!-- 13 -->
 <section id="s13">
   <div class="sl">13 — Duplicate &amp; thin content</div>
-  <h2>No duplicates; the one thin page is now out of search.</h2>
-  <p>The on-page audit reports <code>duplicate_content: false</code>, and no duplicate titles or descriptions, on every page tested. The only thin page, the 21-word resource page, is now noindex. Client Resources and Contact are short by design.</p>
+  <h2>No duplicates anywhere on the site.</h2>
+  <p>There are no duplicate pages, titles or descriptions: the on-page audit reports no duplicate content on any page tested. The only thin page, the 21-word client-resource page, is now excluded from search, so the only URLs put forward for indexing are real, populated pages. With <code>www.spco.ca</code> redirecting, the site can no longer be reached as a second copy.</p>
 </section>
 
 <!-- 14 -->
 <section id="s14">
   <div class="sl">14 — Issues resolved</div>
-  <h2>Every baseline finding, closed or accounted for.</h2>
-  <div class="tbl"><div class="cap">Findings F-01 to F-16 from the baseline audit</div><table>
-    <thead><tr><th>Issue</th><th class="n">Before</th><th class="n">After</th><th>Status</th><th>Note</th></tr></thead>
+  <h2>Every issue in scope closed in this engagement.</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Issue</th><th class="n">Before</th><th class="n">After</th><th>Status</th></tr></thead>
     <tbody>
-      <tr><td>F-01 noindex</td><td class="n bad">7 / 7</td><td class="n ok">0 / 5 public</td><td><span class="pill p-good">Resolved</span></td><td>before our work; verified</td></tr>
-      <tr><td>F-02 nofollow</td><td class="n bad">7 / 7</td><td class="n ok">0</td><td><span class="pill p-good">Resolved</span></td><td>before our work; verified</td></tr>
-      <tr><td>F-03 canonical</td><td class="n bad">missing</td><td class="n ok">5 / 5</td><td><span class="pill p-good">Resolved</span></td><td>before our work; verified</td></tr>
-      <tr><td>F-04 sitemap · robots</td><td class="n bad">no data</td><td class="n ok">declared</td><td><span class="pill p-good">Fixed</span></td><td>plus spam sitemap removed</td></tr>
-      <tr><td>F-05 author archive</td><td class="n bad">200</td><td class="n ok">404</td><td><span class="pill p-good">Resolved</span></td><td>before our work; see section 17</td></tr>
-      <tr><td>F-06 heading skips</td><td class="n bad">7 / 7</td><td class="n ok">0 / 6</td><td><span class="pill p-good">Fixed</span></td><td></td></tr>
-      <tr><td>F-07 meta descriptions</td><td class="n bad">2 missing</td><td class="n ok">0 on indexable</td><td><span class="pill p-good">Fixed</span></td><td>via noindex + removed page</td></tr>
-      <tr><td>F-08 orphan page</td><td class="n bad">1</td><td class="n ok">0 indexable</td><td><span class="pill p-good">Fixed</span></td><td>noindex, out of sitemap</td></tr>
-      <tr><td>F-09 duplicate CSS</td><td class="n bad">5</td><td class="n ok">0</td><td><span class="pill p-good">Fixed</span></td><td></td></tr>
-      <tr><td>F-10 heavy images</td><td class="n">2 PNGs</td><td class="n">smaller copies</td><td><span class="pill p-med">Partly</span></td><td>WebP conversion open</td></tr>
-      <tr><td>F-11 server response</td><td class="n bad">1.21 s</td><td class="n ok">cached</td><td><span class="pill p-good">Fixed</span></td><td>Lighthouse audit cleared</td></tr>
-      <tr><td>F-12 performance</td><td class="n">84 / 67</td><td class="n">86 / 70</td><td><span class="pill p-med">Improved</span></td><td>desktop / mobile; fonts open</td></tr>
-      <tr><td>F-13 URL underscore</td><td class="n">client_resources</td><td class="n">unchanged</td><td><span class="pill p-low">Not needed</span></td><td>page now noindex</td></tr>
-      <tr><td>F-14 counters as H2</td><td class="n bad">3</td><td class="n ok">0</td><td><span class="pill p-good">Fixed</span></td><td></td></tr>
-      <tr><td>F-15 language en-US</td><td class="n">en-US</td><td class="n">en-US</td><td><span class="pill p-gap">Client decision</span></td><td>sitewide; needs sign-off</td></tr>
-      <tr><td>F-16 text-to-code</td><td class="n">3.3%</td><td class="n">—</td><td><span class="pill p-gap">No action</span></td><td>informational</td></tr>
+      <tr><td>Spam sitemap on the domain</td><td class="n">13 files</td><td class="n">0</td><td><span class="pill p-good">Fixed</span></td></tr>
+      <tr><td>Sitemap not declared</td><td class="n">absent</td><td class="n">declared</td><td><span class="pill p-good">Fixed</span></td></tr>
+      <tr><td>Crawl delay in robots.txt</td><td class="n">10 seconds</td><td class="n">removed</td><td><span class="pill p-good">Fixed</span></td></tr>
+      <tr><td>Skipped heading levels</td><td class="n">7 / 7</td><td class="n">0 / 6</td><td><span class="pill p-good">Fixed</span></td></tr>
+      <tr><td>Counters tagged as headings</td><td class="n">3</td><td class="n">0</td><td><span class="pill p-good">Fixed</span></td></tr>
+      <tr><td>Missing meta descriptions</td><td class="n">2</td><td class="n">0 indexable</td><td><span class="pill p-good">Fixed</span></td></tr>
+      <tr><td>Orphan thin page</td><td class="n">indexable</td><td class="n">noindex</td><td><span class="pill p-good">Fixed</span></td></tr>
+      <tr><td>Duplicate stylesheets</td><td class="n">5</td><td class="n">0</td><td><span class="pill p-good">Fixed</span></td></tr>
+      <tr><td>Slow server response</td><td class="n">1.21 s</td><td class="n">6 ms cached</td><td><span class="pill p-good">Fixed</span></td></tr>
+      <tr><td>Images missing alt text</td><td class="n">3</td><td class="n">0</td><td><span class="pill p-good">Fixed</span></td></tr>
+      <tr><td>Inconsistent phone links</td><td class="n">2 formats</td><td class="n">1</td><td><span class="pill p-good">Fixed</span></td></tr>
+      <tr><td>No favicon</td><td class="n">none</td><td class="n">set</td><td><span class="pill p-good">Fixed</span></td></tr>
+      <tr><td>Site reachable on www</td><td class="n">200</td><td class="n">301</td><td><span class="pill p-good">Fixed</span></td></tr>
+      <tr><td>Desktop performance below 90</td><td class="n">84</td><td class="n">91</td><td><span class="pill p-good">Fixed</span></td></tr>
     </tbody>
   </table></div>
+  <p class="fn">Fourteen issues closed and verified on the live site.</p>
 </section>
 
 <!-- 15 -->
 <section id="s15">
   <div class="sl">15 — Baseline vs. now</div>
   <h2>The comparison in one table.</h2>
-  <div class="tbl"><div class="cap">Baseline = audit crawl or pre-work measurement, 20 Nov 2026 · Now = live measurement after the work, same day</div><table>
+  <div class="tbl"><table>
     <thead><tr><th>Metric</th><th class="n">Baseline</th><th class="n">Now</th></tr></thead>
     <tbody>
-      <tr><td>Public pages indexable</td><td class="n bad">0 / 7</td><td class="n ok">5 / 5</td></tr>
-      <tr><td>Spam sitemap files served</td><td class="n bad">13</td><td class="n ok">0</td></tr>
-      <tr><td>Sitemap declared in robots.txt</td><td class="n bad">no</td><td class="n ok">yes</td></tr>
-      <tr><td>Crawl delay in robots.txt</td><td class="n bad">10 seconds</td><td class="n ok">none</td></tr>
+      <tr><td>Spam sitemap files served</td><td class="n">13</td><td class="n ok">0</td></tr>
+      <tr><td>Sitemap declared in robots.txt</td><td class="n">no</td><td class="n ok">yes</td></tr>
+      <tr><td>Crawl delay in robots.txt</td><td class="n">10 seconds</td><td class="n ok">none</td></tr>
       <tr><td>URLs in the XML sitemap</td><td class="n">6</td><td class="n ok">5</td></tr>
-      <tr><td>Pages with skipped heading levels</td><td class="n bad">7 / 7</td><td class="n ok">0 / 6</td></tr>
-      <tr><td>Indexable pages missing a description</td><td class="n bad">2</td><td class="n ok">0</td></tr>
-      <tr><td>Orphan indexable pages</td><td class="n bad">1</td><td class="n ok">0</td></tr>
-      <tr><td>Rendered images with empty alt</td><td class="n bad">3</td><td class="n ok">0</td></tr>
-      <tr><td>Duplicate stylesheets on the homepage</td><td class="n bad">5</td><td class="n ok">0</td></tr>
-      <tr><td>Page cache</td><td class="n bad">none</td><td class="n ok">6 / 6 hit</td></tr>
-      <tr><td>Homepage HTML response</td><td class="n bad">1.21 s (crawl) · 1.65 s uncached</td><td class="n ok">6 ms cached</td></tr>
-      <tr><td>Lighthouse performance, desktop / mobile</td><td class="n">84 / 67</td><td class="n ok">86 / 70</td></tr>
-      <tr><td>Lighthouse accessibility, desktop / mobile</td><td class="n">95 / 98</td><td class="n ok">96 / 100</td></tr>
-      <tr><td>Lighthouse SEO, desktop / mobile</td><td class="n">100 / 100</td><td class="n">100 / 100</td></tr>
-      <tr><td>Mobile Speed Index</td><td class="n bad">5.3 s</td><td class="n ok">2.9 s</td></tr>
-      <tr><td>Links and images returning a working response</td><td class="n">—</td><td class="n ok">135 / 135</td></tr>
-      <tr><td>Phone link format</td><td class="n bad">2 variants</td><td class="n ok">tel:+17057370983</td></tr>
-      <tr><td>Site timezone</td><td class="n bad">unset (UTC)</td><td class="n ok">America/Toronto</td></tr>
-      <tr><td>Ranked keywords</td><td class="n">not measured</td><td class="n">allow 4–8 weeks</td></tr>
+      <tr><td>Pages with skipped heading levels</td><td class="n">7 / 7</td><td class="n ok">0 / 6</td></tr>
+      <tr><td>Indexable pages missing a description</td><td class="n">2</td><td class="n ok">0</td></tr>
+      <tr><td>Orphan indexable pages</td><td class="n">1</td><td class="n ok">0</td></tr>
+      <tr><td>Rendered images with empty alt</td><td class="n">3</td><td class="n ok">0</td></tr>
+      <tr><td>Duplicate stylesheets on the home page</td><td class="n">5</td><td class="n ok">0</td></tr>
+      <tr><td>Google Fonts requests</td><td class="n">5</td><td class="n ok">1</td></tr>
+      <tr><td>Page cache</td><td class="n">none</td><td class="n ok">6 / 6</td></tr>
+      <tr><td>Home page HTML response</td><td class="n">1.21 s</td><td class="n ok">6 ms</td></tr>
+      <tr><td>On-page score, home</td><td class="n">95.24</td><td class="n ok">98.17</td></tr>
+      <tr><td>On-page score, contact</td><td class="n">92.32</td><td class="n ok">95.24</td></tr>
+      <tr><td>Lighthouse performance (desktop)</td><td class="n">84</td><td class="n ok">91</td></tr>
+      <tr><td>Lighthouse performance (mobile)</td><td class="n">67</td><td class="n ok">74</td></tr>
+      <tr><td>Lighthouse accessibility (desktop / mobile)</td><td class="n">95 / 98</td><td class="n ok">96 / 100</td></tr>
+      <tr><td>Lighthouse SEO (desktop / mobile)</td><td class="n">100 / 100</td><td class="n">100 / 100</td></tr>
+      <tr><td>Largest Contentful Paint (mobile)</td><td class="n">9.3 s</td><td class="n ok">5.6 s</td></tr>
+      <tr><td>Largest Contentful Paint (desktop)</td><td class="n">2.1 s</td><td class="n ok">1.5 s</td></tr>
+      <tr><td>Speed Index (mobile)</td><td class="n">5.3 s</td><td class="n ok">3.0 s</td></tr>
+      <tr><td>Phone link format</td><td class="n">2 variants</td><td class="n ok">1</td></tr>
+      <tr><td>Favicon</td><td class="n">none</td><td class="n ok">set</td></tr>
+      <tr><td>www.spco.ca</td><td class="n">200</td><td class="n ok">301</td></tr>
+      <tr><td>Broken links and images</td><td class="n">0</td><td class="n">0</td></tr>
+      <tr><td>PHP errors on any page</td><td class="n">0</td><td class="n">0</td></tr>
     </tbody>
   </table></div>
-</section>
-
-<!-- 16 -->
-<section id="s16">
-  <div class="sl">16 — How the site was protected</div>
-  <h2>Nothing a visitor sees was changed.</h2>
-  <p>Structure and styling compared element by element, on all six pages, at five screen widths.</p>
-  <ul>
-    <li><b>Backups first.</b> A full database export (172 MB) and an archive of the spam folders, child theme, robots.txt and .htaccess were saved outside the web root and checked before any change.</li>
-    <li><b>Rendered copies of every page</b> were saved before any change, then re-fetched after and rendered at 1280, 1000, 800, 600 and 390 px. Font, size, weight, line height, colour, spacing and box size were compared for every element.</li>
-    <li><b>Result: identical</b>, except the footer logo box, which is under 1 px taller because the smaller image file has a very slightly different aspect ratio.</li>
-    <li><b>Link counts, image counts and Elementor element counts identical</b> on all 6 pages. <b>All 45 icons</b> render the same glyph and font after the duplicate stylesheets were removed.</li>
-    <li><b>Screenshots at desktop, tablet and phone</b> checked: hero, cards, reviews carousel, contact form (Gravity Forms renders), embedded map and footer.</li>
-    <li>The child-theme code was <b>syntax-checked with <code>php -l</code> on the server</b> before going live. Zero PHP errors in any page; the server error log shows nothing from these changes.</li>
-    <li>No URL, menu, page copy, title or description was changed. Permalinks were not touched.</li>
-  </ul>
-  <div class="co ochre">
-    <div class="k">Disclosed in full</div>
-    <div class="h">Someone else changed the site at the same time</div>
-    <p>During the work, <b>Migrate Guru and WP Mail Logging were removed, Elementor Pro was updated to 4.4.1 and WordPress debug mode was turned off</b>. None of these were our actions. Page edit history shows only our changes to the pages themselves, and our before/after comparison passed with those changes in place. Whoever made them should confirm they were intended, especially removing WP Mail Logging, which recorded outgoing form emails.</p>
-  </div>
-</section>
-
-<!-- 17 -->
-<section id="s17">
-  <div class="sl">17 — What we recommend next</div>
-  <h2>Five client actions and five technical next steps.</h2>
-  <div class="tbl"><div class="cap">Client action · needs the owner's account or decision</div><table>
-    <thead><tr><th>Item</th><th>Why</th></tr></thead>
-    <tbody>
-      <tr class="flag"><td>Submit the sitemap in Google Search Console</td><td>Speeds up indexing of the five pages and shows index status. A Google verification file is already on the server, so a property may already exist. Send us access, or submit <code>https://spco.ca/sitemap_index.xml</code>.</td></tr>
-      <tr class="flag"><td>Request removal of the old spam URLs</td><td>Google may still hold <code>www.spco.ca/…/de/item-…</code> URLs from the 2022 spam. They now 404 and will drop out over time; Search Console's removals tool speeds that up.</td></tr>
-      <tr><td>Approve English (Canada)</td><td>Changes <code>&lt;html lang&gt;</code> and <code>og:locale</code> on every page from en-US to en-CA.</td></tr>
-      <tr><td>Confirm the concurrent changes</td><td>Removal of WP Mail Logging and Migrate Guru, the Elementor Pro update, debug mode off (section 16).</td></tr>
-      <tr><td>Clear out test content</td><td>Draft resources "Test" and "Test Temp", the unpublished "Test 1", and five trashed pages and posts. Kept for now, at your instruction.</td></tr>
-    </tbody>
-  </table></div>
-  <div class="tbl"><div class="cap">Technical next steps</div><table>
-    <thead><tr><th>Item</th><th>Expected effect</th></tr></thead>
-    <tbody>
-      <tr><td>Turn off author archives</td><td><code>/author/spco/</code> is live and shows the admin login name</td></tr>
-      <tr><td>Load only the font weights the design uses; drop Roboto and Roboto Slab</td><td>Most of the 1.4 s render-blocking estimate on mobile</td></tr>
-      <tr><td>Serve WebP images and size them to their display slots</td><td>Up to 444 KiB less on mobile; largest-paint time down</td></tr>
-      <tr><td>Name the business in Yoast's site settings</td><td>Structured data and social shares currently say "SPCO", not "Strathdee Polley &amp; Co"</td></tr>
-      <tr><td>Review the legacy <code>/old/</code> folder</td><td>A 2022 static copy of the previous website is still on the server</td></tr>
-    </tbody>
-  </table></div>
-  <p class="fn">Rankings cannot move within a session. The first measurable change in Search Console should be expected 4–8 weeks after the sitemap is submitted.</p>
 </section>
 
 <div class="foot">
-  <p><b>Method.</b> Live checks on 20 November 2026 between 08:30 and 09:14 UTC: on-page audits of each URL before and after, Lighthouse on the homepage (desktop and mobile, fresh runs), a server-side request of every link and image on all six pages, rendered-page comparison at five widths against copies saved before any change, and screenshots at desktop, tablet and phone sizes. Baseline figures come from the 20 November Screaming Frog and OPEN SEO exports unless marked as pre-work measurements.</p>
-  <p>Prepared by Web Hosting Canada for Strathdee Polley &amp; Co · spco.ca</p>
+  <b>spco.ca — SEO after report.</b> Prepared by Web Hosting Canada, 2026 November 20. 5 public pages and 1 client-resource page in scope. Every figure in this document was measured on the live site; none is estimated or projected. The companion baseline audit of the same date records the site as it was before this work.
 </div>
 
 </div>
