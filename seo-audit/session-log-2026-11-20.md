@@ -58,3 +58,8 @@ All work went through the Atarim WordPress bridge; this cloud session's network 
 - Fonts: elementor/frontend/print_google_fonts -> false, astra-google-fonts dequeued, one request for Montserrat 300-700, Rubik 300-700, Source Sans Pro 400 (hook 4b). Same woff2 files for all 8 used faces (0 mismatches); Roboto / Roboto Slab were unused.
 - Verified: 200 on home/about/contact, link/img counts unchanged, phone screenshot identical. Backup /home/spcoca/spco-seo.php.bak-before-mobile-speed.
 - Lighthouse cached: desktop 86 -> 91 (LCP 2.1 -> 1.5 s); mobile 71 -> 73-74 (LCP 8.8 -> 4.4-5.6 s). Remaining mobile cost: render-blocking local CSS (~1.5 s est, 36 Elementor/UAE stylesheets).
+
+## Follow-up: client editing in parallel
+- The client is editing the site through their own Claude session (this explains the plugin removals, Elementor Pro update and WP_DEBUG change).
+- Integrity check after being told: robots.txt, www 301, sitemap stylesheet lines, functions.php include, main-sitemap.xsl (200) are all intact; server inc/spco-seo.php has the same sha1 as seo-audit/site-changes/spco-seo.php (b17a01e9…). No posts or pages changed since 09:15 UTC except the icon.
+- Wrote seo-audit/handover-for-client-claude.md for the client's session.
