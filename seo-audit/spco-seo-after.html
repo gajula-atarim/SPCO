@@ -127,6 +127,49 @@ details{font-size:13px} summary{cursor:pointer;font-family:var(--f-mono);font-si
 @media (max-width:560px){.stats,.cards{grid-template-columns:1fr}.phase{grid-template-columns:1fr;gap:4px}.rh .meta{margin-left:0;text-align:left}}
 
 .foot{margin-top:28px;padding-top:14px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--muted);display:grid;gap:6px}
+
+/* ---------- Print / PDF (A4). Used by reports/whc-brand/pdf.js ---------- */
+@page{size:A4;margin:14mm 14mm 18mm}
+@media print{
+  html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{font-size:9.6pt;line-height:1.5;padding:0}
+  .doc{max-width:none;gap:10px}
+  .rh{padding-bottom:9px}
+  .rh img{height:26px}
+  .strip{padding:9px 12px;font-size:8.3pt;line-height:1.6}
+  h1{font-size:22pt;margin-top:2px}
+  .lede{font-size:10pt}
+  section{gap:9px;padding-top:12px}
+  .sl{font-size:8pt}
+  h2{font-size:13pt;margin-top:-3px}
+  h3{font-size:11pt;margin-top:2px}
+  .stats,.cards{gap:8px}
+  .stat{padding:9px 12px 10px}
+  .stat .v{font-size:20pt}
+  .stat .l{font-size:9pt}
+  .stat .s,.card .d{font-size:7.8pt}
+  .card{padding:10px 12px;gap:4px}
+  .card .t{font-size:9.3pt}
+  .co,.f{padding:10px 14px;gap:6px}
+  .co .h,.f .ft{font-size:10pt}
+  ul{padding-left:1.1em} li+li{margin-top:3px}
+  .tbl{overflow:visible}
+  .tbl .cap{padding:7px 10px;font-size:7.8pt}
+  table{min-width:0;font-size:8.4pt}
+  th{padding:6px 8px;font-size:7.4pt}
+  td{padding:6px 8px}
+  .n,.m{font-size:7.9pt}
+  .pill{font-size:7.4pt;padding:2px 7px}
+  thead{display:table-header-group}
+  tr,.stat,.card,.co,.f,.phase,.kv,.strip{break-inside:avoid}
+  .sl,h2,h3,.tbl .cap{break-after:avoid}
+  .fn{font-size:8pt}
+  .tbl{-webkit-box-decoration-break:clone;box-decoration-break:clone}
+  tbody tr:nth-last-child(-n+3),tbody tr:nth-child(-n+2){break-before:avoid}
+  tbody tr:first-child{break-before:auto}
+  .foot{margin-top:14px;font-size:8pt}
+  a{color:inherit;text-decoration:none}
+}
 </style>
 
 <div class="doc">

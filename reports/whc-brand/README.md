@@ -10,6 +10,7 @@ It matches the WHC "SEO Foundations" PDF reports (reference: RSLL, 3 November 20
 | `whc-report.css` | All colours, fonts and components. Single light theme by design. |
 | `whc-logo.png` | Web Hosting Canada logo, transparent background. |
 | `build.py` | Inlines the CSS and logo into a report source file. |
+| `pdf.js` | Renders a built report to a print-ready A4 PDF with page numbers. |
 
 ## Making a report
 
@@ -17,6 +18,9 @@ It matches the WHC "SEO Foundations" PDF reports (reference: RSLL, 3 November 20
 2. Keep `<!--WHC:CSS-->` in the head and `src="WHC_LOGO_SRC"` on the logo.
 3. Build: `python3 reports/whc-brand/build.py path/report.src.html path/report.html`
 4. Publish the built `.html` as an artifact. Commit both files.
+5. PDF: `node reports/whc-brand/pdf.js path/report.html path/report.pdf "Web Hosting Canada · site · date"`.
+   A4, 14 mm margins, page-numbered footer. Headings stay with the block after them, small blocks never split,
+   long tables break only between rows with the header repeated. Check the page thumbnails before sending.
 
 ## Look
 
