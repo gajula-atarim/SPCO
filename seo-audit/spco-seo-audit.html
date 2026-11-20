@@ -2,703 +2,618 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Spectral:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;700;800&display=swap">
 <style>
-/* Layout: an auditor's working paper. Narrow reading column, findings referenced F-01..F-16 like workpaper refs, evidence tucked into expandable notes. */
+/* WHC report style. Matches the "SEO Foundations" PDF reports (e.g. RSLL, 3 Nov 2026).
+   Single light theme by design: the reports are print-style documents with the WHC logo on white.
+   Fonts: Inter 400/700/800 (text, headings) + IBM Plex Mono 400/500 (labels, data). */
 :root{
-  --paper:#f6f7f9; --sheet:#ffffff; --ink:#15213a; --ink-2:#4a5568; --rule:#dde2ea; --tint:#eef1f6;
-  --ochre:#a8761c; --ochre-soft:#f6ecd8;
-  --crit:#b42318; --crit-bg:#fdecea; --high:#b54708; --high-bg:#fef0e1; --med:#946200; --med-bg:#fbf3d6; --low:#2f6f4f; --low-bg:#e5f3ea; --gap:#5a5f73; --gap-bg:#eceef3;
-  --f-display:"Spectral",Georgia,"Times New Roman",serif;
-  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+  --paper:#ffffff;      /* page */
+  --ink:#1a1f2e;        /* headings, first-column labels */
+  --body:#363d4d;       /* running text */
+  --muted:#6b707c;      /* mono captions, secondary data */
+  --faint:#9b9fa7;
+  --navy:#1f3a5c;       /* brand accent: title highlight, section dash, card top rule */
+  --whc-red:#c32127;    /* logo red: header underline only */
+  --rule:#e5e6e8;       /* borders */
+  --rule-2:#dfe3e8;
+  --head:#f6f7f9;       /* table header / caption fill */
+  --chip-bg:#f3f6fa; --chip-bd:#d5e0ec;
+  --green:#0b8a55; --green-bg:#e6f8ef;   /* fixed / healthy / after values */
+  --red:#a3343d;   --red-bg:#fbecee;     /* baseline problem values, critical */
+  --ochre:#8a6414; --ochre-bg:#fbf4e4;   /* worth knowing, flagged rows, medium */
+  --f-text:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --paper:#0f1522; --sheet:#151d2e; --ink:#e6eaf2; --ink-2:#a3adc2; --rule:#29344a; --tint:#1b2539;
-  --ochre:#d9a54a; --ochre-soft:#2e2615;
-  --crit:#f97066; --crit-bg:#3a1a19; --high:#f79a4b; --high-bg:#3a2513; --med:#e8bf4a; --med-bg:#352c12; --low:#6cc196; --low-bg:#14301f; --gap:#aab0c2; --gap-bg:#232c3f;
-  color-scheme:dark}}
-:root[data-theme="dark"]{
-  --paper:#0f1522; --sheet:#151d2e; --ink:#e6eaf2; --ink-2:#a3adc2; --rule:#29344a; --tint:#1b2539;
-  --ochre:#d9a54a; --ochre-soft:#2e2615;
-  --crit:#f97066; --crit-bg:#3a1a19; --high:#f79a4b; --high-bg:#3a2513; --med:#e8bf4a; --med-bg:#352c12; --low:#6cc196; --low-bg:#14301f; --gap:#aab0c2; --gap-bg:#232c3f;
-  color-scheme:dark}
 *{box-sizing:border-box}
-body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
-.wrap{max-width:960px;margin:0 auto}
-header.cover{padding-block:48px 32px;border-bottom:2px solid var(--ink);display:grid;gap:20px}
-.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre)}
-h1,h2,h3{font-family:var(--f-display);font-weight:600;text-wrap:balance;line-height:1.2;margin:0}
-h1{font-size:clamp(2rem,5vw,2.9rem)}
-h2{font-size:1.65rem}
-h3{font-size:1.2rem}
-.meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px 24px;font-size:14px}
-.meta-grid div{display:grid;gap:2px;min-width:0}
-.meta-grid span{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
-nav.toc{padding-block:24px;border-bottom:1px solid var(--rule)}
-nav.toc ol{columns:2 220px;column-gap:32px;margin:12px 0 0;padding-left:1.4em;font-size:14px}
-nav.toc a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule)}
-nav.toc a:hover,nav.toc a:focus-visible{border-color:var(--ochre)}
-section{padding-block:40px 8px;display:grid;gap:16px;scroll-margin-top:16px}
-section > p,section > ul,.prose{max-width:68ch;margin:0}
-.secno{font-family:var(--f-mono);font-size:13px;color:var(--ochre);margin-right:10px;font-weight:500}
-p{margin:0}
-ul{margin:0;padding-left:1.2em}
-li+li{margin-top:4px}
-a{color:var(--ink)}
-:focus-visible{outline:2px solid var(--ochre);outline-offset:2px}
-.callout{background:var(--crit-bg);border:1px solid var(--crit);border-radius:6px;padding:16px 20px;display:grid;gap:8px;max-width:none}
-.callout strong{color:var(--crit)}
-.note{background:var(--tint);border-radius:6px;padding:14px 18px;font-size:14px;color:var(--ink-2);display:grid;gap:6px}
-.note b{color:var(--ink)}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
-.stat{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;display:grid;gap:4px;align-content:start}
-.stat .v{font-family:var(--f-display);font-size:1.9rem;line-height:1.1;font-variant-numeric:tabular-nums}
-.stat .l{font-size:13px;color:var(--ink-2)}
-.stat .s{font-family:var(--f-mono);font-size:11px;color:var(--ink-2);text-transform:uppercase;letter-spacing:.06em}
-.tbl{overflow-x:auto;background:var(--sheet);border:1px solid var(--rule);border-radius:6px}
-table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
-th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--rule)}
-th{font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);background:var(--tint)}
+body{background:var(--paper);color:var(--body);font-family:var(--f-text);font-size:15px;line-height:1.6;margin:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:36px 56px}
+.doc{max-width:860px;margin:0 auto;display:grid;gap:18px}
+p{margin:0} ul{margin:0;padding-left:1.2em} li+li{margin-top:6px}
+b,strong{color:var(--ink);font-weight:700}
+a{color:var(--navy)}
+:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+code{font-family:var(--f-mono);font-size:.82em;background:var(--head);border:1px solid var(--rule);border-radius:4px;padding:1px 5px;color:var(--ink);word-break:break-word}
+
+/* Header: logo, chip, site + date on the right, navy rule with red tick under the logo */
+.rh{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;padding-bottom:12px;border-bottom:1px solid var(--navy);position:relative}
+.rh::after{content:"";position:absolute;left:0;bottom:-1px;width:76px;height:2px;background:var(--whc-red)}
+.rh img{height:30px;width:auto;display:block}
+.chip{font-family:var(--f-mono);font-size:11.5px;color:var(--navy);background:var(--chip-bg);border:1px solid var(--chip-bd);border-radius:999px;padding:4px 12px;white-space:nowrap}
+.rh .meta{margin-left:auto;text-align:right;font-family:var(--f-mono);font-size:11.5px;color:var(--muted);line-height:1.5}
+
+/* Status strip under the header */
+.strip{border:1px solid var(--rule-2);border-radius:8px;padding:12px 16px;font-family:var(--f-mono);font-size:12.5px;line-height:1.75;color:var(--body)}
+.strip .dot{display:block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-bottom:4px}
+.strip .dot.red{background:var(--red)}
+
+h1{font-size:clamp(1.9rem,4.6vw,2.35rem);font-weight:800;letter-spacing:-.02em;line-height:1.15;color:var(--ink);margin:6px 0 0;text-wrap:balance}
+h1 .hl{color:var(--navy)}
+.lede{font-size:15.5px}
+
+/* Section label + heading */
+section{display:grid;gap:14px;padding-top:18px;scroll-margin-top:16px}
+.sl{display:flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:11.5px;color:var(--navy)}
+.sl::before{content:"";width:18px;height:2px;background:var(--navy)}
+h2{font-size:1.22rem;font-weight:800;letter-spacing:-.01em;color:var(--ink);margin:-6px 0 0;text-wrap:balance;line-height:1.3}
+h3{font-size:1.02rem;font-weight:800;color:var(--ink);margin:6px 0 0}
+
+/* Big-number cards */
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.stat{border:1px solid var(--rule);border-top:2px solid var(--navy);border-radius:8px;padding:12px 16px 14px;display:grid;gap:2px;align-content:start}
+.stat .v{font-size:2rem;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1.15;font-variant-numeric:tabular-nums}
+.stat .v small{font-size:.5em;font-weight:700;color:var(--muted)}
+.stat .v.red{color:var(--red)}
+.stat .l{font-size:13px;font-weight:700;color:var(--ink)}
+.stat .s{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+
+/* Category cards */
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{border:1px solid var(--rule);border-radius:8px;padding:14px 16px;display:grid;gap:6px;align-content:start}
+.card .t{font-size:13.5px;font-weight:700;color:var(--ink)}
+.card .d{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);line-height:1.6}
+.card .pill{justify-self:start;margin-top:4px}
+
+/* Pills */
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:11px;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.pill::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
+.p-good{color:var(--green);background:var(--green-bg)}
+.p-crit{color:var(--red);background:var(--red-bg)}
+.p-high{color:var(--red);background:var(--red-bg)}
+.p-med{color:var(--ochre);background:var(--ochre-bg)}
+.p-low{color:var(--navy);background:var(--chip-bg)}
+.p-gap{color:var(--muted);background:var(--head)}
+
+/* Tables: caption row, mono header, rail on the left of each row, ochre/red rail for flagged rows */
+.tbl{border:1px solid var(--rule);border-radius:8px;overflow-x:auto}
+.tbl .cap{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:600px}
+th{font-family:var(--f-mono);font-size:11px;font-weight:400;color:var(--muted);text-align:left;background:var(--head);padding:10px 12px;border-bottom:1px solid var(--rule)}
+td{padding:11px 12px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--body)}
 tr:last-child td{border-bottom:0}
-td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-td code,p code,li code{font-family:var(--f-mono);font-size:12.5px;background:var(--tint);padding:1px 5px;border-radius:3px;word-break:break-all}
-.pill{display:inline-block;font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:999px;white-space:nowrap}
-.p-crit{color:var(--crit);background:var(--crit-bg)} .p-high{color:var(--high);background:var(--high-bg)}
-.p-med{color:var(--med);background:var(--med-bg)} .p-low{color:var(--low);background:var(--low-bg)} .p-gap{color:var(--gap);background:var(--gap-bg)}
-.ref{font-family:var(--f-mono);font-size:12px;color:var(--ochre);white-space:nowrap}
-.finding{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:18px 20px;display:grid;gap:12px}
-.finding-head{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:baseline}
-.finding-head h3{flex:1 1 260px;min-width:0}
-.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px 20px;font-size:14px}
-.kv div{display:grid;gap:2px;min-width:0}
-.kv span{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
-.finding p{font-size:15px}
-details{font-size:14px;color:var(--ink-2)}
-summary{cursor:pointer;font-family:var(--f-mono);font-size:12px;letter-spacing:.04em;color:var(--ink)}
-details[open] summary{margin-bottom:8px}
-.scores{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
-.ring{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:14px;display:grid;justify-items:center;gap:6px;text-align:center}
-.ring svg{width:76px;height:76px}
-.ring .l{font-size:13px;color:var(--ink-2)}
-.matrix td.c{text-align:center;font-family:var(--f-mono)}
-.yes{color:var(--crit);font-weight:600} .warn{color:var(--med);font-weight:600} .ok{color:var(--low)}
-.phase{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--rule)}
-.phase:first-of-type{border-top:0}
-.phase .when{font-family:var(--f-mono);font-size:12px;color:var(--ochre);text-transform:uppercase;letter-spacing:.06em}
-.phase h3{margin-bottom:6px}
-@media (max-width:560px){.phase{grid-template-columns:1fr;gap:6px}}
-footer{margin-top:48px;padding-top:20px;border-top:2px solid var(--ink);font-size:13px;color:var(--ink-2);display:grid;gap:6px}
+td:first-child,th:first-child{border-left:3px solid var(--rule)}
+th:first-child{border-left-color:var(--head)}
+td:first-child{font-weight:700;color:var(--ink)}
+tr.flag td:first-child{border-left-color:var(--ochre)}
+tr.crit td:first-child{border-left-color:var(--red)}
+.n{text-align:right;font-family:var(--f-mono);font-size:12px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.m{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.ok{color:var(--green)} .bad{color:var(--red)} .warn{color:var(--ochre)}
+.fn{font-size:12.5px;color:var(--muted)}
+
+/* Callouts */
+.co{border:1px solid var(--rule);border-left:3px solid var(--green);border-radius:8px;padding:14px 18px;display:grid;gap:8px}
+.co .k{font-family:var(--f-mono);font-size:11.5px;color:var(--green)}
+.co .h{font-size:14.5px;font-weight:800;color:var(--ink)}
+.co.ochre{border-left-color:var(--ochre)} .co.ochre .k{color:var(--ochre)}
+.co.red{border-left-color:var(--red)} .co.red .k{color:var(--red)}
+.co.navy{border-left-color:var(--navy)} .co.navy .k{color:var(--navy)}
+
+/* Finding detail blocks */
+.f{border:1px solid var(--rule);border-radius:8px;padding:14px 18px;display:grid;gap:10px}
+.f .fh{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.f .ref{font-family:var(--f-mono);font-size:11.5px;color:var(--navy)}
+.f .ft{font-size:14.5px;font-weight:800;color:var(--ink);flex:1 1 240px;min-width:0}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px 18px}
+.kv div{display:grid;gap:1px;min-width:0;font-size:13px}
+.kv span{font-family:var(--f-mono);font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+details{font-size:13px} summary{cursor:pointer;font-family:var(--f-mono);font-size:11.5px;color:var(--navy)}
+
+/* Phased plan */
+.phase{display:grid;grid-template-columns:110px 1fr;gap:14px;padding:14px 0;border-top:1px solid var(--rule)}
+.phase:first-child{border-top:0;padding-top:0}
+.phase .when{font-family:var(--f-mono);font-size:11.5px;color:var(--navy)}
+@media (max-width:560px){.stats,.cards{grid-template-columns:1fr}.phase{grid-template-columns:1fr;gap:4px}.rh .meta{margin-left:0;text-align:left}}
+
+.foot{margin-top:28px;padding-top:14px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--muted);display:grid;gap:6px}
 </style>
 
-<div class="wrap">
+<div class="doc">
 
-<header class="cover">
-  <div class="eyebrow">SEO Audit · Pre-project baseline</div>
-  <h1>Strathdee Polley &amp; Co: SEO Baseline Audit</h1>
-  <p class="prose" style="color:var(--ink-2)">The condition of <strong style="color:var(--ink)">spco.ca</strong> before SEO work begins. Every figure here comes from the crawl and audit exports listed below, so the same checks can be re-run later for a before-and-after comparison.</p>
-  <div class="meta-grid">
-    <div><span>Website</span>https://spco.ca</div>
-    <div><span>Crawl date</span>20 November 2026</div>
-    <div><span>Data source A</span>Screaming Frog, Internal: All (56 URLs)</div>
-    <div><span>Data source B</span>OPEN SEO site audit (7 pages, 17 issue rows)</div>
-    <div><span>Data source C</span>PageSpeed Insights screenshot, desktop</div>
-  </div>
+<header class="rh">
+  <img src="data:image/png;base64,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/hUEVl5exr1PnV5iq1fP396x3ecNi4snXS8rA71WKwj9+1xuMHnSmktLl71bvmxlU7sgKHibuk63THyhpLQE9Pn549DT88WUPg9/463TjymTHTL+1bzC1UJUKsrKMahH9ygAmBaRnFx+p6R0RKTw8HDRqdJu0ev1o8xms4yIUp06deQnnnhiq6ttx44d17Vt2/aza9euaQVBUDjnQtu2bS857RiMiYmB2NjYG3YiVhGVl5c/P3jw4OdtNtsN7yoiAucc6tatC0899dQ8AHgHnLHCiAiMMdqyZYvu0qVLO2VZBkEQ4Pz583DlyhXgnDugKj4369tvv10DABgREaHcadnCddytjYvBMMaIiOTz58/PPnbs2MiUlBTJYrEo69atG5OWljaGc55ns9kCr127BkRkY4ypO3fu/G3fvn1PEZHUq1ev91JSUt40m812SZLm5OXlQV5e3lUASIuIiBiQmpoKNpvNAQCqwMDAi/369VsDABgbG6vExMTU2C/8D4TErWOAiBQfH6/q27fvl6+88kr//Pz8keXl5bKrjTNqDaZMmbJx8+bNz1y/fr2BLMuOtWvXNjt//vw+URT39ujRo+fx48cBAOwAoO7Vq9eFGTNmrBXl8nIGjEFNaisSIVerqTI1VckbF53YYs2KyVnPRbf0VEnmgLCwk9Sm5TcV06e2yJ809f2KwiKOet291WniHEGSZNXlK+LlOfMHSX7eW8pzc0dhXj6A+Bcte0QEKApgu37dca+evd69ewMiOr7++usd33zzTSSv8qqwli1bpnt7e6dCVfaJ4HTSbBZFcaTdbje7u7vr6tSpk4CIlRMmTJBcKjUAgN1uV4hIISLKzMyEzMzMmgbcAQBSaGio5dbzFEWh3NxcrEFaMwCQWrduDVOmTHk/OjraYTAYROe6Z43LdTabTSEixfmX1+AddrUhl3OHiMBgMIjt2rVLX7NmzfsrVqyYsWfPHlAURT506BACQKBzkoK3t7f6ySefvLp69eqZUVFRAgBgYGCgxtvbGywWi8rhcDiSkpIIABoAQIOkpCTXEokUFhYGjz766GOMMUc1JxlWk4IKESmusbnTbHX2nW51UFV/vluuodhsNjZv3ryZR44c6b579+56AOCw2WzMbrfLTlCf/u23396OiYlZcOjQoToOh8Nx6NAhAICepaWlDgAgrVaratu2bXavXr0e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" alt="Web Hosting Canada" width="118" height="38">
+  <span class="chip">SEO baseline audit · before any change</span>
+  <div class="meta">spco.ca<br>20 November 2026 · crawl data</div>
 </header>
 
-<nav class="toc" aria-label="Contents">
-  <div class="eyebrow">Contents</div>
-  <ol>
-    <li><a href="#s1">Executive Summary</a></li>
-    <li><a href="#s2">Website SEO Health Overview</a></li>
-    <li><a href="#s3">Key Findings</a></li>
-    <li><a href="#s4">Technical SEO Audit</a></li>
-    <li><a href="#s5">Crawlability &amp; Indexability</a></li>
-    <li><a href="#s6">On-Page SEO Analysis</a></li>
-    <li><a href="#s7">Metadata Analysis</a></li>
-    <li><a href="#s8">Heading Structure</a></li>
-    <li><a href="#s9">URL &amp; Canonical Analysis</a></li>
-    <li><a href="#s10">Redirects &amp; HTTP Status Codes</a></li>
-    <li><a href="#s11">Internal Linking Analysis</a></li>
-    <li><a href="#s12">Image SEO</a></li>
-    <li><a href="#s13">Duplicate / Thin Content</a></li>
-    <li><a href="#s14">Priority Issues &amp; Recommendations</a></li>
-    <li><a href="#s15">SEO Action Plan</a></li>
-    <li><a href="#s16">Before-SEO Baseline Summary</a></li>
-  </ol>
-</nav>
+<div class="strip">
+  <span class="dot red" aria-hidden="true"></span>
+  0/7 pages indexable · 7/7 pages <code>noindex, nofollow</code> · 56/56 crawled URLs return 200 · 2/7 pages without a meta description · 7/7 pages with skipped heading levels · PageSpeed desktop 86 / 95 / 100 / 66
+</div>
 
-<!-- 1 -->
+<h1>spco.ca <span class="hl">SEO baseline audit</span></h1>
+<p class="lede">This document records <b>spco.ca</b> exactly as it was found on 20 November 2026, before any SEO work. Every figure comes from three inputs: a Screaming Frog crawl export, an OPEN SEO site audit, and a PageSpeed Insights desktop run of the homepage. Where the data doesn't cover something, the report says so instead of estimating. A companion results report will re-measure every figure here after the work is done.</p>
+
+<!-- 01 -->
 <section id="s1">
-  <h2><span class="secno">01</span>Executive Summary</h2>
-  <div class="callout">
-    <p><strong>The website is currently hidden from search engines.</strong></p>
-    <p>All 7 pages found by the audit (100%) carry a <code>noindex, nofollow</code> instruction. This tells Google and other search engines not to list the page in search results and not to follow its links. While it is in place, spco.ca cannot rank for anything, including the firm's own name.</p>
-  </div>
-  <p>The good news is that this is one setting, not a structural problem. The rest of the data shows a site in reasonable shape:</p>
-  <ul>
-    <li>All 56 URLs crawled returned a successful <code>200 OK</code> response, with no broken links or server errors.</li>
-    <li>The homepage title (54 characters) and meta description (154 characters) are well written, within recommended lengths, and mention the service and location (Barrie, ON).</li>
-    <li>Desktop PageSpeed scores are strong for Best Practices (100) and Accessibility (95). Performance is 86.</li>
-    <li>The homepage has exactly one H1 heading and about 1,000 words of content.</li>
-  </ul>
-  <p>Beyond the indexing block, we found smaller issues: skipped heading levels on every page, 2 pages without a meta description, a resource page that no other page links to, an author archive page that exposes a login-style username, no canonical tag on the homepage, and duplicate stylesheet files that slow the page down.</p>
-  <p><strong>One important limit:</strong> because the homepage told the crawler not to follow links, Screaming Frog only analysed 1 HTML page (the homepage). Page-level details for the other 6 pages come from OPEN SEO only. A full re-crawl is needed after the indexing block is removed. Section 16 lists what that re-crawl must capture.</p>
-</section>
-
-<!-- 2 -->
-<section id="s2">
-  <h2><span class="secno">02</span>Website SEO Health Overview</h2>
+  <div class="sl">01 — Executive summary</div>
+  <h2>The site is well built and completely hidden from search.</h2>
+  <p>Every page the audit found tells search engines <b>not to list it and not to follow its links</b>. While that instruction is in place, spco.ca cannot appear in Google for anything, including the firm's own name. It is one setting, not a structural fault, and it is the first fix in the action plan.</p>
+  <p>Underneath, the site is in reasonable shape. All 56 crawled URLs load without errors, the homepage title and description are well written for "tax and accounting in Barrie", and desktop Best Practices and Accessibility score 100 and 95. The remaining issues are smaller: skipped heading levels, two missing descriptions, an unlinked resource page, an exposed author page, no canonical tag, and duplicate stylesheet files.</p>
   <div class="stats">
-    <div class="stat"><div class="s">Indexable pages</div><div class="v" style="color:var(--crit)">0 / 7</div><div class="l">0% of pages can appear in search</div></div>
-    <div class="stat"><div class="s">HTTP 200 responses</div><div class="v">56 / 56</div><div class="l">100% of crawled URLs load correctly</div></div>
-    <div class="stat"><div class="s">Pages with heading skips</div><div class="v">7 / 7</div><div class="l">100% of audited pages</div></div>
-    <div class="stat"><div class="s">Missing meta description</div><div class="v">2 / 7</div><div class="l">29% of audited pages</div></div>
+    <div class="stat"><div class="v red">0<small>/7</small></div><div class="l">Pages that can appear in search</div><div class="s">all 7 carry noindex, nofollow</div></div>
+    <div class="stat"><div class="v">56<small>/56</small></div><div class="l">Crawled URLs returning 200</div><div class="s">0 redirects · 0 errors</div></div>
+    <div class="stat"><div class="v">66</div><div class="l">Lighthouse SEO, desktop</div><div class="s">homepage · Performance 86</div></div>
+    <div class="stat"><div class="v">1<small>/7</small></div><div class="l">HTML pages the crawler could reach</div><div class="s">nofollow stopped it at the homepage</div></div>
   </div>
-
-  <h3>Category scorecard</h3>
-  <div class="tbl"><table>
-    <thead><tr><th>Area</th><th>Status</th><th>Basis</th></tr></thead>
-    <tbody>
-      <tr><td>Crawlability &amp; indexability</td><td><span class="pill p-crit">Blocked</span></td><td>7 of 7 pages <code>noindex, nofollow</code></td></tr>
-      <tr><td>HTTP status codes</td><td><span class="pill p-low">Good</span></td><td>56 of 56 URLs return 200; no 3xx/4xx/5xx</td></tr>
-      <tr><td>Meta titles</td><td><span class="pill p-gap">Partial data</span></td><td>Homepage title is good; other 6 pages not crawled by Screaming Frog</td></tr>
-      <tr><td>Meta descriptions</td><td><span class="pill p-med">Needs work</span></td><td>2 of 7 missing</td></tr>
-      <tr><td>Heading structure</td><td><span class="pill p-med">Needs work</span></td><td>Heading levels skip on 7 of 7 pages</td></tr>
-      <tr><td>Canonical tags</td><td><span class="pill p-high">Missing</span></td><td>No canonical tag on the homepage</td></tr>
-      <tr><td>Internal linking</td><td><span class="pill p-med">Needs work</span></td><td>1 orphan page</td></tr>
-      <tr><td>Page performance (desktop)</td><td><span class="pill p-med">Fair</span></td><td>PageSpeed Performance 86; duplicate CSS files loaded</td></tr>
-      <tr><td>Image SEO / alt text</td><td><span class="pill p-gap">No data</span></td><td>Alt text not included in the export</td></tr>
-      <tr><td>XML sitemap &amp; robots.txt</td><td><span class="pill p-gap">No data</span></td><td>Not included in either export</td></tr>
-      <tr><td>Duplicate content</td><td><span class="pill p-gap">No data</span></td><td>Needs a multi-page crawl to assess</td></tr>
-    </tbody>
-  </table></div>
-
-  <h3>PageSpeed Insights: desktop, homepage</h3>
-  <div class="scores">
-    <div class="ring"><svg viewBox="0 0 80 80" role="img" aria-label="Performance 86"><circle cx="40" cy="40" r="34" fill="none" stroke="var(--rule)" stroke-width="6"/><circle cx="40" cy="40" r="34" fill="none" stroke="var(--med)" stroke-width="6" stroke-linecap="round" stroke-dasharray="183.7 213.6" transform="rotate(-90 40 40)"/><text x="40" y="47" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="20" fill="var(--ink)">86</text></svg><div class="l">Performance</div></div>
-    <div class="ring"><svg viewBox="0 0 80 80" role="img" aria-label="Accessibility 95"><circle cx="40" cy="40" r="34" fill="none" stroke="var(--rule)" stroke-width="6"/><circle cx="40" cy="40" r="34" fill="none" stroke="var(--low)" stroke-width="6" stroke-linecap="round" stroke-dasharray="202.9 213.6" transform="rotate(-90 40 40)"/><text x="40" y="47" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="20" fill="var(--ink)">95</text></svg><div class="l">Accessibility</div></div>
-    <div class="ring"><svg viewBox="0 0 80 80" role="img" aria-label="Best Practices 100"><circle cx="40" cy="40" r="34" fill="none" stroke="var(--low)" stroke-width="6"/><text x="40" y="47" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="20" fill="var(--ink)">100</text></svg><div class="l">Best Practices</div></div>
-    <div class="ring"><svg viewBox="0 0 80 80" role="img" aria-label="SEO 66"><circle cx="40" cy="40" r="34" fill="none" stroke="var(--rule)" stroke-width="6"/><circle cx="40" cy="40" r="34" fill="none" stroke="var(--high)" stroke-width="6" stroke-linecap="round" stroke-dasharray="141 213.6" transform="rotate(-90 40 40)"/><text x="40" y="47" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="20" fill="var(--ink)">66</text></svg><div class="l">SEO</div></div>
-  </div>
-  <div class="note">
-    <p><b>Reading these scores.</b> The SEO score of 66 is consistent with the noindex instruction; Lighthouse treats a page blocked from indexing as a heavily weighted failure. The full list of Lighthouse SEO checks was not in the screenshot, so we can't confirm whether other checks also failed. PageSpeed showed "No Data" for real-user experience (Chrome field data), which usually means the site has too little recorded traffic. Mobile scores were not provided.</p>
+  <div class="co ochre">
+    <div class="k">Worth knowing · data coverage</div>
+    <div class="h">Screaming Frog could only read the homepage</div>
+    <p>The homepage's <code>nofollow</code> told the crawler not to follow its links, so of the 56 URLs crawled only 1 is an HTML page; the other 55 are the homepage's stylesheets, scripts and images. Page-level details for the other 6 pages come from OPEN SEO alone. A full re-crawl after the indexing fix will complete the picture.</p>
   </div>
 </section>
 
-<!-- 3 -->
+<!-- 02 -->
+<section id="s2">
+  <div class="sl">02 — Website SEO health overview</div>
+  <h2>Category status before the work.</h2>
+  <p>Each rating comes from the counts beneath it, measured on 20 November 2026.</p>
+  <div class="cards">
+    <div class="card"><div class="t">Indexability</div><div class="d">0 / 7 indexable<br>7 / 7 noindex, nofollow</div><span class="pill p-crit">Blocked</span></div>
+    <div class="card"><div class="t">Crawlability</div><div class="d">1 HTML page reached<br>links not followed</div><span class="pill p-crit">Blocked</span></div>
+    <div class="card"><div class="t">Status codes</div><div class="d">56 / 56 return 200<br>0 redirects · 0 errors</div><span class="pill p-good">Healthy</span></div>
+    <div class="card"><div class="t">Canonicals</div><div class="d">none on the homepage<br>other pages not crawled</div><span class="pill p-high">Missing</span></div>
+    <div class="card"><div class="t">Page titles</div><div class="d">homepage 54 ch · 479 px<br>other 6 pages not crawled</div><span class="pill p-good">Healthy</span></div>
+    <div class="card"><div class="t">Meta descriptions</div><div class="d">5 / 7 present<br>homepage 154 ch</div><span class="pill p-med">Needs work</span></div>
+    <div class="card"><div class="t">Heading structure</div><div class="d">homepage has 1 H1<br>7 / 7 pages skip levels</div><span class="pill p-med">Needs work</span></div>
+    <div class="card"><div class="t">Internal linking</div><div class="d">1 orphan page<br>homepage links to 5 unique pages</div><span class="pill p-med">Needs work</span></div>
+    <div class="card"><div class="t">Page speed (desktop)</div><div class="d">Performance 86 · HTML 1.21 s<br>36 CSS files · 5+ duplicates</div><span class="pill p-med">Needs work</span></div>
+    <div class="card"><div class="t">Author archive</div><div class="d">/author/guzurebovi5293/<br>public · no description</div><span class="pill p-high">Review</span></div>
+    <div class="card"><div class="t">XML sitemap · robots.txt</div><div class="d">not in either export<br>to be checked</div><span class="pill p-gap">No data</span></div>
+    <div class="card"><div class="t">Image alt text</div><div class="d">5 images on the homepage<br>alt not in the export</div><span class="pill p-gap">No data</span></div>
+  </div>
+</section>
+
+<!-- 03 -->
 <section id="s3">
-  <h2><span class="secno">03</span>Key Findings</h2>
-  <div class="tbl"><table>
-    <thead><tr><th>Ref</th><th>Finding</th><th class="num">Affected</th><th>Priority</th></tr></thead>
+  <div class="sl">03 — Key findings</div>
+  <h2>Sixteen findings, ranked by impact.</h2>
+  <div class="tbl"><div class="cap">Percentages use the 7 pages in the OPEN SEO audit, or the 1 crawled HTML page where only the homepage was measurable</div><table>
+    <thead><tr><th>Ref</th><th>Finding</th><th class="n">Affected</th><th>Priority</th></tr></thead>
     <tbody>
-      <tr><td class="ref">F-01</td><td>Every page is set to <code>noindex, nofollow</code>, so nothing can appear in search results</td><td class="num">7 / 7 (100%)</td><td><span class="pill p-crit">Critical</span></td></tr>
-      <tr><td class="ref">F-02</td><td>The <code>nofollow</code> stops crawlers following links, so Google can't find the other pages either</td><td class="num">7 / 7 (100%)</td><td><span class="pill p-crit">Critical</span></td></tr>
-      <tr><td class="ref">F-03</td><td>No canonical tag on the homepage</td><td class="num">1 / 1 crawled</td><td><span class="pill p-high">High</span></td></tr>
-      <tr><td class="ref">F-04</td><td>XML sitemap and robots.txt not verified (not in the data)</td><td class="num">Sitewide</td><td><span class="pill p-high">High</span></td></tr>
-      <tr><td class="ref">F-05</td><td>Author archive exposes a login-style username (<code>guzurebovi5293</code>)</td><td class="num">1 / 7 (14%)</td><td><span class="pill p-high">High</span></td></tr>
-      <tr><td class="ref">F-06</td><td>Heading levels skip (e.g. H2 straight to H4)</td><td class="num">7 / 7 (100%)</td><td><span class="pill p-med">Medium</span></td></tr>
-      <tr><td class="ref">F-07</td><td>Missing meta descriptions</td><td class="num">2 / 7 (29%)</td><td><span class="pill p-med">Medium</span></td></tr>
-      <tr><td class="ref">F-08</td><td>Orphan page: the 2026 intake checklist has no internal links pointing to it</td><td class="num">1 / 7 (14%)</td><td><span class="pill p-med">Medium</span></td></tr>
-      <tr><td class="ref">F-09</td><td>Duplicate stylesheet and icon files loaded on the homepage</td><td class="num">At least 5 of 36 CSS files</td><td><span class="pill p-med">Medium</span></td></tr>
-      <tr><td class="ref">F-10</td><td>Large unoptimised images (175 KB PNG, 89 KB logo)</td><td class="num">2 / 5 images</td><td><span class="pill p-med">Medium</span></td></tr>
-      <tr><td class="ref">F-11</td><td>Homepage HTML response time of 1.21 seconds</td><td class="num">1 / 1 crawled</td><td><span class="pill p-med">Medium</span></td></tr>
-      <tr><td class="ref">F-12</td><td>Desktop Performance score 86 (mobile not measured)</td><td class="num">Homepage</td><td><span class="pill p-med">Medium</span></td></tr>
-      <tr><td class="ref">F-13</td><td>Inconsistent URL style: <code>/client-resources/</code> vs <code>/client_resources/</code></td><td class="num">1 / 7 (14%)</td><td><span class="pill p-low">Low</span></td></tr>
-      <tr><td class="ref">F-14</td><td>Statistic counters ("100+", "72+") marked up as H2 headings</td><td class="num">Homepage</td><td><span class="pill p-low">Low</span></td></tr>
-      <tr><td class="ref">F-15</td><td>Page language set to US English (<code>en-US</code>) for a Canadian firm</td><td class="num">1 / 1 crawled</td><td><span class="pill p-low">Low</span></td></tr>
-      <tr><td class="ref">F-16</td><td>Low text-to-code ratio (3.3%) on the homepage</td><td class="num">1 / 1 crawled</td><td><span class="pill p-low">Low</span></td></tr>
+      <tr class="crit"><td>F-01</td><td>Every page is set to <code>noindex</code>, so nothing can appear in search results</td><td class="n">7 / 7 · 100%</td><td><span class="pill p-crit">Critical</span></td></tr>
+      <tr class="crit"><td>F-02</td><td>Every page is set to <code>nofollow</code>, so crawlers can't discover the other pages</td><td class="n">7 / 7 · 100%</td><td><span class="pill p-crit">Critical</span></td></tr>
+      <tr class="crit"><td>F-03</td><td>No canonical tag on the homepage</td><td class="n">1 / 1 crawled</td><td><span class="pill p-high">High</span></td></tr>
+      <tr class="crit"><td>F-04</td><td>XML sitemap and robots.txt not verified</td><td class="n">sitewide</td><td><span class="pill p-high">High</span></td></tr>
+      <tr class="crit"><td>F-05</td><td>Author archive exposes a login-style username</td><td class="n">1 / 7 · 14%</td><td><span class="pill p-high">High</span></td></tr>
+      <tr class="flag"><td>F-06</td><td>Heading levels skip, e.g. H2 straight to H4</td><td class="n">7 / 7 · 100%</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr class="flag"><td>F-07</td><td>Missing meta descriptions</td><td class="n">2 / 7 · 29%</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr class="flag"><td>F-08</td><td>Orphan page: the 2026 intake checklist has no internal links to it</td><td class="n">1 / 7 · 14%</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr class="flag"><td>F-09</td><td>Duplicate stylesheet and icon files on the homepage</td><td class="n">5+ of 36 CSS</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr class="flag"><td>F-10</td><td>Two PNG images carry 89% of the homepage's image weight</td><td class="n">2 / 5 images</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr class="flag"><td>F-11</td><td>Homepage HTML response of 1.21 seconds</td><td class="n">1 / 1 crawled</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr class="flag"><td>F-12</td><td>Desktop Performance 86; mobile not measured</td><td class="n">homepage</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td>F-13</td><td>Mixed URL style: <code>/client-resources/</code> and <code>/client_resources/</code></td><td class="n">1 / 7 · 14%</td><td><span class="pill p-low">Low</span></td></tr>
+      <tr><td>F-14</td><td>Statistic counters "100+" and "72+" marked up as H2 headings</td><td class="n">homepage</td><td><span class="pill p-low">Low</span></td></tr>
+      <tr><td>F-15</td><td>Page language set to US English for a Canadian firm</td><td class="n">1 / 1 crawled</td><td><span class="pill p-low">Low</span></td></tr>
+      <tr><td>F-16</td><td>Low text-to-code ratio of 3.3%</td><td class="n">1 / 1 crawled</td><td><span class="pill p-low">Low</span></td></tr>
     </tbody>
   </table></div>
-  <p style="font-size:14px;color:var(--ink-2)">Percentages use 7 pages (OPEN SEO) as the base for page-level issues and 1 page (Screaming Frog HTML) where only the homepage was measurable.</p>
 </section>
 
-<!-- 4 -->
+<!-- 04 -->
 <section id="s4">
-  <h2><span class="secno">04</span>Technical SEO Audit</h2>
-  <p>Technical SEO covers how reliably the site can be fetched, read and understood by search engines, before anyone looks at the words on the page.</p>
-  <h3>What the crawler fetched</h3>
-  <div class="tbl"><table>
-    <thead><tr><th>Content type</th><th class="num">URLs</th><th class="num">Share</th><th class="num">Status 200</th></tr></thead>
+  <div class="sl">04 — Technical SEO audit</div>
+  <h2>The server is reliable; the homepage is heavy.</h2>
+  <p>Technical SEO covers how reliably search engines can fetch and read the site, before anyone looks at the words on the page.</p>
+  <div class="tbl"><div class="cap">Screaming Frog "Internal: All" · 56 URLs · 20 Nov 2026, 13:14:32–13:14:46</div><table>
+    <thead><tr><th>Content type</th><th class="n">URLs</th><th class="n">Share</th><th class="n">Status 200</th></tr></thead>
     <tbody>
-      <tr><td>HTML pages</td><td class="num">1</td><td class="num">1.8%</td><td class="num">1</td></tr>
-      <tr><td>CSS stylesheets</td><td class="num">36</td><td class="num">64.3%</td><td class="num">36</td></tr>
-      <tr><td>JavaScript files</td><td class="num">14</td><td class="num">25.0%</td><td class="num">14</td></tr>
-      <tr><td>Images (PNG, WebP, JPEG)</td><td class="num">5</td><td class="num">8.9%</td><td class="num">5</td></tr>
-      <tr><td><strong>Total</strong></td><td class="num"><strong>56</strong></td><td class="num">100%</td><td class="num"><strong>56</strong></td></tr>
+      <tr><td>HTML pages</td><td class="n">1</td><td class="n">1.8%</td><td class="n ok">1</td></tr>
+      <tr><td>CSS stylesheets</td><td class="n">36</td><td class="n">64.3%</td><td class="n ok">36</td></tr>
+      <tr><td>JavaScript files</td><td class="n">14</td><td class="n">25.0%</td><td class="n ok">14</td></tr>
+      <tr><td>Images (PNG, WebP, JPEG)</td><td class="n">5</td><td class="n">8.9%</td><td class="n ok">5</td></tr>
+      <tr><td>Total</td><td class="n">56</td><td class="n">100%</td><td class="n ok">56</td></tr>
     </tbody>
   </table></div>
-  <h3>Homepage technical profile</h3>
-  <div class="tbl"><table>
-    <thead><tr><th>Check</th><th>Value</th><th>Assessment</th></tr></thead>
+  <div class="tbl"><div class="cap">Homepage technical profile</div><table>
+    <thead><tr><th>Check</th><th>Value</th><th>Detail</th></tr></thead>
     <tbody>
-      <tr><td>HTTP status</td><td>200 OK</td><td><span class="pill p-low">Good</span></td></tr>
-      <tr><td>Meta robots</td><td><code>noindex, nofollow</code></td><td><span class="pill p-crit">Blocking</span></td></tr>
-      <tr><td>X-Robots-Tag header</td><td>None</td><td><span class="pill p-low">Good</span> The block comes from the page's HTML, not the server</td></tr>
-      <tr><td>Canonical tag</td><td>None</td><td><span class="pill p-high">Missing</span></td></tr>
-      <tr><td>HTML size / transferred</td><td>201,449 bytes / 38,052 bytes</td><td><span class="pill p-low">Good</span> Compression is working (about 81% smaller over the wire)</td></tr>
-      <tr><td>Response time</td><td>1.21 s</td><td><span class="pill p-med">Slow</span> Above Screaming Frog's 1-second guideline</td></tr>
-      <tr><td>Language</td><td><code>en-US</code></td><td><span class="pill p-low">Low</span> <code>en-CA</code> fits a Barrie, Ontario firm</td></tr>
-      <tr><td>Text-to-code ratio</td><td>3.3%</td><td><span class="pill p-low">Low</span> Most of the file is markup and styling, not readable text</td></tr>
-      <tr><td>Platform (from asset paths)</td><td>WordPress, Astra theme, Elementor and Elementor Pro</td><td>Context for the fixes below</td></tr>
+      <tr><td>HTTP status</td><td class="m ok">200 OK</td><td>Loads correctly</td></tr>
+      <tr class="crit"><td>Meta robots</td><td class="m bad">noindex, nofollow</td><td>Blocks indexing and link discovery (F-01, F-02)</td></tr>
+      <tr><td>X-Robots-Tag header</td><td class="m">none</td><td>The block is in the page HTML, not the server configuration</td></tr>
+      <tr class="crit"><td>Canonical tag</td><td class="m bad">none</td><td>See F-03</td></tr>
+      <tr><td>HTML size / transferred</td><td class="m">201,449 B / 38,052 B</td><td>Compression works: about 81% smaller over the wire</td></tr>
+      <tr class="flag"><td>Response time</td><td class="m warn">1.210 s</td><td>Over Screaming Frog's 1-second guideline; other files on the same server returned in 0.26–0.91 s</td></tr>
+      <tr><td>Language</td><td class="m">en-US</td><td><code>en-CA</code> fits a Barrie, Ontario firm (F-15)</td></tr>
+      <tr><td>Text-to-code ratio</td><td class="m">3.3%</td><td>Most of the file is page-builder markup (F-16)</td></tr>
+      <tr><td>Platform</td><td class="m">WordPress · Astra · Elementor Pro</td><td>Read from the asset paths</td></tr>
     </tbody>
   </table></div>
-  <div class="finding" id="f09">
-    <div class="finding-head"><span class="ref">F-09</span><h3>Duplicate stylesheet and icon files</h3><span class="pill p-med">Medium</span></div>
-    <p>The homepage loads the same files more than once: two versions of the navigation-menu stylesheet, two versions of the Elementor icon font, and both the compressed and uncompressed copies of several Font Awesome icon stylesheets. Each extra file is another request the browser must make before the page finishes drawing.</p>
+  <div class="f">
+    <div class="fh"><span class="ref">F-09</span><span class="ft">Duplicate stylesheet and icon files</span><span class="pill p-med">Medium</span></div>
+    <p>The homepage loads the same files more than once: two versions of the navigation-menu stylesheet, two versions of the Elementor icon font, and both the compressed and uncompressed copies of several Font Awesome stylesheets. Each extra file is one more request before the page finishes drawing.</p>
     <div class="kv">
       <div><span>Current status</span>36 CSS files on one page</div>
-      <div><span>Affected</span>At least 5 redundant files (~21 KB)</div>
-      <div><span>SEO impact</span>Slower page load; affects Core Web Vitals</div>
-      <div><span>Action</span>Remove the duplicate enqueues; turn on Elementor's asset optimisation; consider loading only the icon sets in use</div>
+      <div><span>Affected</span>5+ redundant files · ~21 KB</div>
+      <div><span>SEO impact</span>Slower load; Core Web Vitals</div>
+      <div><span>Action</span>Remove duplicate enqueues; load only icon sets in use</div>
     </div>
     <details><summary>Evidence from the crawl</summary>
       <ul>
-        <li><code>widget-nav-menu.min.css?ver=4.3.3</code> and <code>?ver=3.26.0</code>, both 3,442 bytes</li>
-        <li><code>elementor-icons.min.css?ver=5.34.0</code> and <code>?ver=5.57.0</code>, both 4,545 bytes</li>
+        <li><code>widget-nav-menu.min.css</code> at <code>ver=4.3.3</code> and <code>ver=3.26.0</code>, both 3,442 B</li>
+        <li><code>elementor-icons.min.css</code> at <code>ver=5.34.0</code> and <code>ver=5.57.0</code>, both 4,545 B</li>
         <li><code>fontawesome.css</code> (13,094 B) and <code>fontawesome.min.css</code> (12,587 B), plus <code>all.min.css</code> (12,839 B), which already contains them</li>
-        <li><code>brands.css</code> and <code>brands.min.css</code>; <code>solid.css</code> and <code>solid.min.css</code></li>
+        <li><code>brands.css</code> with <code>brands.min.css</code>; <code>solid.css</code> with <code>solid.min.css</code></li>
       </ul>
     </details>
   </div>
-  <div class="finding" id="f11">
-    <div class="finding-head"><span class="ref">F-11</span><h3>Homepage response time of 1.21 seconds</h3><span class="pill p-med">Medium</span></div>
-    <p>The crawler waited 1.21 seconds for the homepage HTML. Other files on the same server came back in 0.26 to 0.91 seconds, so the delay is in building the page, not the network. Page caching usually fixes this on WordPress.</p>
-    <div class="kv">
-      <div><span>Current status</span>1.210 s (single measurement)</div>
-      <div><span>Affected</span>Homepage</div>
-      <div><span>SEO impact</span>Slower first paint; crawl efficiency</div>
-      <div><span>Action</span>Confirm page caching is active; re-measure server response (TTFB) with a dedicated tool</div>
-    </div>
-  </div>
+  <h3>Lighthouse, before.</h3>
+  <div class="tbl"><div class="cap">PageSpeed Insights · desktop · homepage · one run, supplied as a screenshot</div><table>
+    <thead><tr><th>Category</th><th class="n">Score</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr class="flag"><td>Performance</td><td class="n warn">86</td><td>Duplicate files (F-09), heavy images (F-10) and server response (F-11) are the likely contributors</td></tr>
+      <tr><td>Accessibility</td><td class="n ok">95</td><td>Failing audits not visible in the screenshot</td></tr>
+      <tr><td>Best practices</td><td class="n ok">100</td><td>No failing audits</td></tr>
+      <tr class="crit"><td>SEO</td><td class="n bad">66</td><td>Consistent with the noindex block, which Lighthouse weights heavily; full audit list not supplied</td></tr>
+      <tr><td>Real-user (field) data</td><td class="n m">No Data</td><td>Usually means too little recorded traffic</td></tr>
+    </tbody>
+  </table></div>
+  <p class="fn">Mobile scores were not supplied and are not reported.</p>
 </section>
 
-<!-- 5 -->
+<!-- 05 -->
 <section id="s5">
-  <h2><span class="secno">05</span>Crawlability &amp; Indexability</h2>
-  <p><b>Crawlability</b> is whether search engines can reach a page. <b>Indexability</b> is whether they are allowed to store it and show it in results. A page has to pass both to rank.</p>
-  <div class="finding" id="f01">
-    <div class="finding-head"><span class="ref">F-01</span><h3>Every page is blocked from search results</h3><span class="pill p-crit">Critical</span></div>
-    <p>Each page contains <code>&lt;meta name="robots" content="noindex, nofollow"&gt;</code>. Search engines obey this. The pages will be dropped from, or never added to, Google's index.</p>
-    <div class="kv">
-      <div><span>Current status</span><code>noindex, nofollow</code></div>
-      <div><span>Affected</span>7 of 7 pages (100%)</div>
-      <div><span>SEO impact</span>No search visibility at all</div>
-      <div><span>Action</span>Remove the directive, then confirm on every page</div>
-    </div>
-    <p>On WordPress this is most often the <em>Settings → Reading → "Discourage search engines from indexing this site"</em> option, left on after development. It can also be set by an SEO plugin. The X-Robots-Tag header is empty, so the block is in the page HTML and not the server configuration.</p>
+  <div class="sl">05 — Crawlability &amp; indexability</div>
+  <h2>Every page is closed to search engines.</h2>
+  <p><b>Crawlability</b> is whether search engines can reach a page. <b>Indexability</b> is whether they may store it and show it in results. A page must pass both to rank.</p>
+  <div class="co red">
+    <div class="k">Critical · F-01 and F-02</div>
+    <div class="h">noindex, nofollow on 7 of 7 pages</div>
+    <p>Each page contains <code>&lt;meta name="robots" content="noindex, nofollow"&gt;</code>. On WordPress this is most often the <b>Settings → Reading → "Discourage search engines from indexing this site"</b> option left on after development; an SEO plugin can also set it. The X-Robots-Tag header is empty, so the fix is in WordPress, not the server.</p>
   </div>
-  <div class="finding" id="f02">
-    <div class="finding-head"><span class="ref">F-02</span><h3>Links are not followed, so pages cannot be discovered</h3><span class="pill p-crit">Critical</span></div>
-    <p>The <code>nofollow</code> part tells crawlers not to follow any link on the page. This is why Screaming Frog stopped after the homepage: it found 5 unique internal links but did not follow them. Google would behave the same way.</p>
-    <div class="kv">
-      <div><span>Current status</span>Crawl stops at the homepage</div>
-      <div><span>Affected</span>7 of 7 pages (100%)</div>
-      <div><span>SEO impact</span>Inner pages can't be discovered through links</div>
-      <div><span>Action</span>Fixed by the same change as F-01; then re-crawl the full site</div>
-    </div>
-  </div>
-  <h3>Indexability by page (OPEN SEO)</h3>
-  <div class="tbl"><table>
-    <thead><tr><th>URL</th><th>Meta robots</th><th>Should it be indexed?</th></tr></thead>
+  <div class="tbl"><div class="cap">Indexability by page · OPEN SEO</div><table>
+    <thead><tr><th>Page</th><th>Robots meta</th><th>Should it be indexed?</th></tr></thead>
     <tbody>
-      <tr><td><code>/</code></td><td><span class="yes">noindex, nofollow</span></td><td>Yes</td></tr>
-      <tr><td><code>/about/</code></td><td><span class="yes">noindex, nofollow</span></td><td>Yes</td></tr>
-      <tr><td><code>/services/</code></td><td><span class="yes">noindex, nofollow</span></td><td>Yes</td></tr>
-      <tr><td><code>/client-resources/</code></td><td><span class="yes">noindex, nofollow</span></td><td>Yes</td></tr>
-      <tr><td><code>/contact/</code></td><td><span class="yes">noindex, nofollow</span></td><td>Yes</td></tr>
-      <tr><td><code>/client_resources/2026-intake-and-checklist/</code></td><td><span class="yes">noindex, nofollow</span></td><td>Client to decide: public resource or client-only?</td></tr>
-      <tr><td><code>/author/guzurebovi5293/</code></td><td><span class="yes">noindex, nofollow</span></td><td>Probably not (see F-05)</td></tr>
+      <tr class="crit"><td>/</td><td class="m bad">noindex, nofollow</td><td>Yes</td></tr>
+      <tr class="crit"><td>/about/</td><td class="m bad">noindex, nofollow</td><td>Yes</td></tr>
+      <tr class="crit"><td>/services/</td><td class="m bad">noindex, nofollow</td><td>Yes</td></tr>
+      <tr class="crit"><td>/client-resources/</td><td class="m bad">noindex, nofollow</td><td>Yes</td></tr>
+      <tr class="crit"><td>/contact/</td><td class="m bad">noindex, nofollow</td><td>Yes</td></tr>
+      <tr class="flag"><td>/client_resources/2026-intake-and-checklist/</td><td class="m bad">noindex, nofollow</td><td>Client to decide: public resource or client-only?</td></tr>
+      <tr class="flag"><td>/author/guzurebovi5293/</td><td class="m bad">noindex, nofollow</td><td>Probably not (F-05)</td></tr>
     </tbody>
   </table></div>
-  <div class="finding" id="f04">
-    <div class="finding-head"><span class="ref">F-04</span><h3>XML sitemap and robots.txt not verified</h3><span class="pill p-high">High</span></div>
-    <p>An XML sitemap lists the pages you want indexed; robots.txt tells crawlers where they may go and where the sitemap is. Neither file appears in the exports, so we can't say whether they exist or are correct. This needs checking before the site is opened to search engines.</p>
+  <div class="f">
+    <div class="fh"><span class="ref">F-04</span><span class="ft">XML sitemap and robots.txt not verified</span><span class="pill p-high">High</span></div>
+    <p>A sitemap lists the pages you want indexed; robots.txt tells crawlers where they may go and where the sitemap is. Neither appears in the exports, so we can't say whether they exist or are correct.</p>
     <div class="kv">
-      <div><span>Current status</span>Unknown (no data)</div>
+      <div><span>Current status</span>Unknown · no data</div>
       <div><span>Affected</span>Sitewide</div>
-      <div><span>SEO impact</span>Discovery speed of new and updated pages</div>
-      <div><span>Action</span>Check <code>/robots.txt</code> and the sitemap URL; declare the sitemap in robots.txt; submit it in Google Search Console</div>
+      <div><span>SEO impact</span>Speed of page discovery</div>
+      <div><span>Action</span>Check both; declare the sitemap; submit it in Search Console</div>
     </div>
   </div>
 </section>
 
-<!-- 6 -->
+<!-- 06 -->
 <section id="s6">
-  <h2><span class="secno">06</span>On-Page SEO Analysis</h2>
-  <p>On-page SEO is about the content and markup of each page. Screaming Frog's on-page data covers the homepage only. OPEN SEO covers all 7 pages for the checks below.</p>
-  <h3>Issue matrix: all audited pages</h3>
-  <div class="tbl"><table class="matrix">
-    <thead><tr><th>URL</th><th class="c">Noindex</th><th class="c">Heading skip</th><th class="c">Meta description</th><th class="c">Orphan</th></tr></thead>
+  <div class="sl">06 — On-page SEO analysis</div>
+  <h2>All seven pages, issue by issue.</h2>
+  <div class="tbl"><div class="cap">OPEN SEO site audit · 7 pages · 17 issue rows (3 warnings, 14 informational)</div><table>
+    <thead><tr><th>Page</th><th>Noindex</th><th>Heading skip</th><th>Meta description</th><th>Orphan</th></tr></thead>
     <tbody>
-      <tr><td><code>/</code></td><td class="c yes">Yes</td><td class="c warn">Yes</td><td class="c ok">Present</td><td class="c ok">No</td></tr>
-      <tr><td><code>/about/</code></td><td class="c yes">Yes</td><td class="c warn">Yes</td><td class="c ok">Present</td><td class="c ok">No</td></tr>
-      <tr><td><code>/services/</code></td><td class="c yes">Yes</td><td class="c warn">Yes</td><td class="c ok">Present</td><td class="c ok">No</td></tr>
-      <tr><td><code>/client-resources/</code></td><td class="c yes">Yes</td><td class="c warn">Yes</td><td class="c ok">Present</td><td class="c ok">No</td></tr>
-      <tr><td><code>/contact/</code></td><td class="c yes">Yes</td><td class="c warn">Yes</td><td class="c ok">Present</td><td class="c ok">No</td></tr>
-      <tr><td><code>/client_resources/2026-intake-and-checklist/</code></td><td class="c yes">Yes</td><td class="c warn">Yes</td><td class="c warn">Missing</td><td class="c warn">Yes</td></tr>
-      <tr><td><code>/author/guzurebovi5293/</code></td><td class="c yes">Yes</td><td class="c warn">Yes</td><td class="c warn">Missing</td><td class="c ok">No</td></tr>
+      <tr><td>/</td><td class="m bad">yes</td><td class="m warn">yes</td><td class="m ok">present</td><td class="m ok">no</td></tr>
+      <tr><td>/about/</td><td class="m bad">yes</td><td class="m warn">yes</td><td class="m ok">present</td><td class="m ok">no</td></tr>
+      <tr><td>/services/</td><td class="m bad">yes</td><td class="m warn">yes</td><td class="m ok">present</td><td class="m ok">no</td></tr>
+      <tr><td>/client-resources/</td><td class="m bad">yes</td><td class="m warn">yes</td><td class="m ok">present</td><td class="m ok">no</td></tr>
+      <tr><td>/contact/</td><td class="m bad">yes</td><td class="m warn">yes</td><td class="m ok">present</td><td class="m ok">no</td></tr>
+      <tr class="flag"><td>/client_resources/2026-intake-and-checklist/</td><td class="m bad">yes</td><td class="m warn">yes</td><td class="m bad">missing</td><td class="m bad">yes</td></tr>
+      <tr class="flag"><td>/author/guzurebovi5293/</td><td class="m bad">yes</td><td class="m warn">yes</td><td class="m bad">missing</td><td class="m ok">no</td></tr>
     </tbody>
   </table></div>
-  <p style="font-size:14px;color:var(--ink-2)">"Present" means OPEN SEO did not report the description as missing. Its wording and length were only measured for the homepage.</p>
-  <h3>Homepage content profile</h3>
-  <div class="tbl"><table>
-    <thead><tr><th>Metric</th><th class="num">Value</th><th>What it means</th></tr></thead>
+  <p class="fn">"Present" means OPEN SEO did not flag the description as missing. Wording and length were measured for the homepage only.</p>
+  <div class="tbl"><div class="cap">Homepage content profile · Screaming Frog</div><table>
+    <thead><tr><th>Measure</th><th class="n">Value</th><th>Detail</th></tr></thead>
     <tbody>
-      <tr><td>Word count</td><td class="num">1,036</td><td>A healthy amount of content for a homepage</td></tr>
-      <tr><td>Sentences</td><td class="num">160</td><td></td></tr>
-      <tr><td>Average words per sentence</td><td class="num">6.5</td><td>Low because labels, buttons and stat counters count as sentences</td></tr>
-      <tr><td>Flesch Reading Ease</td><td class="num">66.8</td><td>"Normal": readable by a general audience</td></tr>
-      <tr><td>Text-to-code ratio</td><td class="num">3.3%</td><td>Page builder markup outweighs the text (F-16)</td></tr>
+      <tr><td>Word count</td><td class="n">1,036</td><td>Plenty of content for a homepage</td></tr>
+      <tr><td>Sentences</td><td class="n">160</td><td>Buttons, labels and counters each count as a sentence</td></tr>
+      <tr><td>Average words per sentence</td><td class="n">6.5</td><td>Low for the same reason</td></tr>
+      <tr><td>Flesch reading ease</td><td class="n">66.8</td><td>"Normal": readable by a general audience</td></tr>
+      <tr><td>Text-to-code ratio</td><td class="n">3.3%</td><td>Builder markup outweighs the text (F-16)</td></tr>
     </tbody>
   </table></div>
-  <div class="finding" id="f05">
-    <div class="finding-head"><span class="ref">F-05</span><h3>Author archive exposes a login-style username</h3><span class="pill p-high">High</span></div>
-    <p>The site has a public author page at <code>/author/guzurebovi5293/</code>. Author pages show the account's username in the URL, which is half of what's needed to sign in to WordPress. The name looks auto-generated and doesn't match a person at the firm. We can't tell from this data whether the account is legitimate. On a single-firm site, author archives also add a thin page with no unique content.</p>
+  <div class="f">
+    <div class="fh"><span class="ref">F-05</span><span class="ft">Author archive exposes a login-style username</span><span class="pill p-high">High</span></div>
+    <p>The public page <code>/author/guzurebovi5293/</code> shows an account username in its address, which is half of what's needed to sign in to WordPress. The name looks auto-generated and doesn't match anyone named on the site. This data can't show whether the account is legitimate. On a single-firm site, author archives also add a thin page with nothing unique on it.</p>
     <div class="kv">
-      <div><span>Current status</span>Live author archive, no meta description</div>
-      <div><span>Affected</span>1 of 7 pages (14%)</div>
+      <div><span>Current status</span>Public · no description</div>
+      <div><span>Affected</span>1 / 7 · 14%</div>
       <div><span>SEO impact</span>Thin page; security exposure</div>
-      <div><span>Action</span>Check the account under Users; remove or rename it if unknown; disable or noindex author archives</div>
+      <div><span>Action</span>Check the account under Users; disable author archives</div>
     </div>
   </div>
 </section>
 
-<!-- 7 -->
+<!-- 07 -->
 <section id="s7">
-  <h2><span class="secno">07</span>Metadata Analysis</h2>
-  <p>The <b>meta title</b> is the blue headline in a Google result. The <b>meta description</b> is the short summary below it. Neither directly decides ranking, but both decide whether someone clicks.</p>
-  <h3>Homepage metadata (Screaming Frog)</h3>
-  <div class="tbl"><table>
-    <thead><tr><th>Element</th><th>Content</th><th class="num">Length</th><th class="num">Pixel width</th><th>Assessment</th></tr></thead>
+  <div class="sl">07 — Metadata analysis</div>
+  <h2>The homepage metadata is right; two pages have none.</h2>
+  <p>The <b>title</b> is the headline in a Google result and the <b>meta description</b> is the summary below it. Neither decides ranking on its own, but both decide whether someone clicks.</p>
+  <div class="tbl"><div class="cap">Homepage metadata · Screaming Frog</div><table>
+    <thead><tr><th>Element</th><th>Content</th><th class="n">Length</th><th class="n">Width</th><th>Status</th></tr></thead>
     <tbody>
-      <tr><td>Title</td><td>Tax &amp; Accounting in Barrie, ON | Strathdee Polley &amp; Co</td><td class="num">54 chars</td><td class="num">479 px</td><td><span class="pill p-low">Good</span> Within the ~580 px display limit; service, location and brand included</td></tr>
-      <tr><td>Meta description</td><td>Practical tax, accounting and advisory services for Barrie business owners, professionals and families. Direct access to the people who know your numbers.</td><td class="num">154 chars</td><td class="num">958 px</td><td><span class="pill p-low">Good</span> Within limits; near the upper pixel width, so the last words may be cut on some screens</td></tr>
-      <tr><td>Meta keywords</td><td>None</td><td class="num">0</td><td class="num"></td><td>Fine. Google ignores this tag</td></tr>
+      <tr><td>Title</td><td>Tax &amp; Accounting in Barrie, ON | Strathdee Polley &amp; Co</td><td class="n">54 ch</td><td class="n">479 px</td><td><span class="pill p-good">Healthy</span></td></tr>
+      <tr><td>Meta description</td><td>Practical tax, accounting and advisory services for Barrie business owners, professionals and families. Direct access to the people who know your numbers.</td><td class="n">154 ch</td><td class="n">958 px</td><td><span class="pill p-good">Healthy</span></td></tr>
+      <tr><td>Meta keywords</td><td class="m">none</td><td class="n">0</td><td class="n">–</td><td><span class="pill p-gap">Ignored by Google</span></td></tr>
     </tbody>
   </table></div>
-  <div class="finding" id="f07">
-    <div class="finding-head"><span class="ref">F-07</span><h3>Missing meta descriptions</h3><span class="pill p-med">Medium</span></div>
-    <p>Without a description, Google writes its own snippet from page text, which is often less persuasive and less accurate.</p>
+  <p class="fn">The description sits near the upper pixel limit, so its last words may be cut on some screens.</p>
+  <div class="f">
+    <div class="fh"><span class="ref">F-07</span><span class="ft">Missing meta descriptions</span><span class="pill p-med">Medium</span></div>
+    <p>Without a description, Google writes its own snippet from page text, which is usually less persuasive.</p>
     <div class="kv">
-      <div><span>Current status</span>Missing on 2 pages</div>
-      <div><span>Affected</span>2 of 7 pages (29%)</div>
-      <div><span>SEO impact</span>Lower click-through from search results</div>
-      <div><span>Action</span>Write a unique 120–158 character description for the intake checklist; noindex the author archive rather than describe it</div>
+      <div><span>Current status</span>Missing</div>
+      <div><span>Affected</span>2 / 7 · 29%</div>
+      <div><span>SEO impact</span>Lower click-through</div>
+      <div><span>Action</span>Write a 145–158 ch description for the checklist; noindex the author archive</div>
     </div>
-    <details><summary>Affected URLs</summary><ul><li><code>/client_resources/2026-intake-and-checklist/</code></li><li><code>/author/guzurebovi5293/</code></li></ul></details>
+    <details><summary>Affected pages</summary><ul><li><code>/client_resources/2026-intake-and-checklist/</code></li><li><code>/author/guzurebovi5293/</code></li></ul></details>
   </div>
-  <div class="note"><p><b>Data gap.</b> Titles and descriptions for the other 6 pages were not in the Screaming Frog export, so we can't check their lengths or whether any are duplicated. The post-fix re-crawl will cover this.</p></div>
+  <p class="fn">Titles and descriptions of the other 6 pages were not in the Screaming Frog export, so their lengths and uniqueness are not measured here.</p>
 </section>
 
-<!-- 8 -->
+<!-- 08 -->
 <section id="s8">
-  <h2><span class="secno">08</span>Heading Structure</h2>
-  <p>Headings (H1 to H6) work like the outline of a document. There should be one H1 (the page's main topic), with H2s for sections and H3s inside them. Skipping a level, such as going from H2 to H4, makes the outline harder for search engines and screen readers to follow.</p>
-  <h3>Homepage headings (Screaming Frog)</h3>
-  <div class="tbl"><table>
-    <thead><tr><th>Level</th><th>Text</th><th class="num">Length</th><th>Assessment</th></tr></thead>
+  <div class="sl">08 — Heading structure</div>
+  <h2>One H1 on the homepage; skipped levels on every page.</h2>
+  <p>Headings are the outline of a page: one H1 for the main topic, H2s for sections, H3s inside them. Jumping from H2 to H4 makes that outline harder for search engines and screen readers to follow.</p>
+  <div class="tbl"><div class="cap">Homepage headings · Screaming Frog</div><table>
+    <thead><tr><th>Level</th><th>Text</th><th class="n">Length</th><th>Status</th></tr></thead>
     <tbody>
-      <tr><td>H1</td><td>Accounting and tax advice from people who know your business</td><td class="num">60</td><td><span class="pill p-low">Good</span> One H1 only; describes the service</td></tr>
-      <tr><td>H2 (1st)</td><td>100+</td><td class="num">4</td><td><span class="pill p-low">Low</span> A statistic counter, not a section heading</td></tr>
-      <tr><td>H2 (2nd)</td><td>72+</td><td class="num">3</td><td><span class="pill p-low">Low</span> A statistic counter, not a section heading</td></tr>
+      <tr><td>H1</td><td>Accounting and tax advice from people who know your business</td><td class="n">60</td><td><span class="pill p-good">Healthy</span></td></tr>
+      <tr class="flag"><td>H2 · 1st</td><td>100+</td><td class="n">4</td><td><span class="pill p-low">A number, not a heading</span></td></tr>
+      <tr class="flag"><td>H2 · 2nd</td><td>72+</td><td class="n">3</td><td><span class="pill p-low">A number, not a heading</span></td></tr>
     </tbody>
   </table></div>
-  <div class="finding" id="f06">
-    <div class="finding-head"><span class="ref">F-06</span><h3>Heading levels skip on every page</h3><span class="pill p-med">Medium</span></div>
-    <p>OPEN SEO found headings that jump levels on all 7 pages. Because it appears everywhere, the cause is probably in a shared template (header, footer or a reused section) rather than in each page's content.</p>
+  <div class="f">
+    <div class="fh"><span class="ref">F-06</span><span class="ft">Heading levels skip on 7 of 7 pages</span><span class="pill p-med">Medium</span></div>
+    <p>Because it happens on every page, the cause is most likely in a shared template (header, footer or a reused section) rather than in each page's content.</p>
     <div class="kv">
       <div><span>Current status</span>Levels skip</div>
-      <div><span>Affected</span>7 of 7 pages (100%)</div>
-      <div><span>SEO impact</span>Weaker content outline; accessibility</div>
-      <div><span>Action</span>Fix shared header/footer headings first, then each page. Check visual size after each change, because the theme styles each level differently</div>
+      <div><span>Affected</span>7 / 7 · 100%</div>
+      <div><span>SEO impact</span>Weaker outline; accessibility</div>
+      <div><span>Action</span>Fix shared templates first; check visual size after each change</div>
     </div>
   </div>
-  <div class="finding" id="f14">
-    <div class="finding-head"><span class="ref">F-14</span><h3>Statistic counters used as H2 headings</h3><span class="pill p-low">Low</span></div>
-    <p>The first two H2s on the homepage are "100+" and "72+". These are numbers, not section titles, and they take the place where descriptive headings such as "Our services" would carry more meaning.</p>
-    <div class="kv">
-      <div><span>Current status</span>2 of the homepage's H2s are numbers</div>
-      <div><span>Affected</span>Homepage</div>
-      <div><span>SEO impact</span>Minor</div>
-      <div><span>Action</span>Change the counter widgets' HTML tag to a <code>div</code> or <code>p</code>, keeping the styling</div>
-    </div>
-  </div>
+  <p class="fn">F-14: the "100+" and "72+" counters can keep their styling with their HTML tag changed to <code>div</code>.</p>
 </section>
 
-<!-- 9 -->
+<!-- 09 -->
 <section id="s9">
-  <h2><span class="secno">09</span>URL &amp; Canonical Analysis</h2>
-  <p>A <b>canonical tag</b> tells search engines which address is the official version of a page, so that variations (with tracking parameters, for example) don't compete with each other.</p>
-  <div class="finding" id="f03">
-    <div class="finding-head"><span class="ref">F-03</span><h3>No canonical tag on the homepage</h3><span class="pill p-high">High</span></div>
-    <p>The homepage has no canonical tag. Some SEO plugins leave the canonical out when a page is set to noindex, so it may appear once F-01 is fixed. This needs to be confirmed after the fix, not assumed.</p>
+  <div class="sl">09 — URL &amp; canonical analysis</div>
+  <h2>Clean addresses, one inconsistency, no canonical.</h2>
+  <p>A <b>canonical tag</b> names the official address of a page, so variants such as tracking-parameter URLs don't compete with it.</p>
+  <div class="f">
+    <div class="fh"><span class="ref">F-03</span><span class="ft">No canonical tag on the homepage</span><span class="pill p-high">High</span></div>
+    <p>Some SEO plugins leave the canonical out while a page is set to noindex, so it may appear once F-01 is fixed. That has to be confirmed after the fix, not assumed.</p>
     <div class="kv">
-      <div><span>Current status</span>No canonical element</div>
-      <div><span>Affected</span>1 of 1 crawled page</div>
-      <div><span>SEO impact</span>Risk of split signals across URL variants</div>
-      <div><span>Action</span>After lifting noindex, confirm a self-referencing canonical is on every page; configure the SEO plugin if not</div>
+      <div><span>Current status</span>None</div>
+      <div><span>Affected</span>1 / 1 crawled</div>
+      <div><span>SEO impact</span>Split ranking signals</div>
+      <div><span>Action</span>Confirm a self-referencing canonical on every page</div>
     </div>
   </div>
-  <h3>URL structure (all 7 pages)</h3>
-  <div class="tbl"><table>
-    <thead><tr><th>URL</th><th>Folder depth</th><th>Assessment</th></tr></thead>
+  <div class="tbl"><div class="cap">URL structure · all 7 pages</div><table>
+    <thead><tr><th>Page</th><th class="n">Folder depth</th><th>Detail</th></tr></thead>
     <tbody>
-      <tr><td><code>/</code></td><td>0</td><td><span class="pill p-low">Good</span></td></tr>
-      <tr><td><code>/about/</code>, <code>/services/</code>, <code>/contact/</code></td><td>1</td><td><span class="pill p-low">Good</span> Short, lowercase, readable</td></tr>
-      <tr><td><code>/client-resources/</code></td><td>1</td><td><span class="pill p-low">Good</span> Uses a hyphen</td></tr>
-      <tr><td><code>/client_resources/2026-intake-and-checklist/</code></td><td>2</td><td><span class="pill p-low">Low</span> Uses an underscore, and sits under a different folder from its hub page</td></tr>
-      <tr><td><code>/author/guzurebovi5293/</code></td><td>2</td><td>See F-05</td></tr>
+      <tr><td>/</td><td class="n">0</td><td>Healthy</td></tr>
+      <tr><td>/about/ · /services/ · /contact/</td><td class="n">1</td><td>Short, lowercase, readable</td></tr>
+      <tr><td>/client-resources/</td><td class="n">1</td><td>Uses a hyphen</td></tr>
+      <tr class="flag"><td>/client_resources/2026-intake-and-checklist/</td><td class="n">2</td><td>Underscore, and a different folder from its hub page (F-13)</td></tr>
+      <tr class="flag"><td>/author/guzurebovi5293/</td><td class="n">2</td><td>See F-05</td></tr>
     </tbody>
   </table></div>
-  <div class="finding" id="f13">
-    <div class="finding-head"><span class="ref">F-13</span><h3>Inconsistent URL style for client resources</h3><span class="pill p-low">Low</span></div>
-    <p>The hub page uses <code>/client-resources/</code> and the resource item uses <code>/client_resources/</code>. Google's guidance is to use hyphens, which it reads as word separators. Underscores join words together. Matching folders also make it clear the item belongs to the hub.</p>
-    <div class="kv">
-      <div><span>Current status</span>Underscore in the resource URL base</div>
-      <div><span>Affected</span>1 of 7 pages (14%)</div>
-      <div><span>SEO impact</span>Minor</div>
-      <div><span>Action</span>Change the resource post type's slug to <code>client-resources</code> and add a 301 redirect from the old address. Do this before the site is indexed, while nothing ranks on the old URL</div>
-    </div>
-  </div>
+  <p class="fn">F-13: Google reads hyphens as word separators and underscores as joiners. Changing the resource slug to <code>client-resources</code> with a 301 redirect is cheapest now, before anything ranks on the old address.</p>
 </section>
 
 <!-- 10 -->
 <section id="s10">
-  <h2><span class="secno">10</span>Redirects &amp; HTTP Status Codes</h2>
-  <p>Status codes are the server's reply to each request: 200 means "here it is", 3xx means "moved", 4xx means "not found", 5xx means "server error".</p>
-  <div class="tbl"><table>
-    <thead><tr><th>Status code</th><th class="num">URLs</th><th class="num">Share</th></tr></thead>
+  <div class="sl">10 — Redirects &amp; HTTP status codes</div>
+  <h2>Every crawled URL returns 200.</h2>
+  <div class="tbl"><div class="cap">Screaming Frog · 56 URLs</div><table>
+    <thead><tr><th>Status</th><th class="n">URLs</th><th class="n">Share</th></tr></thead>
     <tbody>
-      <tr><td>200 OK</td><td class="num">56</td><td class="num">100%</td></tr>
-      <tr><td>3xx Redirects</td><td class="num">0</td><td class="num">0%</td></tr>
-      <tr><td>4xx Client errors</td><td class="num">0</td><td class="num">0%</td></tr>
-      <tr><td>5xx Server errors</td><td class="num">0</td><td class="num">0%</td></tr>
+      <tr><td>200 OK</td><td class="n ok">56</td><td class="n">100%</td></tr>
+      <tr><td>3xx redirect</td><td class="n">0</td><td class="n">0%</td></tr>
+      <tr><td>4xx not found</td><td class="n">0</td><td class="n">0%</td></tr>
+      <tr><td>5xx server error</td><td class="n">0</td><td class="n">0%</td></tr>
     </tbody>
   </table></div>
-  <p>No redirects or errors were found. This covers only the homepage and its files. The re-crawl should also confirm that <code>http://</code> and <code>www.</code> versions of the address redirect to <code>https://spco.ca</code> with a single 301, which this data does not show.</p>
+  <p class="fn">This covers the homepage and its files only. Whether <code>http://</code> and <code>www.</code> addresses 301 to <code>https://spco.ca</code> is not in the data and goes into the re-crawl.</p>
 </section>
 
 <!-- 11 -->
 <section id="s11">
-  <h2><span class="secno">11</span>Internal Linking Analysis</h2>
-  <p>Internal links are how visitors and search engines move between pages. They also signal which pages matter most.</p>
-  <div class="tbl"><table>
-    <thead><tr><th>Homepage link metric (Screaming Frog)</th><th class="num">Value</th></tr></thead>
+  <div class="sl">11 — Internal linking analysis</div>
+  <h2>One page has no way in.</h2>
+  <div class="tbl"><div class="cap">Homepage links · Screaming Frog</div><table>
+    <thead><tr><th>Measure</th><th class="n">Total</th><th class="n">Unique</th><th>Detail</th></tr></thead>
     <tbody>
-      <tr><td>Internal links out (total / unique)</td><td class="num">30 / 5</td></tr>
-      <tr><td>External links out (total / unique)</td><td class="num">3 / 2</td></tr>
-      <tr><td>Internal links in (total / unique)</td><td class="num">6 / 1</td></tr>
-      <tr><td>Crawl depth</td><td class="num">0</td></tr>
+      <tr><td>Internal links out</td><td class="n">30</td><td class="n">5</td><td>Header, body and footer navigation</td></tr>
+      <tr><td>External links out</td><td class="n">3</td><td class="n">2</td><td></td></tr>
+      <tr><td>Internal links in</td><td class="n">6</td><td class="n">1</td><td>All from the homepage itself; no other page was crawled</td></tr>
     </tbody>
   </table></div>
-  <p>The homepage links to 5 unique internal pages, 30 times in total, which is typical for repeated header, body and footer navigation. The 6 inbound links all come from the homepage itself (logo and menu links), since no other page was crawled.</p>
-  <div class="finding" id="f08">
-    <div class="finding-head"><span class="ref">F-08</span><h3>Orphan page: 2026 intake checklist</h3><span class="pill p-med">Medium</span></div>
-    <p>An orphan page has no internal links pointing to it. Visitors can't navigate to it and search engines treat it as unimportant. The Client Resources hub page would be the natural place to link it from.</p>
+  <div class="f">
+    <div class="fh"><span class="ref">F-08</span><span class="ft">Orphan page: 2026 intake checklist</span><span class="pill p-med">Medium</span></div>
+    <p>No page on the site links to <code>/client_resources/2026-intake-and-checklist/</code>. Visitors can't navigate to it and search engines treat it as unimportant. The Client Resources page is the natural place to link it from.</p>
     <div class="kv">
       <div><span>Current status</span>0 internal links in</div>
-      <div><span>Affected</span>1 of 7 pages (14%)</div>
-      <div><span>SEO impact</span>Page unlikely to be found or ranked</div>
-      <div><span>Action</span>Link it from <code>/client-resources/</code>, or remove it from the sitemap if it's meant for clients only</div>
+      <div><span>Affected</span>1 / 7 · 14%</div>
+      <div><span>SEO impact</span>Unlikely to be found</div>
+      <div><span>Action</span>Link from /client-resources/, or keep it out of the sitemap if client-only</div>
     </div>
-    <details><summary>Affected URL</summary><p><code>https://spco.ca/client_resources/2026-intake-and-checklist/</code></p></details>
   </div>
 </section>
 
 <!-- 12 -->
 <section id="s12">
-  <h2><span class="secno">12</span>Image SEO</h2>
-  <p>The homepage loads 5 images, 295,658 bytes in total.</p>
-  <div class="tbl"><table>
-    <thead><tr><th>Image</th><th>Format</th><th class="num">Size</th><th class="num">Share</th><th>Assessment</th></tr></thead>
+  <div class="sl">12 — Image SEO</div>
+  <h2>Two images carry 89% of the weight.</h2>
+  <div class="tbl"><div class="cap">Images on the homepage · 5 files · 295,658 B</div><table>
+    <thead><tr><th>Image</th><th>Format</th><th class="n">Size</th><th class="n">Share</th><th>Detail</th></tr></thead>
     <tbody>
-      <tr><td><code>QBO-lv2.png</code></td><td>PNG</td><td class="num">175,396 B</td><td class="num">59.3%</td><td><span class="pill p-med">Large</span> Convert to WebP and resize to display size</td></tr>
-      <tr><td><code>SPCO-LOGO-1.png</code></td><td>PNG</td><td class="num">88,837 B</td><td class="num">30.0%</td><td><span class="pill p-med">Large</span> A 180×36 version (8,988 B) already exists</td></tr>
-      <tr><td><code>Barrie-Fountain-scaled-…jpg</code></td><td>JPEG</td><td class="num">17,541 B</td><td class="num">5.9%</td><td><span class="pill p-low">Good</span></td></tr>
-      <tr><td><code>SPCO-Logo-180x36.png</code></td><td>PNG</td><td class="num">8,988 B</td><td class="num">3.0%</td><td><span class="pill p-low">Good</span></td></tr>
-      <tr><td><code>xero-l2-certified-professional.webp</code></td><td>WebP</td><td class="num">4,896 B</td><td class="num">1.7%</td><td><span class="pill p-low">Good</span></td></tr>
+      <tr class="flag"><td>QBO-lv2.png</td><td class="m">PNG</td><td class="n warn">175,396 B</td><td class="n">59.3%</td><td>Convert to WebP; resize to display size</td></tr>
+      <tr class="flag"><td>SPCO-LOGO-1.png</td><td class="m">PNG</td><td class="n warn">88,837 B</td><td class="n">30.0%</td><td>A 180×36 version (8,988 B) already exists</td></tr>
+      <tr><td>Barrie-Fountain-scaled…jpg</td><td class="m">JPEG</td><td class="n">17,541 B</td><td class="n">5.9%</td><td>Healthy</td></tr>
+      <tr><td>SPCO-Logo-180x36.png</td><td class="m">PNG</td><td class="n">8,988 B</td><td class="n">3.0%</td><td>Healthy</td></tr>
+      <tr><td>xero-l2-certified-professional.webp</td><td class="m">WebP</td><td class="n">4,896 B</td><td class="n">1.7%</td><td>Healthy</td></tr>
     </tbody>
   </table></div>
-  <div class="finding" id="f10">
-    <div class="finding-head"><span class="ref">F-10</span><h3>Two images make up 89% of image weight</h3><span class="pill p-med">Medium</span></div>
-    <p>The QuickBooks badge PNG and the full-size logo PNG together weigh 264 KB. Saving them as WebP at the size they are actually shown would likely cut that substantially and help the Performance score.</p>
-    <div class="kv">
-      <div><span>Current status</span>264,233 B across 2 PNGs</div>
-      <div><span>Affected</span>2 of 5 images (40%)</div>
-      <div><span>SEO impact</span>Page speed, Largest Contentful Paint</div>
-      <div><span>Action</span>Convert to WebP, resize, and use the existing small logo where possible</div>
-    </div>
-  </div>
-  <div class="note"><p><b>Data gap: alt text.</b> The "Internal: All" export doesn't include image alt attributes, so we can't report how many images are missing descriptive alt text. Export Screaming Frog's <em>Images</em> tab (Missing Alt Text and Alt Text Over 100 Characters filters) after the full re-crawl.</p></div>
+  <p class="fn">Alt text is not in the "Internal: All" export, so the number of images without descriptions is not reported. The Screaming Frog Images export from the re-crawl will supply it.</p>
 </section>
 
 <!-- 13 -->
 <section id="s13">
-  <h2><span class="secno">13</span>Duplicate / Thin Content</h2>
-  <p>Duplicate content is when several pages carry the same or near-identical text. Thin content is a page with too little useful text to deserve a ranking.</p>
-  <div class="tbl"><table>
-    <thead><tr><th>Check</th><th>Result</th></tr></thead>
-    <tbody>
-      <tr><td>Exact duplicates</td><td><span class="pill p-gap">Not assessable</span> Only 1 HTML page was crawled, so there is nothing to compare</td></tr>
-      <tr><td>Near duplicates</td><td><span class="pill p-gap">Not assessable</span> Screaming Frog's near-duplicate analysis returned no data</td></tr>
-      <tr><td>Homepage word count</td><td><span class="pill p-low">Good</span> 1,036 words; not thin</td></tr>
-      <tr><td>Likely thin page</td><td><span class="pill p-med">Probable</span> The author archive (F-05). Author pages on a single-firm site usually repeat content found elsewhere</td></tr>
-    </tbody>
-  </table></div>
-  <p>The re-crawl should run with near-duplicate detection and spelling and grammar checks turned on in Screaming Frog, so these can be measured across all pages.</p>
+  <div class="sl">13 — Duplicate &amp; thin content</div>
+  <h2>Not measurable from a one-page crawl.</h2>
+  <p>With only the homepage crawled there is nothing to compare it against, and Screaming Frog's near-duplicate check returned no data. The homepage itself is not thin at 1,036 words. The author archive (F-05) is the one page likely to be thin, since author pages on a single-firm site usually repeat content found elsewhere.</p>
 </section>
 
 <!-- 14 -->
 <section id="s14">
-  <h2><span class="secno">14</span>Priority Issues &amp; Recommendations</h2>
-  <h3>Critical: fix before anything else</h3>
-  <div class="tbl"><table>
-    <thead><tr><th>Ref</th><th>SEO issue</th><th>Current status</th><th class="num">URLs</th><th class="num">%</th><th>SEO impact</th><th>Recommended action</th></tr></thead>
+  <div class="sl">14 — Priority issues &amp; recommendations</div>
+  <h2>Each issue, its size, and the fix.</h2>
+  <div class="tbl"><div class="cap">Critical and high priority</div><table>
+    <thead><tr><th>Issue</th><th>Status</th><th class="n">URLs</th><th class="n">%</th><th>SEO impact</th><th>Priority</th><th>Action</th></tr></thead>
     <tbody>
-      <tr><td class="ref">F-01</td><td>Pages set to noindex</td><td><code>noindex</code></td><td class="num">7</td><td class="num">100%</td><td>No search visibility</td><td>Untick "Discourage search engines" (or the SEO plugin equivalent); confirm on all pages</td></tr>
-      <tr><td class="ref">F-02</td><td>Links set to nofollow</td><td><code>nofollow</code></td><td class="num">7</td><td class="num">100%</td><td>Pages can't be discovered</td><td>Same fix as F-01; re-crawl to confirm all pages are reached</td></tr>
+      <tr class="crit"><td>F-01 noindex</td><td class="m bad">noindex</td><td class="n">7</td><td class="n">100%</td><td>No search visibility</td><td><span class="pill p-crit">Critical</span></td><td>Untick "Discourage search engines" or the plugin equivalent; confirm on all pages</td></tr>
+      <tr class="crit"><td>F-02 nofollow</td><td class="m bad">nofollow</td><td class="n">7</td><td class="n">100%</td><td>Pages can't be discovered</td><td><span class="pill p-crit">Critical</span></td><td>Same fix; re-crawl to confirm every page is reached</td></tr>
+      <tr class="crit"><td>F-03 Canonical</td><td class="m bad">none</td><td class="n">1</td><td class="n">100%*</td><td>Split signals</td><td><span class="pill p-high">High</span></td><td>Confirm self-referencing canonicals after F-01</td></tr>
+      <tr class="crit"><td>F-04 Sitemap · robots</td><td class="m">no data</td><td class="n">–</td><td class="n">–</td><td>Slower discovery</td><td><span class="pill p-high">High</span></td><td>Check both; declare sitemap; submit in Search Console</td></tr>
+      <tr class="crit"><td>F-05 Author archive</td><td class="m bad">public</td><td class="n">1</td><td class="n">14%</td><td>Thin page; security</td><td><span class="pill p-high">High</span></td><td>Verify the account; disable author archives</td></tr>
     </tbody>
   </table></div>
-  <h3>High priority</h3>
-  <div class="tbl"><table>
-    <thead><tr><th>Ref</th><th>SEO issue</th><th>Current status</th><th class="num">URLs</th><th class="num">%</th><th>SEO impact</th><th>Recommended action</th></tr></thead>
+  <div class="tbl"><div class="cap">Medium priority</div><table>
+    <thead><tr><th>Issue</th><th>Status</th><th class="n">URLs</th><th class="n">%</th><th>SEO impact</th><th>Priority</th><th>Action</th></tr></thead>
     <tbody>
-      <tr><td class="ref">F-03</td><td>Missing canonical</td><td>None on homepage</td><td class="num">1</td><td class="num">100% of crawled</td><td>Split ranking signals</td><td>Confirm self-referencing canonicals after F-01</td></tr>
-      <tr><td class="ref">F-04</td><td>Sitemap / robots.txt unverified</td><td>No data</td><td class="num">n/a</td><td class="num">n/a</td><td>Slower discovery</td><td>Check both; declare sitemap; submit in Search Console</td></tr>
-      <tr><td class="ref">F-05</td><td>Author archive with login-style username</td><td>Public</td><td class="num">1</td><td class="num">14%</td><td>Thin page; security</td><td>Verify account; disable or noindex author archives</td></tr>
+      <tr class="flag"><td>F-06 Heading skips</td><td class="m warn">skips</td><td class="n">7</td><td class="n">100%</td><td>Weaker outline</td><td><span class="pill p-med">Medium</span></td><td>Fix shared templates, then pages</td></tr>
+      <tr class="flag"><td>F-07 Meta descriptions</td><td class="m warn">missing</td><td class="n">2</td><td class="n">29%</td><td>Lower click-through</td><td><span class="pill p-med">Medium</span></td><td>Write unique descriptions</td></tr>
+      <tr class="flag"><td>F-08 Orphan page</td><td class="m warn">0 inlinks</td><td class="n">1</td><td class="n">14%</td><td>Unlikely to rank</td><td><span class="pill p-med">Medium</span></td><td>Link from Client Resources</td></tr>
+      <tr class="flag"><td>F-09 Duplicate CSS</td><td class="m warn">36 files</td><td class="n">1</td><td class="n">–</td><td>Page speed</td><td><span class="pill p-med">Medium</span></td><td>Remove duplicate enqueues</td></tr>
+      <tr class="flag"><td>F-10 Heavy images</td><td class="m warn">264 KB</td><td class="n">1</td><td class="n">–</td><td>Page speed</td><td><span class="pill p-med">Medium</span></td><td>Convert to WebP; resize</td></tr>
+      <tr class="flag"><td>F-11 Response time</td><td class="m warn">1.21 s</td><td class="n">1</td><td class="n">–</td><td>Page speed</td><td><span class="pill p-med">Medium</span></td><td>Confirm page caching; re-measure</td></tr>
+      <tr class="flag"><td>F-12 Performance</td><td class="m warn">86</td><td class="n">1</td><td class="n">–</td><td>User experience</td><td><span class="pill p-med">Medium</span></td><td>Follows F-09 to F-11; measure mobile</td></tr>
     </tbody>
   </table></div>
-  <h3>Medium priority</h3>
-  <div class="tbl"><table>
-    <thead><tr><th>Ref</th><th>SEO issue</th><th>Current status</th><th class="num">URLs</th><th class="num">%</th><th>SEO impact</th><th>Recommended action</th></tr></thead>
+  <div class="tbl"><div class="cap">Low priority</div><table>
+    <thead><tr><th>Issue</th><th>Status</th><th class="n">URLs</th><th class="n">%</th><th>SEO impact</th><th>Priority</th><th>Action</th></tr></thead>
     <tbody>
-      <tr><td class="ref">F-06</td><td>Heading levels skip</td><td>Skips present</td><td class="num">7</td><td class="num">100%</td><td>Weaker outline</td><td>Fix shared templates first, then pages</td></tr>
-      <tr><td class="ref">F-07</td><td>Missing meta description</td><td>Missing</td><td class="num">2</td><td class="num">29%</td><td>Lower click-through</td><td>Write unique descriptions</td></tr>
-      <tr><td class="ref">F-08</td><td>Orphan page</td><td>0 inlinks</td><td class="num">1</td><td class="num">14%</td><td>Unlikely to rank</td><td>Link from Client Resources hub</td></tr>
-      <tr><td class="ref">F-09</td><td>Duplicate CSS / icon files</td><td>36 CSS files</td><td class="num">1</td><td class="num">n/a</td><td>Page speed</td><td>Remove duplicate enqueues</td></tr>
-      <tr><td class="ref">F-10</td><td>Heavy images</td><td>264 KB in 2 PNGs</td><td class="num">1</td><td class="num">n/a</td><td>Page speed</td><td>Convert to WebP; resize</td></tr>
-      <tr><td class="ref">F-11</td><td>Slow HTML response</td><td>1.21 s</td><td class="num">1</td><td class="num">n/a</td><td>Page speed</td><td>Enable or verify page caching</td></tr>
-      <tr><td class="ref">F-12</td><td>Performance score</td><td>86 desktop</td><td class="num">1</td><td class="num">n/a</td><td>User experience</td><td>Addressed by F-09 to F-11; measure mobile</td></tr>
+      <tr><td>F-13 URL underscore</td><td class="m">client_resources</td><td class="n">1</td><td class="n">14%</td><td>Minor</td><td><span class="pill p-low">Low</span></td><td>Change slug; 301 redirect</td></tr>
+      <tr><td>F-14 Numbers as H2</td><td class="m">100+ · 72+</td><td class="n">1</td><td class="n">–</td><td>Minor</td><td><span class="pill p-low">Low</span></td><td>Change counter tag to div</td></tr>
+      <tr><td>F-15 Language</td><td class="m">en-US</td><td class="n">1</td><td class="n">100%*</td><td>Minor</td><td><span class="pill p-low">Low</span></td><td>English (Canada), with client sign-off</td></tr>
+      <tr><td>F-16 Text-to-code</td><td class="m">3.3%</td><td class="n">1</td><td class="n">–</td><td>Minor</td><td><span class="pill p-low">Low</span></td><td>Improves as F-09 trims markup</td></tr>
     </tbody>
   </table></div>
-  <h3>Low priority</h3>
-  <div class="tbl"><table>
-    <thead><tr><th>Ref</th><th>SEO issue</th><th>Current status</th><th class="num">URLs</th><th class="num">%</th><th>SEO impact</th><th>Recommended action</th></tr></thead>
-    <tbody>
-      <tr><td class="ref">F-13</td><td>Underscore in URL base</td><td><code>/client_resources/</code></td><td class="num">1</td><td class="num">14%</td><td>Minor</td><td>Change slug; 301 redirect</td></tr>
-      <tr><td class="ref">F-14</td><td>Numbers used as H2s</td><td>"100+", "72+"</td><td class="num">1</td><td class="num">n/a</td><td>Minor</td><td>Change counter tag to <code>div</code></td></tr>
-      <tr><td class="ref">F-15</td><td>Language <code>en-US</code></td><td><code>en-US</code></td><td class="num">1</td><td class="num">100% of crawled</td><td>Minor</td><td>Switch site language to English (Canada), with client sign-off</td></tr>
-      <tr><td class="ref">F-16</td><td>Low text-to-code ratio</td><td>3.3%</td><td class="num">1</td><td class="num">n/a</td><td>Minor</td><td>Improves as F-09 trims markup; no direct action</td></tr>
-    </tbody>
-  </table></div>
+  <p class="fn">* Of the 1 HTML page Screaming Frog could crawl.</p>
 </section>
 
 <!-- 15 -->
 <section id="s15">
-  <h2><span class="secno">15</span>SEO Action Plan</h2>
+  <div class="sl">15 — SEO action plan</div>
+  <h2>Four phases, starting with the block.</h2>
   <div>
-    <div class="phase">
-      <div class="when">Phase 1<br>Week 1</div>
-      <div><h3>Open the site to search engines</h3>
-        <ul>
-          <li>Take a full backup.</li>
-          <li>Remove <code>noindex, nofollow</code> sitewide (F-01, F-02).</li>
-          <li>Decide whether the author archive and intake checklist should be indexed; set them accordingly (F-05).</li>
-          <li>Check robots.txt and the XML sitemap; set up Google Search Console and submit the sitemap (F-04).</li>
-          <li>Confirm canonical tags now appear (F-03).</li>
-          <li>Re-crawl the full site with Screaming Frog and re-run OPEN SEO.</li>
-        </ul></div>
-    </div>
-    <div class="phase">
-      <div class="when">Phase 2<br>Weeks 2–3</div>
-      <div><h3>On-page fixes</h3>
-        <ul>
-          <li>Review titles and meta descriptions for all pages using the new crawl; write the 2 missing descriptions (F-07).</li>
-          <li>Fix heading levels in shared templates, then on each page (F-06, F-14).</li>
-          <li>Link the intake checklist from the Client Resources hub (F-08).</li>
-          <li>Correct the resource URL base with a 301 redirect (F-13).</li>
-          <li>Audit image alt text from the new Images export.</li>
-        </ul></div>
-    </div>
-    <div class="phase">
-      <div class="when">Phase 3<br>Weeks 3–4</div>
-      <div><h3>Performance</h3>
-        <ul>
-          <li>Remove duplicate stylesheet and icon files (F-09).</li>
-          <li>Convert and resize the two heavy PNGs (F-10).</li>
-          <li>Confirm page caching and re-measure response time (F-11).</li>
-          <li>Run PageSpeed Insights on mobile and desktop for key pages (F-12).</li>
-          <li>Switch site language to <code>en-CA</code> if the client agrees (F-15).</li>
-        </ul></div>
-    </div>
-    <div class="phase">
-      <div class="when">Phase 4<br>Week 6 onward</div>
-      <div><h3>Measure against this baseline</h3>
-        <ul>
-          <li>Re-run both crawls and PageSpeed with the same settings and compare against Section 16.</li>
-          <li>Check Search Console's indexing report for pages indexed vs. submitted.</li>
-          <li>Indexing typically takes days to weeks; ranking movement should be judged over 4–8 weeks, not sooner.</li>
-        </ul></div>
-    </div>
+    <div class="phase"><div class="when">Phase 1 · week 1</div><div><h3>Open the site to search engines</h3><ul>
+      <li>Take a full backup.</li>
+      <li>Remove <code>noindex, nofollow</code> sitewide (F-01, F-02).</li>
+      <li>Decide whether the author archive and intake checklist should be indexed (F-05).</li>
+      <li>Check robots.txt and the sitemap; set up Search Console and submit the sitemap (F-04).</li>
+      <li>Confirm canonical tags now appear (F-03), then re-crawl the whole site.</li>
+    </ul></div></div>
+    <div class="phase"><div class="when">Phase 2 · weeks 2–3</div><div><h3>On-page fixes</h3><ul>
+      <li>Review titles and descriptions on every page from the new crawl; write the 2 missing ones (F-07).</li>
+      <li>Fix heading levels in shared templates, then each page (F-06, F-14).</li>
+      <li>Link the intake checklist from Client Resources (F-08) and correct its URL base with a 301 (F-13).</li>
+      <li>Audit image alt text from the Images export.</li>
+    </ul></div></div>
+    <div class="phase"><div class="when">Phase 3 · weeks 3–4</div><div><h3>Performance</h3><ul>
+      <li>Remove duplicate stylesheet and icon files (F-09).</li>
+      <li>Convert and resize the two heavy PNGs (F-10).</li>
+      <li>Confirm page caching and re-measure response time (F-11).</li>
+      <li>Run PageSpeed on mobile and desktop for key pages (F-12); switch to <code>en-CA</code> if the client agrees (F-15).</li>
+    </ul></div></div>
+    <div class="phase"><div class="when">Phase 4 · week 6 on</div><div><h3>Measure against this baseline</h3><ul>
+      <li>Re-run both crawls and PageSpeed with the same settings and compare against section 16.</li>
+      <li>Check Search Console for pages indexed against pages submitted.</li>
+      <li>Judge ranking movement over 4–8 weeks, not sooner.</li>
+    </ul></div></div>
   </div>
 </section>
 
 <!-- 16 -->
 <section id="s16">
-  <h2><span class="secno">16</span>Before-SEO Baseline Summary</h2>
-  <p>These are the measured starting values. Re-run the same tools with the same settings after implementation and fill in the "After" column.</p>
-  <div class="tbl"><table>
-    <thead><tr><th>Metric</th><th>Baseline (20 Nov 2026)</th><th>Target</th><th>Source</th><th>After</th></tr></thead>
+  <div class="sl">16 — Before-SEO baseline summary</div>
+  <h2>The starting point, in one table.</h2>
+  <div class="tbl"><div class="cap">Re-run the same tools with the same settings to fill the "Now" column</div><table>
+    <thead><tr><th>Metric</th><th class="n">Baseline · 20 Nov 2026</th><th class="n">Target</th><th>Source</th><th class="n">Now</th></tr></thead>
     <tbody>
-      <tr><td>Indexable pages</td><td class="num">0 of 7 (0%)</td><td>All public pages</td><td>OPEN SEO</td><td></td></tr>
-      <tr><td>Pages with noindex</td><td class="num">7 of 7 (100%)</td><td>Only pages meant to be hidden</td><td>OPEN SEO</td><td></td></tr>
-      <tr><td>HTML pages reached by crawler</td><td class="num">1</td><td>All linked pages</td><td>Screaming Frog</td><td></td></tr>
-      <tr><td>URLs returning 200</td><td class="num">56 of 56 (100%)</td><td>100%</td><td>Screaming Frog</td><td></td></tr>
-      <tr><td>3xx / 4xx / 5xx URLs</td><td class="num">0 / 0 / 0</td><td>0 / 0 / 0</td><td>Screaming Frog</td><td></td></tr>
-      <tr><td>Pages missing meta description</td><td class="num">2 of 7 (29%)</td><td>0</td><td>OPEN SEO</td><td></td></tr>
-      <tr><td>Pages with heading skips</td><td class="num">7 of 7 (100%)</td><td>0</td><td>OPEN SEO</td><td></td></tr>
-      <tr><td>Orphan pages</td><td class="num">1</td><td>0</td><td>OPEN SEO</td><td></td></tr>
-      <tr><td>Homepage canonical tag</td><td>Absent</td><td>Self-referencing</td><td>Screaming Frog</td><td></td></tr>
-      <tr><td>Homepage title length</td><td class="num">54 chars / 479 px</td><td>Keep within 30–60 chars</td><td>Screaming Frog</td><td></td></tr>
-      <tr><td>Homepage meta description length</td><td class="num">154 chars / 958 px</td><td>120–158 chars</td><td>Screaming Frog</td><td></td></tr>
-      <tr><td>Homepage H1 count</td><td class="num">1</td><td>1</td><td>Screaming Frog</td><td></td></tr>
-      <tr><td>Homepage word count</td><td class="num">1,036</td><td>Maintain</td><td>Screaming Frog</td><td></td></tr>
-      <tr><td>Homepage response time</td><td class="num">1.21 s</td><td>Under 0.6 s</td><td>Screaming Frog</td><td></td></tr>
-      <tr><td>Homepage HTML size / transferred</td><td class="num">201,449 B / 38,052 B</td><td>Lower</td><td>Screaming Frog</td><td></td></tr>
-      <tr><td>CSS / JS files on homepage</td><td class="num">36 / 14</td><td>Fewer</td><td>Screaming Frog</td><td></td></tr>
-      <tr><td>Image weight on homepage</td><td class="num">295,658 B</td><td>Lower</td><td>Screaming Frog</td><td></td></tr>
-      <tr><td>PageSpeed desktop: Performance</td><td class="num">86</td><td>90+</td><td>PageSpeed Insights</td><td></td></tr>
-      <tr><td>PageSpeed desktop: Accessibility</td><td class="num">95</td><td>95+</td><td>PageSpeed Insights</td><td></td></tr>
-      <tr><td>PageSpeed desktop: Best Practices</td><td class="num">100</td><td>100</td><td>PageSpeed Insights</td><td></td></tr>
-      <tr><td>PageSpeed desktop: SEO</td><td class="num">66</td><td>90+</td><td>PageSpeed Insights</td><td></td></tr>
-      <tr><td>Real-user (field) data</td><td>No Data</td><td>Data available</td><td>PageSpeed Insights</td><td></td></tr>
+      <tr><td>Pages indexable</td><td class="n bad">0 / 7</td><td class="n">all public pages</td><td class="m">OPEN SEO</td><td class="n"></td></tr>
+      <tr><td>Pages with noindex</td><td class="n bad">7 / 7</td><td class="n">intentional only</td><td class="m">OPEN SEO</td><td class="n"></td></tr>
+      <tr><td>HTML pages reached by crawler</td><td class="n bad">1</td><td class="n">all linked pages</td><td class="m">Screaming Frog</td><td class="n"></td></tr>
+      <tr><td>URLs returning 200</td><td class="n">56 / 56</td><td class="n">100%</td><td class="m">Screaming Frog</td><td class="n"></td></tr>
+      <tr><td>3xx / 4xx / 5xx URLs</td><td class="n">0 / 0 / 0</td><td class="n">0 / 0 / 0</td><td class="m">Screaming Frog</td><td class="n"></td></tr>
+      <tr><td>Pages missing a meta description</td><td class="n bad">2 / 7</td><td class="n">0</td><td class="m">OPEN SEO</td><td class="n"></td></tr>
+      <tr><td>Pages with heading skips</td><td class="n bad">7 / 7</td><td class="n">0</td><td class="m">OPEN SEO</td><td class="n"></td></tr>
+      <tr><td>Orphan pages</td><td class="n bad">1</td><td class="n">0</td><td class="m">OPEN SEO</td><td class="n"></td></tr>
+      <tr><td>Homepage canonical</td><td class="n bad">none</td><td class="n">self-referencing</td><td class="m">Screaming Frog</td><td class="n"></td></tr>
+      <tr><td>Homepage title</td><td class="n">54 ch · 479 px</td><td class="n">30–60 ch</td><td class="m">Screaming Frog</td><td class="n"></td></tr>
+      <tr><td>Homepage meta description</td><td class="n">154 ch · 958 px</td><td class="n">145–158 ch</td><td class="m">Screaming Frog</td><td class="n"></td></tr>
+      <tr><td>Homepage H1 count</td><td class="n">1</td><td class="n">1</td><td class="m">Screaming Frog</td><td class="n"></td></tr>
+      <tr><td>Homepage word count</td><td class="n">1,036</td><td class="n">maintain</td><td class="m">Screaming Frog</td><td class="n"></td></tr>
+      <tr><td>Homepage response time</td><td class="n bad">1.21 s</td><td class="n">under 0.6 s</td><td class="m">Screaming Frog</td><td class="n"></td></tr>
+      <tr><td>Homepage HTML size / transferred</td><td class="n">201,449 / 38,052 B</td><td class="n">lower</td><td class="m">Screaming Frog</td><td class="n"></td></tr>
+      <tr><td>CSS / JS files on homepage</td><td class="n">36 / 14</td><td class="n">fewer</td><td class="m">Screaming Frog</td><td class="n"></td></tr>
+      <tr><td>Image weight on homepage</td><td class="n">295,658 B</td><td class="n">lower</td><td class="m">Screaming Frog</td><td class="n"></td></tr>
+      <tr><td>Lighthouse performance, desktop</td><td class="n">86</td><td class="n">90+</td><td class="m">PageSpeed</td><td class="n"></td></tr>
+      <tr><td>Lighthouse accessibility, desktop</td><td class="n">95</td><td class="n">95+</td><td class="m">PageSpeed</td><td class="n"></td></tr>
+      <tr><td>Lighthouse best practices, desktop</td><td class="n">100</td><td class="n">100</td><td class="m">PageSpeed</td><td class="n"></td></tr>
+      <tr><td>Lighthouse SEO, desktop</td><td class="n bad">66</td><td class="n">90+</td><td class="m">PageSpeed</td><td class="n"></td></tr>
+      <tr><td>Real-user field data</td><td class="n">no data</td><td class="n">available</td><td class="m">PageSpeed</td><td class="n"></td></tr>
     </tbody>
   </table></div>
 
-  <h3>Not measured in this baseline</h3>
-  <p>These need extra data or tools. They should be captured as soon as possible so they have a starting point too.</p>
-  <div class="tbl"><table>
-    <thead><tr><th>Item</th><th>What's needed</th></tr></thead>
+  <div class="tbl"><div class="cap">Not measured in this baseline · what's needed to measure it</div><table>
+    <thead><tr><th>Item</th><th>Needed</th></tr></thead>
     <tbody>
-      <tr><td>Titles, descriptions, headings, canonicals for the other 6 pages</td><td>Full Screaming Frog re-crawl after noindex/nofollow is removed</td></tr>
+      <tr><td>Titles, descriptions, headings and canonicals of the other 6 pages</td><td>Full Screaming Frog re-crawl after the noindex/nofollow fix</td></tr>
       <tr><td>Image alt text</td><td>Screaming Frog Images export</td></tr>
-      <tr><td>Duplicate and near-duplicate content</td><td>Multi-page crawl with near-duplicate detection enabled</td></tr>
-      <tr><td>XML sitemap, robots.txt</td><td>Direct check of both files</td></tr>
-      <tr><td>http/https and www redirects</td><td>Crawl of the URL variants</td></tr>
-      <tr><td>Mobile PageSpeed scores and Core Web Vitals</td><td>PageSpeed Insights (mobile); field data once traffic builds</td></tr>
-      <tr><td>Indexed pages, impressions, clicks, queries</td><td>Google Search Console</td></tr>
-      <tr><td>Organic traffic and conversions</td><td>Google Analytics 4</td></tr>
-      <tr><td>Keyword rankings, backlinks, local listing (Google Business Profile)</td><td>Rank tracking, backlink and local SEO tools</td></tr>
-      <tr><td>Structured data (schema)</td><td>Rich Results Test or Screaming Frog structured data extraction</td></tr>
+      <tr><td>Duplicate and near-duplicate content</td><td>Multi-page crawl with near-duplicate detection on</td></tr>
+      <tr><td>XML sitemap and robots.txt</td><td>Direct check of both files</td></tr>
+      <tr><td>http/https and www redirects</td><td>Crawl of the address variants</td></tr>
+      <tr><td>Mobile scores and Core Web Vitals</td><td>PageSpeed mobile; field data once traffic builds</td></tr>
+      <tr><td>Indexed pages, impressions, clicks</td><td>Google Search Console</td></tr>
+      <tr><td>Organic traffic and enquiries</td><td>Google Analytics 4</td></tr>
+      <tr><td>Rankings, backlinks, Google Business Profile</td><td>Rank tracking, backlink and local listing checks</td></tr>
+      <tr><td>Structured data</td><td>Rich Results Test or crawl extraction</td></tr>
     </tbody>
   </table></div>
 </section>
 
-<footer>
-  <p><strong style="color:var(--ink)">Methodology.</strong> Findings are drawn from three inputs: a Screaming Frog "Internal: All" export (56 URLs, crawled 20 Nov 2026, 13:14:32 to 13:14:46), an OPEN SEO site audit issue export (7 pages, 17 issue rows: 3 warnings, 14 informational), and a PageSpeed Insights desktop screenshot of the homepage. Priority reflects our judgement of SEO impact and urgency. Where the data did not cover an area, the report says so instead of estimating.</p>
-  <p>Prepared for Strathdee Polley &amp; Co · spco.ca</p>
-</footer>
+<div class="foot">
+  <p><b>Method.</b> Screaming Frog "Internal: All" export of 56 URLs (20 Nov 2026, 13:14:32–13:14:46); OPEN SEO site audit of 7 pages with 17 issue rows; PageSpeed Insights desktop run of the homepage, supplied as a screenshot. Priorities reflect our judgement of SEO impact and urgency.</p>
+  <p>Prepared by Web Hosting Canada for Strathdee Polley &amp; Co · spco.ca</p>
+</div>
 
 </div>
