@@ -52,3 +52,9 @@ All work went through the Atarim WordPress bridge; this cloud session's network 
 ## Follow-up: sitemap stylesheet
 - Yoast 28.9 removed its sitemap stylesheet output ("removed temporarily"); its XSL is gone and Chromium has dropped XSLT. Added hook 3 to spco-child/inc/spco-seo.php: on sitemap URLs, inserts <?xml-stylesheet type="text/css" href="https://spco.ca/main-sitemap.css"?> (Yoast's own CSS) after the XML declaration, only when no stylesheet line exists. Server lint passed; backup /home/spcoca/spco-seo.php.bak-before-sitemap-css. Verified on sitemap_index.xml and page-sitemap.xml; homepage 200.
 - Correction: the user's Chrome still supports XSLT (the test Chromium 157 does not). Added spco-child/main-sitemap.xsl (Yoast classic-style view, clickable links); the hook now outputs the XSL stylesheet first and /main-sitemap.css as fallback. Verified: .xsl 200 application/xml, both sitemaps carry both lines, homepage 200. Backup /home/spcoca/spco-seo.php.bak-before-sitemap-xsl.
+
+## Follow-up: mobile speed fixes 1 and 2
+- Hero: Elementor background_image_tablet = 2048x910, background_image_mobile = 1536x683 (post 1697, section dac02f0); homepage preload per breakpoint with fetchpriority=high (hook 4a). The hero has no motion effect (the background is set on the section by CSS), so nothing to disable.
+- Fonts: elementor/frontend/print_google_fonts -> false, astra-google-fonts dequeued, one request for Montserrat 300-700, Rubik 300-700, Source Sans Pro 400 (hook 4b). Same woff2 files for all 8 used faces (0 mismatches); Roboto / Roboto Slab were unused.
+- Verified: 200 on home/about/contact, link/img counts unchanged, phone screenshot identical. Backup /home/spcoca/spco-seo.php.bak-before-mobile-speed.
+- Lighthouse cached: desktop 86 -> 91 (LCP 2.1 -> 1.5 s); mobile 71 -> 73-74 (LCP 8.8 -> 4.4-5.6 s). Remaining mobile cost: render-blocking local CSS (~1.5 s est, 36 Elementor/UAE stylesheets).

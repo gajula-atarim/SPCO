@@ -58,3 +58,38 @@ add_action( 'init', function () {
 		return preg_replace( '/^(<\?xml[^>]*\?>)/', '$1' . $pi, $buffer, 1 );
 	} );
 }, 0 );
+
+/**
+ * 4. Mobile speed (20 Nov 2026).
+ *    a) Homepage hero: preload the hero background (it is a CSS background, so browsers otherwise only
+ *       find it after reading the stylesheets). One preload per Elementor breakpoint, each matching the
+ *       file Elementor serves there (mobile 1536px, tablet 2048px, desktop 2560px).
+ *    b) Google Fonts: Elementor loaded 4 separate font stylesheets (incl. Roboto and Roboto Slab, which no
+ *       text on the site uses) and Astra a 5th. Replaced by one request for the families actually used.
+ *       Same font files and font-display: swap, so text renders identically.
+ */
+add_action( 'wp_head', function () {
+	if ( ! is_front_page() ) {
+		return;
+	}
+	$base = content_url( '/uploads/2026/11/StrathdeePolley_Homepage_Background_Web' );
+	$hero = array(
+		'(max-width: 767px)'                         => $base . '-1536x683.jpg',
+		'(min-width: 768px) and (max-width: 1024px)' => $base . '-2048x910.jpg',
+		'(min-width: 1025px)'                        => $base . '-scaled.jpg',
+	);
+	foreach ( $hero as $media => $url ) {
+		printf( "<link rel=\"preload\" as=\"image\" href=\"%s\" media=\"%s\" fetchpriority=\"high\" />\n", esc_url( $url ), esc_attr( $media ) );
+	}
+}, 1 );
+
+add_filter( 'elementor/frontend/print_google_fonts', '__return_false' );
+add_action( 'wp_enqueue_scripts', function () {
+	wp_dequeue_style( 'astra-google-fonts' );
+	wp_enqueue_style(
+		'spco-google-fonts',
+		'https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700|Rubik:300,400,500,600,700|Source+Sans+Pro:400&display=swap',
+		array(),
+		null
+	);
+}, 20 );
